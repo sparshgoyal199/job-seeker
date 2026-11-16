@@ -1,0 +1,231 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-23 21:35:41
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_213541.log
+=================================================================
+
+=================================================================
+[21:35:41] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 2692 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... received 100 posts (Total in WP: 1172, Pages: 12)
+  Processed 100 posts: +0 new to DB, page completed.
+Encountered already-synced post ID. Incremental sync complete!
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 1
+Brand new posts added        : 0
+Total listings in database   : 2692
+Total matches (pre-filtered) : 540
+Total detail records ready   : 540
+============================================================
+
+=================================================================
+[21:35:44] STEP: 1b/6 Ingest AI Internships from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.multi_portal --limit 10
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL AI INTERNSHIP INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+=================================================================
+🌐 [Internshala] Fetching AI & Machine Learning internships...
+   ✅ Internshala: Discovered 10 AI internships.
+🌐 [LinkedIn Jobs] Querying public AI Engineer Intern postings...
+   ✅ LinkedIn Jobs: Discovered 10 AI internships.
+🌐 [Indeed India] Launching browser to scan AI Engineer Intern vacancies...
+   ✅ Indeed India: Discovered 10 AI internships.
+
+=================================================================
+SUMMARY: Gathered 30 candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 6
+   🔄 Existing Jobs Refreshed: 24
+   🎯 Total Ready for Decision-Maker Enrichment: 30
+
+=================================================================
+[21:35:54] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 6 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+[1/6] [200043041] ✅ YES (groq-qwen) -> amber - AI Engineering Intern
+[2/6] [207708797] ✅ YES (groq-qwen) -> ABEC Exhibition & Conferences Pvt. Ltd - AI Intern
+[3/6] [209759867] ✅ YES (groq-qwen) -> Honeywell - Intern Bachelors AI
+[4/6] [237687867] ✅ YES (groq-qwen) -> WEINTERN PRIVATE LIMITED - AI/ML Intern
+[5/6] [265605259] ✅ YES (groq-qwen) -> Optimspace - Data Science Intern
+[6/6] [296373135] ✅ YES (groq-qwen) -> Datafoundry - AI ML Intern
+
+=================================================================
+STRICT LLM EVALUATION SUMMARY
+=================================================================
+  Total Processed : 6 in 2.9s
+  Strict YES      : 6
+  Strict NO       : 0
+  Skipped / Error : 0
+
+Provider Health:
+  groq-qwen: OK (✓6 ✗0)
+  groq-oss: OK (✓0 ✗0)
+  gemini: OK (✓0 ✗0)
+
+Database Totals:
+  maybe: 28
+  no: 310
+  yes: 208
+=================================================================
+
+=================================================================
+[21:36:02] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 76
+   Contacts in DB (total)  : 172
+   Pending (not mailed yet): 0
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[21:36:02] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.portal_contacts --limit 0
+=================================================================
+✅ No new unattempted portal jobs to enrich!
+   (All portal jobs have either had emails discovered or been marked for manual apply).
+
+=================================================================
+[21:36:03] STEP: 4b/6 Discover Decision-Maker Emails via LinkedIn & X-Ray
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.linkedin_decision_makers --limit 5
+=================================================================
+=================================================================
+🚀 LINKEDIN DECISION-MAKER ENRICHMENT PIPELINE
+=================================================================
+Target Companies Selected : 5
+Mode                      : LIVE PRODUCTION
+=================================================================
+
+=================================================================
+🏢 COMPANY: Datafoundry (Post #296373135)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/datafoundryai
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: InAmigos Foundation (Post #284115521)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : inamigosfoundation.org.in
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Arthrex India (Post #282504471)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/arthrex-india
+   • Domain   : medicalsdir.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Arthrex India...
+   🎯 [Zero-Cost Success] Found 6 decision-makers via Free X-Ray. Zero Apify credits used ($0.00 spent)!
+   Received 6 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 6 candidates...
+   [1/6] Matt Hessler             (medicalsdir.com) ... ✅ matt.hessler@medicalsdir.com [Score: 90]
+   [2/6] Mark Yorba               (medicalsdir.com) ... ✅ mark.yorba@medicalsdir.com [Score: 90]
+   [3/6] Sumedh Pawaskar          (medicalsdir.com) ... ✅ sumedh.pawaskar@medicalsdir.com [Score: 10]
+   [4/6] Sutanu Bera, Ph.D        (medicalsdir.com) ... ✅ sutanu.d@medicalsdir.com [Score: 10]
+   [5/6] Dev Kumar                (medicalsdir.com) ... ✅ dev.kumar@medicalsdir.com [Score: 90]
+   [6/6] Anand Kumar              (medicalsdir.com) ... ✅ anand.kumar@medicalsdir.com [Score: 90]
+
+🎯 Selected TOP 5 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Matt Hessler           | matt.hessler@medicalsdir.com | Arthrex
+   2. Mark Yorba             | mark.yorba@medicalsdir.com   | Arthrex
+   3. Dev Kumar              | dev.kumar@medicalsdir.com    | Arthrex India
+   4. Anand Kumar            | anand.kumar@medicalsdir.com  | Arthrex India
+   5. Sumedh Pawaskar        | sumedh.pawaskar@medicalsdir.com | Project Manager & IT Head at Comsense ..
+
+✨ Successfully queued 5 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: Hope Behind Tails Foundation (Post #280773616)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : hopebehindtails.org
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: AryaXAI (Post #277861040)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+ENRICHMENT BATCH COMPLETE
+Total Decision-Makers Added to Queue: 5
+Run: python cold_mailer.py --dry-run   to preview the new emails!
+=================================================================
+
+=================================================================
+[21:37:40] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.outreach.mailer
+=================================================================
+
+=================================================================
+🚀 LIVE COLD EMAIL SENDING (WATERFALL STRATEGY)
+=================================================================
+Contacts in Queue       : 5
+Max Capacity per Account: 50 emails
+Sending Priority:
+  1. Account 1: sparshgoyal199@gmail.com (Primary 1)
+  2. Account 2: rahilgoyal127@gmail.com (Primary 2)
+  3. Account 3: sparsh198@gmail.com (Primary 3)
+-----------------------------------------------------------------
+[1/5] [Account 1: sparshgoyal199@gmail.com (1/50)] ➔ matt.hessler@medicalsdir.com (Matt Hessler) ... ✅ SENT
+[2/5] [Account 1: sparshgoyal199@gmail.com (2/50)] ➔ mark.yorba@medicalsdir.com (Mark Yorba) ... ✅ SENT
+[3/5] [Account 1: sparshgoyal199@gmail.com (3/50)] ➔ dev.kumar@medicalsdir.com (Dev Kumar) ... ✅ SENT
+[4/5] [Account 1: sparshgoyal199@gmail.com (4/50)] ➔ anand.kumar@medicalsdir.com (Anand Kumar) ... ✅ SENT
+[5/5] [Account 1: sparshgoyal199@gmail.com (5/50)] ➔ sumedh.pawaskar@medicalsdir.com (Sumedh Pawaskar) ... ✅ SENT
+
+=================================================================
+OUTREACH RUN COMPLETE (WATERFALL)
+  Successfully Sent : 5
+  Failed            : 0
+
+Database Status:
+  • sent: 177
+=================================================================
+
+=================================================================
+[21:38:12] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.reporting.dashboard --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 208
+  ✉️  Email Outreach Available : 135 jobs
+  👉 Action: Manual Portal     : 73 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 151.7s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_213541.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================

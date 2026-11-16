@@ -1,0 +1,440 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-29 16:37:23
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261029_163722.log
+=================================================================
+
+=================================================================
+[16:37:23] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 3090 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... No posts returned.
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 0
+Brand new posts added        : 0
+Total listings in database   : 3090
+Total matches (pre-filtered) : 938
+Total detail records ready   : 3090
+============================================================
+
+=================================================================
+[16:37:28] STEP: 1b/6 Ingest Open Hiring Postings from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.multi_portal --limit 40
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL OPEN HIRING INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Remotive API, Arbeitnow API, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+Target : 40 fresh jobs per portal (Total: ~200 jobs)
+=================================================================
+📊 Pre-filtering against 3090 known DB entries to avoid duplicate scraping.
+
+🌐 [Internshala] Fetching active tech internships across targeted streams (target: 40)...
+   ✅ Internshala: Discovered 40 brand-new active hiring companies.
+🌐 [LinkedIn Jobs] Querying public postings across rotated search queries (target: 40)...
+   ✅ LinkedIn Jobs: Discovered 40 brand-new active hiring companies.
+🌐 [Remotive API] Fetching live remote developer & AI positions (target: 40)...
+   ✅ Remotive: Discovered 0 brand-new active hiring companies.
+🌐 [Arbeitnow API] Fetching live tech & developer positions (target: 40)...
+   ✅ Arbeitnow: Discovered 40 brand-new active hiring companies.
+🌐 [Indeed India] Launching browser to scan active postings (target: 40)...
+   ⚠️ Indeed India returned 403 (Cloudflare block) — skipping Indeed.
+
+=================================================================
+SUMMARY: Gathered 120 brand-new candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 120
+   🔄 Existing Jobs Refreshed: 0
+   🎯 Total Ready for Decision-Maker Enrichment: 120
+
+=================================================================
+[16:38:53] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[16:39:07] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 230
+   Contacts in DB (total)  : 1359
+   Pending (not mailed yet): 190
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[16:39:09] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.portal_contacts --limit 50
+=================================================================
+=================================================================
+🔍 RECRUITER CONTACT DISCOVERY & ENRICHMENT ENGINE
+=================================================================
+Unattempted Portal Jobs without emails : 1903
+Jobs Selected for this batch           : 50
+Mode                                   : LIVE ENRICHMENT
+-----------------------------------------------------------------
+[1/50] Post #10365 | LexisNexis Risk Solutions ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@risk.lexisnexis.com>
+       Domain   : risk.lexisnexis.com
+[2/50] Post #10362 | Wipro Walk-In Drive ... ❌ No verified contact found (Requires manual portal apply)
+[3/50] Post #10359 | Netomi ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@netomi.com>
+       Domain   : netomi.com
+[4/50] Post #10356 | RannLab Technologies ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <hr@rannlab.com>
+       Domain   : rannlab.com
+[5/50] Post #10354 | DigiMantra ... ❌ No verified contact found (Requires manual portal apply)
+[6/50] Post #10349 | Aipxperts ... 🎯 FOUND via Company Cache (hr@aipxperts.com)!
+[7/50] Post #10346 | TCS NQT 2026 ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@tcs.com>
+       Domain   : tcs.com
+[8/50] Post #10343 | Cognizant ... 🎯 FOUND via Company Cache (careers@cognizant.com)!
+[9/50] Post #10337 | NviSust Innovations ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@nvisust.com>
+       Domain   : nvisust.com
+[10/50] Post #10334 | UXD LAB Software ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@uxdlab.com>
+       Domain   : uxdlab.com
+[11/50] Post #10331 | CodeVibez ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@codevibez.com>
+       Domain   : codevibez.com
+[12/50] Post #10329 | Thoughtworks ... ❌ No verified contact found (Requires manual portal apply)
+[13/50] Post #10327 | RELQ TECHNOLOGIES ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@relqtechnologies.com>
+       Domain   : relqtechnologies.com
+[14/50] Post #10324 | HPE ... ❌ No verified contact found (Requires manual portal apply)
+[15/50] Post #10322 | TCS Walk-In Hiring ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@tata.com>
+       Domain   : tata.com
+[16/50] Post #10320 | TestingXperts ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@testingxperts.com>
+       Domain   : testingxperts.com
+[17/50] Post #10317 | Global Payments ... ❌ No verified contact found (Requires manual portal apply)
+[18/50] Post #10311 | Deloitte ... 🎯 FOUND via Company Cache (careers@deloitte.com)!
+[19/50] Post #10309 | Gurucul ... ❌ No verified contact found (Requires manual portal apply)
+[20/50] Post #10306 | Mphasis ... 🎯 FOUND via Company Cache (careers@mphasis.com)!
+[21/50] Post #10304 | Chapter Enterprise ... ❌ No verified contact found (Requires manual portal apply)
+[22/50] Post #10302 | tecHindustan ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@techindustan.com>
+       Domain   : techindustan.com
+[23/50] Post #10296 | Oak Tree Software ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@oaktreecloud.com>
+       Domain   : oaktreecloud.com
+[24/50] Post #10293 | Wells Fargo ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <wellsfargocareers@wellsfargo.com>
+       Domain   : wellsfargo.com
+[25/50] Post #10290 | Citi ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@citi.com>
+       Domain   : citi.com
+[26/50] Post #10288 | Infosys | QA ... ❌ No verified contact found (Requires manual portal apply)
+[27/50] Post #10285 | Microsoft ... 🎯 FOUND via Company Cache (shresth.gupta@microsoft.com)!
+[28/50] Post #10282 | Mastercard ... 🎯 FOUND via Company Cache (careers@mastercard.com)!
+[29/50] Post #10279 | Apple Is ... ❌ No verified contact found (Requires manual portal apply)
+[30/50] Post #10276 | TCS ... 🎯 FOUND via Company Cache (careers@tcs.com)!
+[31/50] Post #10270 | Accenture ... 🎯 FOUND via Company Cache (careers@accenture.com)!
+[32/50] Post #10267 | HighLevel ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@gohighlevel.com>
+       Domain   : gohighlevel.com
+[33/50] Post #10264 | Capgemini ... 🎯 FOUND via Company Cache (careers@capgemini.com)!
+[34/50] Post #10259 | Siemens ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@siemens.com>
+       Domain   : siemens.com
+[35/50] Post #10255 | Cybercom Creation ... ❌ No verified contact found (Requires manual portal apply)
+[36/50] Post #10250 | PRIMAFELICITAS ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@primafelicitas.com>
+       Domain   : primafelicitas.com
+[37/50] Post #10248 | GreyOrange ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@greyorange.com>
+       Domain   : greyorange.com
+[38/50] Post #10245 | Cognizant ... 🎯 FOUND via Company Cache (careers@cognizant.com)!
+[39/50] Post #10242 | StatusNeo ... 🎯 FOUND via Company Cache (careers@statusneo.com)!
+[40/50] Post #10239 | American Express ... 🎯 FOUND via Company Cache (careers@americanexpress.com)!
+[41/50] Post #10236 | SQE Labs ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@sqelabs.com>
+       Domain   : sqelabs.com
+[42/50] Post #10233 | Insbytech Solutions ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@insbytech.com>
+       Domain   : insbytech.com
+[43/50] Post #10230 | LTM ... 🎯 FOUND via Company Cache (careers@ltm.com)!
+[44/50] Post #10227 | Portcast ... ❌ No verified contact found (Requires manual portal apply)
+[45/50] Post #10222 | BuzzHire ... 🎯 FOUND via Company Cache (careers@buzzhire.in)!
+[46/50] Post #10219 | Rubrik Software Engineer ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@rubrik.com>
+       Domain   : rubrik.com
+[47/50] Post #10216 | Microvista Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[48/50] Post #10212 | Franklin Templeton ... ❌ No verified contact found (Requires manual portal apply)
+[49/50] Post #10209 | Infosys SAP Referral ... ❌ No verified contact found (Requires manual portal apply)
+[50/50] Post #10205 | Mastercard ... 🎯 FOUND via Company Cache (careers@mastercard.com)!
+
+=================================================================
+ENRICHMENT SUMMARY
+  Processed Jobs       : 50
+  New Emails Discovered: 36
+  ✅ Added 36 new recruiter email(s) into hr_contacts table!
+  They will now be included in your cold email queue and dashboard.
+=================================================================
+
+=================================================================
+📦 QUEUE STATUS: 226 pending emails already waiting in queue.
+   Skipping Step 4b enrichment for today to conserve search & Apify quota.
+   Step 5 will send up to 200 emails from these existing pending contacts.
+=================================================================
+
+=================================================================
+[16:50:48] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP (Daily Limit: 200)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.outreach.mailer --limit 200
+=================================================================
+
+📊 Today's Outreach Budget: 4/200 sent today (196 remaining for today).
+
+=================================================================
+🚀 LIVE COLD EMAIL SENDING (WATERFALL STRATEGY)
+=================================================================
+Contacts in Queue       : 194 (Sending up to: 194)
+Daily Cap Remaining     : 196/200 emails
+Max Capacity per Account: 200 emails
+Sending Priority:
+  1. Account 1: sparshgoyal199@gmail.com (Primary 1)
+  2. Account 2: rahilgoyal127@gmail.com (Primary 2)
+  3. Account 3: sparsh198@gmail.com (Primary 3)
+-----------------------------------------------------------------
+[1/194] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ deepika.khobragadhe@claveprep.com (Deepika Khobragadhe) ... ✅ SENT
+[2/194] [Account 1: sparshgoyal199@gmail.com (2/200)] ➔ khushi.bansal@claveprep.com (Khushi Bansal) ... ✅ SENT
+[3/194] [Account 1: sparshgoyal199@gmail.com (3/200)] ➔ abhyanand.jha@claveprep.com (Abhyanand Jha) ... ✅ SENT
+[4/194] [Account 1: sparshgoyal199@gmail.com (4/200)] ➔ arpitha.kn@claveprep.com (Arpitha KN) ... ✅ SENT
+[5/194] [Account 1: sparshgoyal199@gmail.com (5/200)] ➔ tanya.tyagi@claveprep.com (Tanya Tyagi) ... ✅ SENT
+[6/194] [Account 1: sparshgoyal199@gmail.com (6/200)] ➔ palak.khanna@claveprep.com (Palak Khanna) ... ✅ SENT
+[7/194] [Account 1: sparshgoyal199@gmail.com (7/200)] ➔ priya@shecan.global (Priya Dharshini.P) ... ✅ SENT
+[8/194] [Account 1: sparshgoyal199@gmail.com (8/200)] ➔ avinash.singh@shecan.global (Avinash Kumar Singh) ... ✅ SENT
+[9/194] [Account 1: sparshgoyal199@gmail.com (9/200)] ➔ rishabh.ray@shecan.global (RISHABH KUMAR RAY) ... ✅ SENT
+[10/194] [Account 1: sparshgoyal199@gmail.com (10/200)] ➔ gaurav.jha@shecan.global (Gaurav Jha) ... ✅ SENT
+[11/194] [Account 1: sparshgoyal199@gmail.com (11/200)] ➔ shresth.pandey@shecan.global (Shresth Pandey) ... ✅ SENT
+[12/194] [Account 1: sparshgoyal199@gmail.com (12/200)] ➔ nehal.bhalla@shecan.global (Nehal Bhalla) ... ✅ SENT
+[13/194] [Account 1: sparshgoyal199@gmail.com (13/200)] ➔ mahavir.kumar@shecan.global (Mahavir Kumar) ... ✅ SENT
+[14/194] [Account 1: sparshgoyal199@gmail.com (14/200)] ➔ anchal@shecan.global (Anchal .) ... ✅ SENT
+[15/194] [Account 1: sparshgoyal199@gmail.com (15/200)] ➔ tarannum@remotive.com (Tarannum .) ... ✅ SENT
+[16/194] [Account 1: sparshgoyal199@gmail.com (16/200)] ➔ bhanupriya.das@remotive.com (Bhanupriya Das) ... ✅ SENT
+[17/194] [Account 1: sparshgoyal199@gmail.com (17/200)] ➔ sundaram.mishra@remotive.com (Sundaram Mishra) ... ✅ SENT
+[18/194] [Account 1: sparshgoyal199@gmail.com (18/200)] ➔ somdatta.jana@remotive.com (Somdatta Jana) ... ✅ SENT
+[19/194] [Account 1: sparshgoyal199@gmail.com (19/200)] ➔ chhavi.maheshwari@remotive.com (Chhavi Maheshwari) ... ✅ SENT
+[20/194] [Account 1: sparshgoyal199@gmail.com (20/200)] ➔ pratik.roy@remotive.com (Pratik Roy) ... ✅ SENT
+[21/194] [Account 1: sparshgoyal199@gmail.com (21/200)] ➔ madhubanti.ghosh@remotive.com (Madhubanti Ghosh) ... ✅ SENT
+[22/194] [Account 1: sparshgoyal199@gmail.com (22/200)] ➔ sukhamay.mukherjee@remotive.com (Sukhamay Mukherjee) ... ✅ SENT
+[23/194] [Account 1: sparshgoyal199@gmail.com (23/200)] ➔ akshita.venkatapuram@bondada.net (Akshita Chakrapani Venkatapuram) ... ✅ SENT
+[24/194] [Account 1: sparshgoyal199@gmail.com (24/200)] ➔ syed.parvez@bondada.net (syed parvez) ... ✅ SENT
+[25/194] [Account 1: sparshgoyal199@gmail.com (25/200)] ➔ himanshu.jangir@bondada.net (Himanshu Jangir) ... ✅ SENT
+[26/194] [Account 1: sparshgoyal199@gmail.com (26/200)] ➔ shiva.prasad@bondada.net (Shiva Prasad) ... ✅ SENT
+[27/194] [Account 1: sparshgoyal199@gmail.com (27/200)] ➔ nagunoori.durgaprasad@bondada.net (Nagunoori Durgaprasad) ... ✅ SENT
+[28/194] [Account 1: sparshgoyal199@gmail.com (28/200)] ➔ bondada.engineering@bondada.net (Bondada Engineering) ... ✅ SENT
+[29/194] [Account 1: sparshgoyal199@gmail.com (29/200)] ➔ priyanshu.pareek@bondada.net (PRIYANSHU PAREEK) ... ✅ SENT
+[30/194] [Account 1: sparshgoyal199@gmail.com (30/200)] ➔ vaibhav.sarda@bondada.net (Vaibhav Sarda) ... ✅ SENT
+[31/194] [Account 1: sparshgoyal199@gmail.com (31/200)] ➔ mayur.narekar@opalcode.io (Mayur Narekar) ... ✅ SENT
+[32/194] [Account 1: sparshgoyal199@gmail.com (32/200)] ➔ marlyn.sequeira@opalcode.io (Marlyn Lourine Sequeira) ... ✅ SENT
+[33/194] [Account 1: sparshgoyal199@gmail.com (33/200)] ➔ priti.kale@opalcode.io (Priti Kale) ... ✅ SENT
+[34/194] [Account 1: sparshgoyal199@gmail.com (34/200)] ➔ adv.rajavel@opalcode.io (Adv. Radhakrishnan Rajavel) ... ✅ SENT
+[35/194] [Account 1: sparshgoyal199@gmail.com (35/200)] ➔ divyesh@opalcode.io (Divyesh Vaghela, Ph.D.) ... ✅ SENT
+[36/194] [Account 1: sparshgoyal199@gmail.com (36/200)] ➔ rushi.suthar@opalcode.io (Rushi Suthar) ... ✅ SENT
+[37/194] [Account 1: sparshgoyal199@gmail.com (37/200)] ➔ aditya.vishwakarma@opalcode.io (Aditya Vishwakarma) ... ✅ SENT
+[38/194] [Account 1: sparshgoyal199@gmail.com (38/200)] ➔ pranit.narkhede@opalcode.io (Pranit Narkhede) ... ✅ SENT
+[39/194] [Account 1: sparshgoyal199@gmail.com (39/200)] ➔ casey.skillen@skillzenloop.com (Casey Skillen) ... ✅ SENT
+[40/194] [Account 1: sparshgoyal199@gmail.com (40/200)] ➔ roel.sillen@skillzenloop.com (Roel Sillen) ... ✅ SENT
+[41/194] [Account 1: sparshgoyal199@gmail.com (41/200)] ➔ lisa.skillern@skillzenloop.com (Lisa Skillern) ... ✅ SENT
+[42/194] [Account 1: sparshgoyal199@gmail.com (42/200)] ➔ kenny.skillen@skillzenloop.com (Kenny Skillen) ... ✅ SENT
+[43/194] [Account 1: sparshgoyal199@gmail.com (43/200)] ➔ kurt@skillzenloop.com (Kurt Sillén) ... ✅ SENT
+[44/194] [Account 1: sparshgoyal199@gmail.com (44/200)] ➔ sarah.skillen@skillzenloop.com (Sarah Skillen) ... ✅ SENT
+[45/194] [Account 1: sparshgoyal199@gmail.com (45/200)] ➔ jaydip.dey@noetherlabs.com (Jaydip Dey 🌟) ... ✅ SENT
+[46/194] [Account 1: sparshgoyal199@gmail.com (46/200)] ➔ eram.qudsia@noetherlabs.com (Eram Qudsia) ... ✅ SENT
+[47/194] [Account 1: sparshgoyal199@gmail.com (47/200)] ➔ prateek.sachan@noetherlabs.com (Prateek Sachan) ... ✅ SENT
+[48/194] [Account 1: sparshgoyal199@gmail.com (48/200)] ➔ gregory@noetherlabs.com (Gregory S.) ... ✅ SENT
+[49/194] [Account 1: sparshgoyal199@gmail.com (49/200)] ➔ khaled.alkhazraji@noetherlabs.com (Khaled Alkhazraji) ... ✅ SENT
+[50/194] [Account 1: sparshgoyal199@gmail.com (50/200)] ➔ nicholas@noetherlabs.com (Nicholas A.) ... ✅ SENT
+[51/194] [Account 1: sparshgoyal199@gmail.com (51/200)] ➔ kai.chan@noetherlabs.com (Kai Chan) ... ✅ SENT
+[52/194] [Account 1: sparshgoyal199@gmail.com (52/200)] ➔ saud.bazhair@noetherlabs.com (Saud Obaid Bazhair) ... ✅ SENT
+[53/194] [Account 1: sparshgoyal199@gmail.com (53/200)] ➔ arul.johnson@infinexalearningsolutions.com (Arul Johnson) ... ✅ SENT
+[54/194] [Account 1: sparshgoyal199@gmail.com (54/200)] ➔ leo.mashego@infinexalearningsolutions.com (Leo Mashego) ... ✅ SENT
+[55/194] [Account 1: sparshgoyal199@gmail.com (55/200)] ➔ lechara@infinexalearningsolutions.com (LeChara G.) ... ✅ SENT
+[56/194] [Account 1: sparshgoyal199@gmail.com (56/200)] ➔ abhay.kumar@infinexalearningsolutions.com (Abhay Kumar) ... ✅ SENT
+[57/194] [Account 1: sparshgoyal199@gmail.com (57/200)] ➔ jason.starck@infinexalearningsolutions.com (Jason Starck) ... ✅ SENT
+[58/194] [Account 1: sparshgoyal199@gmail.com (58/200)] ➔ vikram.somani@infinexalearningsolutions.com (Vikram Somani) ... ✅ SENT
+[59/194] [Account 1: sparshgoyal199@gmail.com (59/200)] ➔ sumana.rao@infinexalearningsolutions.com (Sumana Rao) ... ✅ SENT
+[60/194] [Account 1: sparshgoyal199@gmail.com (60/200)] ➔ gajendra.yadav@infinexalearningsolutions.com (GAJENDRA S YADAV) ... ✅ SENT
+[61/194] [Account 1: sparshgoyal199@gmail.com (61/200)] ➔ sakshi.rochlani@nayepankh.com (Sakshi Rochlani) ... ✅ SENT
+[62/194] [Account 1: sparshgoyal199@gmail.com (62/200)] ➔ priti.kale@nayepankh.com (Priti Kale) ... ✅ SENT
+[63/194] [Account 1: sparshgoyal199@gmail.com (63/200)] ➔ trupti.adulkar@nayepankh.com (Trupti Adulkar) ... ✅ SENT
+[64/194] [Account 1: sparshgoyal199@gmail.com (64/200)] ➔ srishti.sinha@nayepankh.com (Srishti Sinha) ... ✅ SENT
+[65/194] [Account 1: sparshgoyal199@gmail.com (65/200)] ➔ kalpana.joshi@nayepankh.com (KALPANA JOSHI) ... ✅ SENT
+[66/194] [Account 1: sparshgoyal199@gmail.com (66/200)] ➔ ishita.nema@nayepankh.com (Ishita Nema) ... ✅ SENT
+[67/194] [Account 1: sparshgoyal199@gmail.com (67/200)] ➔ randhir.kumar@nayepankh.com (Randhir Kumar) ... ✅ SENT
+[68/194] [Account 1: sparshgoyal199@gmail.com (68/200)] ➔ nishita@nayepankh.com (Nishita R.) ... ✅ SENT
+[69/194] [Account 1: sparshgoyal199@gmail.com (69/200)] ➔ samriddhi.mishra@crossinginfotech.in (Samriddhi Mishra) ... ✅ SENT
+[70/194] [Account 1: sparshgoyal199@gmail.com (70/200)] ➔ siddheshwar.mishra@crossinginfotech.in (Siddheshwar Nath Mishra) ... ✅ SENT
+[71/194] [Account 1: sparshgoyal199@gmail.com (71/200)] ➔ abhishek.sharma@crossinginfotech.in (Abhishek Sharma) ... ✅ SENT
+[72/194] [Account 1: sparshgoyal199@gmail.com (72/200)] ➔ mantej.singh@crossinginfotech.in (Mantej Singh) ... ✅ SENT
+[73/194] [Account 1: sparshgoyal199@gmail.com (73/200)] ➔ abhishek.kumar@crossinginfotech.in (Abhishek kumar) ... ✅ SENT
+[74/194] [Account 1: sparshgoyal199@gmail.com (74/200)] ➔ shabna@crossinginfotech.in (Shabna C) ... ✅ SENT
+[75/194] [Account 1: sparshgoyal199@gmail.com (75/200)] ➔ manimaran.mani@crossinginfotech.in (manimaran mani) ... ✅ SENT
+[76/194] [Account 1: sparshgoyal199@gmail.com (76/200)] ➔ haresh.sankar@crossinginfotech.in (Haresh Gowri Sankar) ... ✅ SENT
+[77/194] [Account 1: sparshgoyal199@gmail.com (77/200)] ➔ amit.chandravanshi@withings.com (Amit Kumar Chandravanshi) ... ✅ SENT
+[78/194] [Account 1: sparshgoyal199@gmail.com (78/200)] ➔ puja.rawani@withings.com (Puja Rawani) ... ✅ SENT
+[79/194] [Account 1: sparshgoyal199@gmail.com (79/200)] ➔ meenal.mahajan@withings.com (Meenal Mahajan) ... ✅ SENT
+[80/194] [Account 1: sparshgoyal199@gmail.com (80/200)] ➔ kumar.viswanathan@withings.com (Kumar Viswanathan) ... ✅ SENT
+[81/194] [Account 1: sparshgoyal199@gmail.com (81/200)] ➔ akshay.deshraj@withings.com (Akshay Deshraj) ... ✅ SENT
+[82/194] [Account 1: sparshgoyal199@gmail.com (82/200)] ➔ sourabh.gupta@withings.com (Sourabh Gupta) ... ✅ SENT
+[83/194] [Account 1: sparshgoyal199@gmail.com (83/200)] ➔ ajai.tiwari@withings.com (Ajai Tiwari) ... ✅ SENT
+[84/194] [Account 1: sparshgoyal199@gmail.com (84/200)] ➔ ankit.kanojiya@withings.com (Ankit Kanojiya) ... ✅ SENT
+[85/194] [Account 1: sparshgoyal199@gmail.com (85/200)] ➔ madhavi.pandey@ahead.com (Madhavi Pandey) ... ✅ SENT
+[86/194] [Account 1: sparshgoyal199@gmail.com (86/200)] ➔ sukhamay.mukherjee@ahead.com (Sukhamay Mukherjee) ... ✅ SENT
+[87/194] [Account 1: sparshgoyal199@gmail.com (87/200)] ➔ kanak.ramapure@ahead.com (Kanak Ramapure) ... ✅ SENT
+[88/194] [Account 1: sparshgoyal199@gmail.com (88/200)] ➔ ramakant.markam@ahead.com (Ramakant Markam) ... ✅ SENT
+[89/194] [Account 1: sparshgoyal199@gmail.com (89/200)] ➔ neelam@ahead.com (Neelam R.) ... ✅ SENT
+[90/194] [Account 1: sparshgoyal199@gmail.com (90/200)] ➔ firdos.ali@ahead.com (Firdos Liyakat Ali) ... ✅ SENT
+[91/194] [Account 1: sparshgoyal199@gmail.com (91/200)] ➔ irfan.shaikh@ahead.com (Irfan.A Shaikh) ... ✅ SENT
+[92/194] [Account 1: sparshgoyal199@gmail.com (92/200)] ➔ ishita.srivastava@ahead.com (Ishita Srivastava) ... ✅ SENT
+[93/194] [Account 1: sparshgoyal199@gmail.com (93/200)] ➔ chetan.dwaraki@binaryworks.com (Chetan Annapragada Dwaraki) ... ✅ SENT
+[94/194] [Account 1: sparshgoyal199@gmail.com (94/200)] ➔ puja.rawani@binaryworks.com (Puja Rawani) ... ✅ SENT
+[95/194] [Account 1: sparshgoyal199@gmail.com (95/200)] ➔ pooja.pandey@binaryworks.com (Pooja Pandey) ... ✅ SENT
+[96/194] [Account 1: sparshgoyal199@gmail.com (96/200)] ➔ rashmita.babu@binaryworks.com (Rashmita Babu) ... ✅ SENT
+[97/194] [Account 1: sparshgoyal199@gmail.com (97/200)] ➔ poonam.hers@binaryworks.com (Poonam Agrawal (she/her/hers)) ... ✅ SENT
+[98/194] [Account 1: sparshgoyal199@gmail.com (98/200)] ➔ shivam.shrirao@binaryworks.com (Shivam Shrirao) ... ✅ SENT
+[99/194] [Account 1: sparshgoyal199@gmail.com (99/200)] ➔ shreyas.gaharwar@binaryworks.com (Shreyas Singh Gaharwar) ... ✅ SENT
+[100/194] [Account 1: sparshgoyal199@gmail.com (100/200)] ➔ prakhar.doneria@binaryworks.com (Prakhar Doneria) ... ✅ SENT
+[101/194] [Account 1: sparshgoyal199@gmail.com (101/200)] ➔ dilip.sharma@uplabh.com (Dilip Sharma) ... ✅ SENT
+[102/194] [Account 1: sparshgoyal199@gmail.com (102/200)] ➔ sidharth.kumar@uplabh.com (Sidharth Kumar) ... ✅ SENT
+[103/194] [Account 1: sparshgoyal199@gmail.com (103/200)] ➔ karthik.rao@uplabh.com (Karthik Rao) ... ✅ SENT
+[104/194] [Account 1: sparshgoyal199@gmail.com (104/200)] ➔ aarish.ejaz@vynexaai.site (Aarish Ejaz) ... ✅ SENT
+[105/194] [Account 1: sparshgoyal199@gmail.com (105/200)] ➔ elisha@vynexaai.site (Elisha M) ... ✅ SENT
+[106/194] [Account 1: sparshgoyal199@gmail.com (106/200)] ➔ minal.jobanputra@vynexaai.site (Minal Jobanputra) ... ✅ SENT
+[107/194] [Account 1: sparshgoyal199@gmail.com (107/200)] ➔ ashraf.anwar@vynexaai.site (Ashraf Anwar) ... ✅ SENT
+[108/194] [Account 1: sparshgoyal199@gmail.com (108/200)] ➔ inder.khanna@vynexaai.site (Inder Khanna) ... ✅ SENT
+[109/194] [Account 1: sparshgoyal199@gmail.com (109/200)] ➔ matthias.bruckhoff@vynexaai.site (Matthias Bruckhoff) ... ✅ SENT
+[110/194] [Account 1: sparshgoyal199@gmail.com (110/200)] ➔ andreas.schmidt@vynexaai.site (Andreas Schmidt) ... ✅ SENT
+[111/194] [Account 1: sparshgoyal199@gmail.com (111/200)] ➔ steve.ankoman@vynexaai.site (Steve Ankoman) ... ✅ SENT
+[112/194] [Account 1: sparshgoyal199@gmail.com (112/200)] ➔ jothishwaran@scyverge.com (Jothishwaran R) ... ✅ SENT
+[113/194] [Account 1: sparshgoyal199@gmail.com (113/200)] ➔ khushi.bansal@scyverge.com (Khushi Bansal) ... ✅ SENT
+[114/194] [Account 1: sparshgoyal199@gmail.com (114/200)] ➔ abhyanand.jha@scyverge.com (Abhyanand Jha) ... ✅ SENT
+[115/194] [Account 1: sparshgoyal199@gmail.com (115/200)] ➔ arpitha.kn@scyverge.com (Arpitha KN) ... ✅ SENT
+[116/194] [Account 1: sparshgoyal199@gmail.com (116/200)] ➔ rashi.tyagi@scyverge.com (Rashi Tyagi) ... ✅ SENT
+[117/194] [Account 1: sparshgoyal199@gmail.com (117/200)] ➔ pushpendra.tripathi@scyverge.com (Pushpendra Tripathi) ... ✅ SENT
+[118/194] [Account 1: sparshgoyal199@gmail.com (118/200)] ➔ deepika.khobragadhe@scyverge.com (Deepika Khobragadhe) ... ✅ SENT
+[119/194] [Account 1: sparshgoyal199@gmail.com (119/200)] ➔ tanya.tyagi@scyverge.com (Tanya Tyagi) ... ✅ SENT
+[120/194] [Account 1: sparshgoyal199@gmail.com (120/200)] ➔ bertrand.mathieu@abilian.com (Bertrand MATHIEU) ... ✅ SENT
+[121/194] [Account 1: sparshgoyal199@gmail.com (121/200)] ➔ navitha.reddy@impactodigifin.com (Navitha Reddy) ... ✅ SENT
+[122/194] [Account 1: sparshgoyal199@gmail.com (122/200)] ➔ isanur.sardar@impactodigifin.com (Isanur Sardar) ... ✅ SENT
+[123/194] [Account 1: sparshgoyal199@gmail.com (123/200)] ➔ manikanta.kalyanapu@impactodigifin.com (Manikanta Kalyanapu) ... ✅ SENT
+[124/194] [Account 1: sparshgoyal199@gmail.com (124/200)] ➔ navya.raj@impactodigifin.com (Navya Raj) ... ✅ SENT
+[125/194] [Account 1: sparshgoyal199@gmail.com (125/200)] ➔ abhishek.dasgupta@impactodigifin.com (Abhishek Dasgupta) ... ✅ SENT
+[126/194] [Account 1: sparshgoyal199@gmail.com (126/200)] ➔ bhoomika@impactodigifin.com (Bhoomika S) ... ✅ SENT
+[127/194] [Account 1: sparshgoyal199@gmail.com (127/200)] ➔ ayush.paul@impactodigifin.com (Ayush Paul) ... ✅ SENT
+[128/194] [Account 1: sparshgoyal199@gmail.com (128/200)] ➔ nageswara.korlepara@impactodigifin.com (Nageswara Rao Korlepara) ... ✅ SENT
+[129/194] [Account 1: sparshgoyal199@gmail.com (129/200)] ➔ harshit.rai@diffzenepharma.com (Harshit Rai) ... ✅ SENT
+[130/194] [Account 1: sparshgoyal199@gmail.com (130/200)] ➔ ayush.verma@diffzenepharma.com (Ayush Verma) ... ✅ SENT
+[131/194] [Account 1: sparshgoyal199@gmail.com (131/200)] ➔ arshad.sahjavi@diffzenepharma.com (Arshad Sahjavi) ... ✅ SENT
+[132/194] [Account 1: sparshgoyal199@gmail.com (132/200)] ➔ jean.torres@diffzenepharma.com (Jean Marie Torres) ... ✅ SENT
+[133/194] [Account 1: sparshgoyal199@gmail.com (133/200)] ➔ yolanda@diffzenepharma.com (Yolanda S.) ... ✅ SENT
+[134/194] [Account 1: sparshgoyal199@gmail.com (134/200)] ➔ kristina.pmp@diffzenepharma.com (Kristina Blackwell, PE, MBA, PMP) ... ✅ SENT
+[135/194] [Account 1: sparshgoyal199@gmail.com (135/200)] ➔ dan.schroeder@diffzenepharma.com (Dan Schroeder) ... ✅ SENT
+[136/194] [Account 1: sparshgoyal199@gmail.com (136/200)] ➔ lou.zumpano@diffzenepharma.com (Lou Zumpano) ... ✅ SENT
+[137/194] [Account 1: sparshgoyal199@gmail.com (137/200)] ➔ amity.priya@namekart.com (Amity Priya) ... ✅ SENT
+[138/194] [Account 1: sparshgoyal199@gmail.com (138/200)] ➔ kartikey.siwatch@namekart.com (Kartikey Siwatch) ... ✅ SENT
+[139/194] [Account 1: sparshgoyal199@gmail.com (139/200)] ➔ shivani.bhatt@namekart.com (Shivani Bhatt) ... ✅ SENT
+[140/194] [Account 1: sparshgoyal199@gmail.com (140/200)] ➔ shruti.kumari@namekart.com (Shruti Kumari) ... ✅ SENT
+[141/194] [Account 1: sparshgoyal199@gmail.com (141/200)] ➔ rupali.goel@namekart.com (Rupali Goel) ... ✅ SENT
+[142/194] [Account 1: sparshgoyal199@gmail.com (142/200)] ➔ sneha.das@namekart.com (Sneha Das) ... ✅ SENT
+[143/194] [Account 1: sparshgoyal199@gmail.com (143/200)] ➔ herambh.verma@namekart.com (Herambh Verma) ... ✅ SENT
+[144/194] [Account 1: sparshgoyal199@gmail.com (144/200)] ➔ shubham.anand@namekart.com (Shubham Anand) ... ✅ SENT
+[145/194] [Account 1: sparshgoyal199@gmail.com (145/200)] ➔ kavita.darnal@arcelormittal.com (Kavita Darnal) ... ✅ SENT
+[146/194] [Account 1: sparshgoyal199@gmail.com (146/200)] ➔ dharmeshwar.sharma@arcelormittal.com (Dharmeshwar Sharma) ... ✅ SENT
+[147/194] [Account 1: sparshgoyal199@gmail.com (147/200)] ➔ rinku.shreya@arcelormittal.com (Rinku Shreya) ... ✅ SENT
+[148/194] [Account 1: sparshgoyal199@gmail.com (148/200)] ➔ roshni.pandey@arcelormittal.com (Roshni Pandey) ... ✅ SENT
+[149/194] [Account 1: sparshgoyal199@gmail.com (149/200)] ➔ ankit.kanojiya@arcelormittal.com (Ankit Kanojiya) ... ✅ SENT
+[150/194] [Account 1: sparshgoyal199@gmail.com (150/200)] ➔ vishal.jain@arcelormittal.com (Vishal Jain) ... ✅ SENT
+[151/194] [Account 1: sparshgoyal199@gmail.com (151/200)] ➔ nisarg.trivedi@arcelormittal.com (Nisarg Trivedi) ... ✅ SENT
+[152/194] [Account 1: sparshgoyal199@gmail.com (152/200)] ➔ anshika.mehta@arcelormittal.com (Anshika Mehta) ... ✅ SENT
+[153/194] [Account 1: sparshgoyal199@gmail.com (153/200)] ➔ navya.vasamsetti@peoplematters.in (Navya Sree Vasamsetti) ... ✅ SENT
+[154/194] [Account 1: sparshgoyal199@gmail.com (154/200)] ➔ naresh.reddy@peoplematters.in (Naresh Reddy) ... ✅ SENT
+[155/194] [Account 1: sparshgoyal199@gmail.com (155/200)] ➔ shambhavi.singh@peoplematters.in (Shambhavi Singh) ... ✅ SENT
+[156/194] [Account 1: sparshgoyal199@gmail.com (156/200)] ➔ eram.qudsia@peoplematters.in (Eram Qudsia) ... ✅ SENT
+[157/194] [Account 1: sparshgoyal199@gmail.com (157/200)] ➔ nikita.morwani@peoplematters.in (Nikita Morwani) ... ✅ SENT
+[158/194] [Account 1: sparshgoyal199@gmail.com (158/200)] ➔ sidhosh.ps@peoplematters.in (Sidhosh PS) ... ✅ SENT
+[159/194] [Account 1: sparshgoyal199@gmail.com (159/200)] ➔ puja.rawani@peoplematters.in (Puja Rawani) ... ✅ SENT
+[160/194] [Account 1: sparshgoyal199@gmail.com (160/200)] ➔ disha.ghuge@peoplematters.in (Disha Ghuge) ... ✅ SENT
+[161/194] [Account 1: sparshgoyal199@gmail.com (161/200)] ➔ lisa.boyce@arbeitnow.com (Lisa Boyce) ... ✅ SENT
+[162/194] [Account 1: sparshgoyal199@gmail.com (162/200)] ➔ chris.wohl@arbeitnow.com (Chris Wohl) ... ✅ SENT
+[163/194] [Account 1: sparshgoyal199@gmail.com (163/200)] ➔ helene.bich@arbeitnow.com (Helene Bich) ... ✅ SENT
+[164/194] [Account 1: sparshgoyal199@gmail.com (164/200)] ➔ matthias.ller@arbeitnow.com (Matthias Müller) ... ✅ SENT
+[165/194] [Account 1: sparshgoyal199@gmail.com (165/200)] ➔ alexander.orlov@arbeitnow.com (Alexander Orlov) ... ✅ SENT
+[166/194] [Account 1: sparshgoyal199@gmail.com (166/200)] ➔ gloria@arbeitnow.com (Gloria B.) ... ✅ SENT
+[167/194] [Account 1: sparshgoyal199@gmail.com (167/200)] ➔ gopala.char@arbeitnow.com (Gopala-Krishna Char) ... ✅ SENT
+[168/194] [Account 1: sparshgoyal199@gmail.com (168/200)] ➔ eric@arbeitnow.com (Eric A. Lief, Ph.D) ... ✅ SENT
+[169/194] [Account 1: sparshgoyal199@gmail.com (169/200)] ➔ priyanka.maghnani@rempact.com (Priyanka Maghnani) ... ✅ SENT
+[170/194] [Account 1: sparshgoyal199@gmail.com (170/200)] ➔ rashmita.babu@rempact.com (Rashmita Babu) ... ✅ SENT
+[171/194] [Account 1: sparshgoyal199@gmail.com (171/200)] ➔ aditya.vishwakarma@rempact.com (Aditya Vishwakarma) ... ✅ SENT
+[172/194] [Account 1: sparshgoyal199@gmail.com (172/200)] ➔ naina.nare@rempact.com (Naina Nare) ... ✅ SENT
+[173/194] [Account 1: sparshgoyal199@gmail.com (173/200)] ➔ shraddha.pingale@rempact.com (Shraddha Pingale) ... ✅ SENT
+[174/194] [Account 1: sparshgoyal199@gmail.com (174/200)] ➔ tony.abraham@rempact.com (TONY ABRAHAM) ... ✅ SENT
+[175/194] [Account 1: sparshgoyal199@gmail.com (175/200)] ➔ puja.rawani@rempact.com (Puja Rawani) ... ✅ SENT
+[176/194] [Account 1: sparshgoyal199@gmail.com (176/200)] ➔ priyanka.nigamm@rempact.com (Priyanka Nigamm) ... ✅ SENT
+[177/194] [Account 1: sparshgoyal199@gmail.com (177/200)] ➔ careers@risk.lexisnexis.com (Hiring Team) ... ✅ SENT
+[178/194] [Account 1: sparshgoyal199@gmail.com (178/200)] ➔ careers@netomi.com (Hiring Team) ... ✅ SENT
+[179/194] [Account 1: sparshgoyal199@gmail.com (179/200)] ➔ hr@rannlab.com (Hiring Team) ... ✅ SENT
+[180/194] [Account 1: sparshgoyal199@gmail.com (180/200)] ➔ careers@nvisust.com (Hiring Team) ... ✅ SENT
+[181/194] [Account 1: sparshgoyal199@gmail.com (181/200)] ➔ careers@uxdlab.com (Hiring Team) ... ✅ SENT
+[182/194] [Account 1: sparshgoyal199@gmail.com (182/200)] ➔ careers@codevibez.com (Hiring Team) ... ✅ SENT
+[183/194] [Account 1: sparshgoyal199@gmail.com (183/200)] ➔ careers@relqtechnologies.com (Hiring Team) ... ✅ SENT
+[184/194] [Account 1: sparshgoyal199@gmail.com (184/200)] ➔ careers@testingxperts.com (Hiring Team) ... ✅ SENT
+[185/194] [Account 1: sparshgoyal199@gmail.com (185/200)] ➔ careers@techindustan.com (Hiring Team) ... ✅ SENT
+[186/194] [Account 1: sparshgoyal199@gmail.com (186/200)] ➔ careers@oaktreecloud.com (Hiring Team) ... ✅ SENT
+[187/194] [Account 1: sparshgoyal199@gmail.com (187/200)] ➔ wellsfargocareers@wellsfargo.com (Hiring Team) ... ✅ SENT
+[188/194] [Account 1: sparshgoyal199@gmail.com (188/200)] ➔ careers@citi.com (Hiring Team) ... ✅ SENT
+[189/194] [Account 1: sparshgoyal199@gmail.com (189/200)] ➔ careers@gohighlevel.com (Hiring Team) ... ✅ SENT
+[190/194] [Account 1: sparshgoyal199@gmail.com (190/200)] ➔ careers@siemens.com (Hiring Team) ... ✅ SENT
+[191/194] [Account 1: sparshgoyal199@gmail.com (191/200)] ➔ careers@primafelicitas.com (Hiring Team) ... ✅ SENT
+[192/194] [Account 1: sparshgoyal199@gmail.com (192/200)] ➔ careers@greyorange.com (Hiring Team) ... ✅ SENT
+[193/194] [Account 1: sparshgoyal199@gmail.com (193/200)] ➔ careers@sqelabs.com (Hiring Team) ... ✅ SENT
+[194/194] [Account 1: sparshgoyal199@gmail.com (194/200)] ➔ careers@insbytech.com (Hiring Team) ... ✅ SENT
+
+=================================================================
+OUTREACH RUN COMPLETE (WATERFALL)
+  Successfully Sent : 194
+  Failed            : 0
+
+Database Status:
+  • failed: 24
+  • sent: 1360
+  • skipped: 11
+=================================================================
+
+=================================================================
+[17:17:35] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.reporting.dashboard --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 3210
+  ✉️  Email Outreach Available : 700 jobs
+  👉 Action: Manual Portal     : 2510 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  LinkedIn Leads Dashboard     : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 2415.6s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261029_163722.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================

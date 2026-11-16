@@ -1,0 +1,162 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-23 20:51:40
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_205140.log
+=================================================================
+
+=================================================================
+[20:51:40] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 2679 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... received 100 posts (Total in WP: 1172, Pages: 12)
+  Processed 100 posts: +0 new to DB, page completed.
+Encountered already-synced post ID. Incremental sync complete!
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 1
+Brand new posts added        : 0
+Total listings in database   : 2679
+Total matches (pre-filtered) : 527
+Total detail records ready   : 527
+============================================================
+
+=================================================================
+[20:51:42] STEP: 1b/6 Ingest AI Internships from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.multi_portal --limit 10
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL AI INTERNSHIP INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+=================================================================
+🌐 [Internshala] Fetching AI & Machine Learning internships...
+   ✅ Internshala: Discovered 10 AI internships.
+🌐 [LinkedIn Jobs] Querying public AI Engineer Intern postings...
+   ✅ LinkedIn Jobs: Discovered 10 AI internships.
+🌐 [Indeed India] Launching browser to scan AI Engineer Intern vacancies...
+   ✅ Indeed India: Discovered 10 AI internships.
+
+=================================================================
+SUMMARY: Gathered 30 candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 14
+   🔄 Existing Jobs Refreshed: 16
+   🎯 Total Ready for Decision-Maker Enrichment: 30
+
+=================================================================
+[20:51:56] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[20:52:03] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 76
+   Contacts in DB (total)  : 172
+   Pending (not mailed yet): 0
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[20:52:03] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.portal_contacts --limit 0
+=================================================================
+✅ No new unattempted portal jobs to enrich!
+   (All portal jobs have either had emails discovered or been marked for manual apply).
+
+=================================================================
+[20:52:04] STEP: 4b/6 Discover Decision-Maker Emails via LinkedIn & X-Ray
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.linkedin_decision_makers --limit 5
+=================================================================
+=================================================================
+🚀 LINKEDIN DECISION-MAKER ENRICHMENT PIPELINE
+=================================================================
+Target Companies Selected : 5
+Mode                      : LIVE PRODUCTION
+=================================================================
+
+=================================================================
+🏢 COMPANY: Women First India Foundation (Post #291868261)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : womenfirstindia.org
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Opportunity: Full-time based (Post #291637788)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : opportunity.org
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: WeIntern Pvt Ltd (Post #290152745)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : we-intern.in
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: The SmartBridge (Post #289478094)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : smartbridge.com
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Codeatrix (Post #287386861)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+ENRICHMENT BATCH COMPLETE
+Total Decision-Makers Added to Queue: 0
+Run: python cold_mailer.py --dry-run   to preview the new emails!
+=================================================================
+
+=================================================================
+[20:52:58] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.outreach.mailer
+=================================================================
+✅ No pending contacts found to email (all matching contacts were already reached).
+
+=================================================================
+[20:52:59] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.reporting.dashboard --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 207
+  ✉️  Email Outreach Available : 135 jobs
+  👉 Action: Manual Portal     : 72 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 79.7s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_205140.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================

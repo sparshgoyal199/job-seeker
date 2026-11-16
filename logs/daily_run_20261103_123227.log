@@ -1,0 +1,36 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-11-03 12:32:27
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261103_123227.log
+=================================================================
+
+=================================================================
+[12:32:27] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 3663 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... received 100 posts (Total in WP: 1194, Pages: 12)
+  Processed 100 posts: +4 new to DB, page completed.
+Encountered already-synced post ID. Incremental sync complete!
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 5
+Brand new posts added        : 4
+Total listings in database   : 3667
+Total matches (pre-filtered) : 1515
+Total detail records ready   : 3667
+============================================================
+
+=================================================================
+[12:32:32] STEP: 1b/6 Ingest Open Hiring Postings from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.multi_portal --limit 40
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL OPEN HIRING INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Remotive API, Arbeitnow API, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+Target : 40 fresh jobs per portal (Total: ~200 jobs)
+=================================================================

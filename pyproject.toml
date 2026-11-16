@@ -1,0 +1,39 @@
+[project]
+name = "medicine-app"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "SparshGoyalFlexilyticsAI", email = "sparsh.goyal@flexilytics.ai" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.104.1",
+    "uvicorn>=0.24.0",
+    "supabase>=2.3.0",
+    "python-dotenv>=1.0.0",
+    "pydantic[email]>=2.11.2",
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-multipart>=0.0.6",
+    "aiohttp>=3.9.1",
+    "mistralai>=1.0.0",
+    "httpx>=0.25.2",
+    "email-validator>=2.0.0",
+    "argon2-cffi>=25.1.0",
+    "requests>=2.34.2",
+    "beautifulsoup4>=4.15.0",
+    "instructor>=1.17.0",
+    "openai>=3.3.0",
+]
+
+[project.scripts]
+medicine-app = "medicine_app:main"
+
+[tool.uv]
+package = false
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"
+

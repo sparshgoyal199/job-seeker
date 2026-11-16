@@ -1,0 +1,212 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-29 14:43:53
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261029_144353.log
+=================================================================
+
+=================================================================
+[14:43:53] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 3090 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... No posts returned.
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 0
+Brand new posts added        : 0
+Total listings in database   : 3090
+Total matches (pre-filtered) : 938
+Total detail records ready   : 3090
+============================================================
+
+=================================================================
+[14:44:04] STEP: 1b/6 Ingest Open Hiring Postings from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.multi_portal --limit 40
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL OPEN HIRING INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Remotive API, Arbeitnow API, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+Target : 40 fresh jobs per portal (Total: ~200 jobs)
+=================================================================
+📊 Pre-filtering against 3090 known DB entries to avoid duplicate scraping.
+
+🌐 [Internshala] Fetching active tech internships across targeted streams (target: 40)...
+   ⚠️ Internshala artificial-intelligence-ai-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Read timed out. (read timeout=12)
+   ⚠️ Internshala computer-science-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/computer-science-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Internshala python-django-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/python-django-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Internshala data-science-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/data-science-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Internshala machine-learning-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/machine-learning-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Internshala web-development-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/web-development-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ✅ Internshala: Discovered 0 brand-new active hiring companies.
+🌐 [LinkedIn Jobs] Querying public postings across rotated search queries (target: 40)...
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Generative%20AI&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=AI%20Engineer%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Machine%20Learning%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%20Science%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Software%20Engineer%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Python%20Developer%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Backend%20Developer%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ✅ LinkedIn Jobs: Discovered 0 brand-new active hiring companies.
+🌐 [Remotive API] Fetching live remote developer & AI positions (target: 40)...
+   ⚠️ Remotive API error for category software-dev: HTTPSConnectionPool(host='remotive.com', port=443): Max retries exceeded with url: /api/remote-jobs?category=software-dev&limit=50 (Caused by NameResolutionError("HTTPSConnection(host='remotive.com', port=443): Failed to resolve 'remotive.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Remotive API error for category data: HTTPSConnectionPool(host='remotive.com', port=443): Max retries exceeded with url: /api/remote-jobs?category=data&limit=50 (Caused by NameResolutionError("HTTPSConnection(host='remotive.com', port=443): Failed to resolve 'remotive.com' ([Errno 11001] getaddrinfo failed)"))
+   ✅ Remotive: Discovered 0 brand-new active hiring companies.
+🌐 [Arbeitnow API] Fetching live tech & developer positions (target: 40)...
+   ⚠️ Arbeitnow API error: HTTPSConnectionPool(host='www.arbeitnow.com', port=443): Max retries exceeded with url: /api/job-board-api (Caused by NameResolutionError("HTTPSConnection(host='www.arbeitnow.com', port=443): Failed to resolve 'www.arbeitnow.com' ([Errno 11001] getaddrinfo failed)"))
+   ✅ Arbeitnow: Discovered 0 brand-new active hiring companies.
+🌐 [Indeed India] Launching browser to scan active postings (target: 40)...
+   ✅ Indeed India: Discovered 0 brand-new active hiring companies.
+
+=================================================================
+SUMMARY: Gathered 0 brand-new candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 0
+   🔄 Existing Jobs Refreshed: 0
+   🎯 Total Ready for Decision-Maker Enrichment: 0
+
+=================================================================
+[14:45:39] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[14:45:59] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 230
+   Contacts in DB (total)  : 1348
+   Pending (not mailed yet): 193
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[14:46:03] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.portal_contacts --limit 50
+=================================================================
+=================================================================
+🔍 RECRUITER CONTACT DISCOVERY & ENRICHMENT ENGINE
+=================================================================
+Unattempted Portal Jobs without emails : 1953
+Jobs Selected for this batch           : 50
+Mode                                   : LIVE ENRICHMENT
+-----------------------------------------------------------------
+[1/50] Post #10541 | LTM ... 🎯 FOUND via Company Cache (careers@ltm.com)!
+[2/50] Post #10538 | Axis Max Life Insurance ... ❌ No verified contact found (Requires manual portal apply)
+[3/50] Post #10535 | Capgemini ... 🎯 FOUND via Company Cache (careers@capgemini.com)!
+[4/50] Post #10532 | Microsoft ... 🎯 FOUND via Company Cache (shresth.gupta@microsoft.com)!
+[5/50] Post #10522 | CorpXCloud Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[6/50] Post #10519 | HPE ... ❌ No verified contact found (Requires manual portal apply)
+[7/50] Post #10516 | CGI ... 🎯 FOUND via Company Cache (careers@cgi.com)!
+[8/50] Post #10513 | Evolute Group ... ❌ No verified contact found (Requires manual portal apply)
+[9/50] Post #10510 | Ascendion Is ... ❌ No verified contact found (Requires manual portal apply)
+[10/50] Post #10507 | Wells Fargo ... ❌ No verified contact found (Requires manual portal apply)
+[11/50] Post #10504 | Happiest Minds ... ❌ No verified contact found (Requires manual portal apply)
+[12/50] Post #10501 | KreditBee ... ❌ No verified contact found (Requires manual portal apply)
+[13/50] Post #10497 | Microvista Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[14/50] Post #10495 | Kuku FM ... ❌ No verified contact found (Requires manual portal apply)
+[15/50] Post #10492 | Infosys SAP Referral ... ❌ No verified contact found (Requires manual portal apply)
+[16/50] Post #10490 | Jade Business Services ... ❌ No verified contact found (Requires manual portal apply)
+[17/50] Post #10484 | Bhash Software Labs ... ❌ No verified contact found (Requires manual portal apply)
+[18/50] Post #10481 | Cognizant ... 🎯 FOUND via Company Cache (careers@cognizant.com)!
+[19/50] Post #10478 | Qualcomm ... 🎯 FOUND via Company Cache (careers@qualcomm.com)!
+[20/50] Post #10476 | Cyient ... ❌ No verified contact found (Requires manual portal apply)
+[21/50] Post #10473 | Moon Technolabs ... 🎯 FOUND via Company Cache (careers@moontechnolabs.com)!
+[22/50] Post #10461 | Anviam Solutions Pvt. Ltd. ... ❌ No verified contact found (Requires manual portal apply)
+[23/50] Post #10458 | ASJ Transglobal LLP ... ❌ No verified contact found (Requires manual portal apply)
+[24/50] Post #10451 | Sahajanand Infotech ... ❌ No verified contact found (Requires manual portal apply)
+[25/50] Post #10445 | Amazon ... ❌ No verified contact found (Requires manual portal apply)
+[26/50] Post #10442 | Siemens Gamesa ... ❌ No verified contact found (Requires manual portal apply)
+[27/50] Post #10440 | Volvo ... ❌ No verified contact found (Requires manual portal apply)
+[28/50] Post #10437 | Cognizant ... 🎯 FOUND via Company Cache (careers@cognizant.com)!
+[29/50] Post #10434 | Amadeus ... ❌ No verified contact found (Requires manual portal apply)
+[30/50] Post #10432 | Mobileum ... ❌ No verified contact found (Requires manual portal apply)
+[31/50] Post #10427 | Seasia Infotech ... ❌ No verified contact found (Requires manual portal apply)
+[32/50] Post #10424 | Barclays ... ❌ No verified contact found (Requires manual portal apply)
+[33/50] Post #10421 | BN Digitech Pvt Ltd ... ❌ No verified contact found (Requires manual portal apply)
+[34/50] Post #10418 | Universal Software ... ❌ No verified contact found (Requires manual portal apply)
+[35/50] Post #10413 | Accenture Summer Internship ... ❌ No verified contact found (Requires manual portal apply)
+[36/50] Post #10411 | Oppvenuz ... ❌ No verified contact found (Requires manual portal apply)
+[37/50] Post #10408 | 🎮Light & Wonder ... h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+❌ No verified contact found (Requires manual portal apply)
+[38/50] Post #10405 | Comcast ... ❌ No verified contact found (Requires manual portal apply)
+[39/50] Post #10402 | Accellor ... ❌ No verified contact found (Requires manual portal apply)
+[40/50] Post #10399 | Tanvox Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[41/50] Post #10397 | IRIS Software ... 🎯 FOUND via Company Cache (careers@irissoftware.com)!
+[42/50] Post #10395 | Ecubix Smart Sales ... ❌ No verified contact found (Requires manual portal apply)
+[43/50] Post #10392 | Wipro ... 🎯 FOUND via Company Cache (careers@wipro.com)!
+[44/50] Post #10389 | Innovatily ... ❌ No verified contact found (Requires manual portal apply)
+[45/50] Post #10386 | Novillex Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[46/50] Post #10380 | American Chase ... 🎯 FOUND via Company Cache (careers@chase.com)!
+[47/50] Post #10374 | Headout ... ❌ No verified contact found (Requires manual portal apply)
+[48/50] Post #10371 | HuntingCube ... ❌ No verified contact found (Requires manual portal apply)
+[49/50] Post #10369 | TestingXperts ... ❌ No verified contact found (Requires manual portal apply)
+[50/50] Post #10367 | Intellyk ... ❌ No verified contact found (Requires manual portal apply)
+
+=================================================================
+ENRICHMENT SUMMARY
+  Processed Jobs       : 50
+  New Emails Discovered: 11
+  ✅ Added 11 new recruiter email(s) into hr_contacts table!
+  They will now be included in your cold email queue and dashboard.
+=================================================================
+
+=================================================================
+📦 QUEUE STATUS: 204 pending emails already waiting in queue.
+   Skipping Step 4b enrichment for today to conserve search & Apify quota.
+   Step 5 will send up to 200 emails from these existing pending contacts.
+=================================================================
+
+=================================================================
+[14:57:06] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP (Daily Limit: 200)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.outreach.mailer --limit 200
+=================================================================
+
+📊 Today's Outreach Budget: 4/200 sent today (196 remaining for today).
+
+=================================================================
+🚀 LIVE COLD EMAIL SENDING (WATERFALL STRATEGY)
+=================================================================
+Contacts in Queue       : 179 (Sending up to: 179)
+Daily Cap Remaining     : 196/200 emails
+Max Capacity per Account: 200 emails
+Sending Priority:
+  1. Account 1: sparshgoyal199@gmail.com (Primary 1)
+  2. Account 2: rahilgoyal127@gmail.com (Primary 2)
+  3. Account 3: sparsh198@gmail.com (Primary 3)
+-----------------------------------------------------------------
+[1/179] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ careers@bookingholdings.com (Hiring Team) ... ❌ FAILED (gaierror: [Errno 11001] getaddrinfo failed)
+[2/179] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ rashi.tyagi@claveprep.com (Rashi Tyagi) ... ❌ FAILED (gaierror: [Errno 11001] getaddrinfo failed)
+[3/179] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ pushpendra.tripathi@claveprep.com (Pushpendra Tripathi) ... ❌ FAILED (gaierror: [Errno 11001] getaddrinfo failed)
+[4/179] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ deepika.khobragadhe@claveprep.com (Deepika Khobragadhe) ... ⚠️ AUTH ERROR on sparshgoyal199@gmail.com

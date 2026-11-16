@@ -1,0 +1,906 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-27 13:39:17
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261027_133917.log
+=================================================================
+
+=================================================================
+[13:39:17] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 2890 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... HTTP 404 - stopping.
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 0
+Brand new posts added        : 0
+Total listings in database   : 2890
+Total matches (pre-filtered) : 738
+Total detail records ready   : 2890
+============================================================
+
+=================================================================
+[13:39:18] STEP: 1b/6 Ingest Open Hiring Postings from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.multi_portal --limit 40
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL OPEN HIRING INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+Target : 40 jobs per portal (Total: ~120 jobs)
+=================================================================
+🌐 [Internshala] Fetching active internships across pages (target: 40)...
+   ✅ Internshala: Discovered 40 active hiring companies.
+🌐 [LinkedIn Jobs] Querying public postings across pages (target: 40)...
+   ✅ LinkedIn Jobs: Discovered 32 active hiring companies.
+🌐 [Indeed India] Launching browser to scan active postings (target: 40)...
+   ✅ Indeed India: Discovered 15 active hiring companies.
+
+=================================================================
+SUMMARY: Gathered 87 candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 31
+   🔄 Existing Jobs Refreshed: 56
+   🎯 Total Ready for Decision-Maker Enrichment: 87
+
+=================================================================
+[13:39:42] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[13:39:50] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 226
+   Contacts in DB (total)  : 955
+   Pending (not mailed yet): 78
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[13:39:50] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.portal_contacts --limit 50
+=================================================================
+=================================================================
+🔍 RECRUITER CONTACT DISCOVERY & ENRICHMENT ENGINE
+=================================================================
+Unattempted Portal Jobs without emails : 2050
+Jobs Selected for this batch           : 50
+Mode                                   : LIVE ENRICHMENT
+-----------------------------------------------------------------
+[1/50] Post #10874 | Experion Technologies ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careers@experionglobal.com>
+       Domain   : experionglobal.com
+[2/50] Post #10866 | JPMorganChase ... ❌ No verified contact found (Requires manual portal apply)
+[3/50] Post #10863 | UST ... 🎯 FOUND via Company Cache (priya.gusain@ust.com)!
+[4/50] Post #10860 | Capgemini ... 🎯 FOUND via Company Cache (careers@capgemini.com)!
+[5/50] Post #10856 | Capgemini ... 🎯 FOUND via Company Cache (careers@capgemini.com)!
+[6/50] Post #10854 | Meritto ... ❌ No verified contact found (Requires manual portal apply)
+[7/50] Post #10851 | Deloitte SDET – ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@deloitte.com>
+       Domain   : deloitte.com
+[8/50] Post #10848 | Mphasis ... 🎯 FOUND via Company Cache (careers@mphasis.com)!
+[9/50] Post #10845 | Deloitte ... 🎯 FOUND via Company Cache (careers@deloitte.com)!
+[10/50] Post #10843 | agasty.ai SDET ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@agasty.ai>
+       Domain   : agasty.ai
+[11/50] Post #10838 | Accelflow Systems ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@accelflowsystems.com>
+       Domain   : accelflowsystems.com
+[12/50] Post #10836 | Adidas ... ❌ No verified contact found (Requires manual portal apply)
+[13/50] Post #10833 | Cognizant Returnship Program ... ❌ No verified contact found (Requires manual portal apply)
+[14/50] Post #10826 | Nike ... ❌ No verified contact found (Requires manual portal apply)
+[15/50] Post #10819 | Infolexus Solutions ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@infolexus.com>
+       Domain   : infolexus.com
+[16/50] Post #10816 | DevLabs Technology® Hiring ... 🎯 FOUND via Company Cache (careers@devlabstechnology.com)!
+[17/50] Post #10811 | Moon Technolabs ... 🎯 FOUND via Company Cache (careers@moontechnolabs.com)!
+[18/50] Post #10805 | Kalp Corporate ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careers@kalpcorporate.com>
+       Domain   : kalpcorporate.com
+[19/50] Post #10802 | MG Consulting Services Pvt. Ltd. ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <hr@mgcsinfo.com>
+       Domain   : mgcsinfo.com
+[20/50] Post #10798 | Orangebits Software Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[21/50] Post #10795 | Maxposure Limited ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@maxposuremedia.com>
+       Domain   : maxposuremedia.com
+[22/50] Post #10792 | Texas Instruments India ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <workforcedev@list.ti.com>
+       Domain   : ti.com
+[23/50] Post #10790 | Nagarro ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@nagarro.com>
+       Domain   : nagarro.com
+[24/50] Post #10787 | CGI ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@cgi.com>
+       Domain   : cgi.com
+[25/50] Post #10782 | Deloitte ... 🎯 FOUND via Company Cache (careers@deloitte.com)!
+[26/50] Post #10779 | GlobalLogic ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@globallogic.com>
+       Domain   : globallogic.com
+[27/50] Post #10776 | Nykaa ... 🎯 FOUND via Search Engine OSINT!
+       Recruiter: Hiring Team <careers@nykaa.com>
+       Domain   : nykaa.com
+[28/50] Post #10774 | SparxIT ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@sparxitsolutions.com>
+       Domain   : sparxitsolutions.com
+[29/50] Post #10772 | Infosys InStep 2027 ... ❌ No verified contact found (Requires manual portal apply)
+[30/50] Post #10770 | Nagarro ... 🎯 FOUND via Company Cache (careers@nagarro.com)!
+[31/50] Post #10767 | Persistent Systems ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@persistent.com>
+       Domain   : persistent.com
+[32/50] Post #10765 | ABS ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@abs.com>
+       Domain   : abs.com
+[33/50] Post #10762 | Wise ... ❌ No verified contact found (Requires manual portal apply)
+[34/50] Post #10760 | Swiggy Instamart ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@swiggy.com>
+       Domain   : swiggy.com
+[35/50] Post #10758 | Seraphic Infosolutions ... ❌ No verified contact found (Requires manual portal apply)
+[36/50] Post #10753 | AM Webtech ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careers@amwebtech.com>
+       Domain   : amwebtech.com
+[37/50] Post #10748 | Infosys ... 🎯 FOUND via Company Cache (careers@infosys.com)!
+[38/50] Post #10745 | IDX™ Hiring QA ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@idx.us>
+       Domain   : idx.us
+[39/50] Post #10741 | OLX India ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@olx.in>
+       Domain   : olx.in
+[40/50] Post #10738 | EY GDS ... ❌ No verified contact found (Requires manual portal apply)
+[41/50] Post #10735 | WEX ... ❌ No verified contact found (Requires manual portal apply)
+[42/50] Post #10733 | Amnex Infotechnologies ... ❌ No verified contact found (Requires manual portal apply)
+[43/50] Post #10730 | Healthfirst Technologies ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@healthfirst.org>
+       Domain   : healthfirst.org
+[44/50] Post #10727 | American Chase ... 🎯 FOUND via Company Cache (careers@chase.com)!
+[45/50] Post #10724 | GlowApps Private Limited ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@drsunitamishra.com>
+       Domain   : drsunitamishra.com
+[46/50] Post #10721 | TechnoToil ... ❌ No verified contact found (Requires manual portal apply)
+[47/50] Post #10718 | WeyBee Solutions Pvt. Ltd. ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@weybee.com>
+       Domain   : weybee.com
+[48/50] Post #10715 | PGAGI ... 🎯 FOUND via Company Cache (careers@pgagi.in)!
+[49/50] Post #10712 | Omniscient Software Pvt. Ltd. ... ❌ No verified contact found (Requires manual portal apply)
+[50/50] Post #10707 | AiTrillion ... ❌ No verified contact found (Requires manual portal apply)
+
+=================================================================
+ENRICHMENT SUMMARY
+  Processed Jobs       : 50
+  New Emails Discovered: 35
+  ✅ Added 35 new recruiter email(s) into hr_contacts table!
+  They will now be included in your cold email queue and dashboard.
+=================================================================
+
+=================================================================
+[13:48:34] STEP: 4b/6 Discover Decision-Maker LinkedIn Profiles & Emails (113 waiting, targeting ~87 more)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.linkedin_leads --limit 22 --method auto
+=================================================================
+
+=================================================================
+🚀 LINKEDIN DECISION-MAKER & TECH LEADER ENRICHMENT ENGINE
+=================================================================
+Candidate Profile : Sparsh Goyal (B.Sc CS Hansraj College, 2026)
+Core Skills       : Python, FastAPI, RAG, LangChain, MCP Server, LLM Orchestration, SQLite, Vector Databases
+Discovery Method  : AUTO (Apify + Logged-in Chrome)
+=================================================================
+
+🔍 Screening candidate listings for Strict Resume Fit (Target: 22 companies)...
+   Evaluating Post #295692236: Gateway Software Solutions - Flutter Dev... ✗ [Skipped]
+   Evaluating Post #284282336: Gateway Software Solutions - Node.js Dev... ✗ [Skipped]
+   Evaluating Post #278562998: Universal Printers - Data Analyst Intern... ✓ [Match: Universal Printers]
+   Evaluating Post #273630751: VinciStack - Software Engineer Intern... ✓ [Match: VinciStack]
+   Evaluating Post #272500553: Requin Solutions Private Limited - MERN ... ✗ [Skipped]
+   Evaluating Post #269902765: Vecmocon Technologies - Software Develop... ✗ [Skipped]
+   Evaluating Post #266436259: WebBoost Solutions by UM - MERN STACK DE... ✗ [Skipped]
+   Evaluating Post #265998350: SkilloVilla - Java Backend Developer Int... ✗ [Skipped]
+   Evaluating Post #265605259: Optimspace - Data Science Intern... ✓ [Match: Optimspace]
+   Evaluating Post #263908887: Faveo - Golang developer Internship... ✗ [Skipped]
+   Evaluating Post #262389985: She Can Foundation - Software Developmen... ✓ [Match: She Can Foundation]
+   Evaluating Post #258100620: Crazy For Success Foundation - Software ... ✓ [Match: Crazy For Success Foundation]
+   Evaluating Post #255225086: Alphanumeric Ideas Private Limited - Ful... ✓ [Match: Alphanumeric Ideas Private Limited]
+   Evaluating Post #253997848: Apport Software Solutions Private Limite... ✓ [Match: Apport Software Solutions Private Limited]
+   Evaluating Post #253773685: Honeywell Technologies - Intern Bachelor... ✓ [Match: Honeywell Technologies]
+   Evaluating Post #253346179: Meteoros Automation - Mobile App Develop... ✗ [Skipped]
+   Evaluating Post #253254512: Nextloop Technologies LLP - Backend Deve... ✓ [Match: Nextloop Technologies LLP]
+   Evaluating Post #252037497: WEINTERN PVT LIMITED - AI/ML Intern... ✓ [Match: WEINTERN PVT LIMITED]
+   Evaluating Post #250164528: Webenoid Inc - Software Development Inte... ✓ [Match: Webenoid Inc]
+   Evaluating Post #248414117: Kweesha - Backend Web Development  – Nig... ✓ [Match: Kweesha]
+   Evaluating Post #248013926: Shure India - Software Development Inter... ✓ [Match: Shure India]
+   Evaluating Post #247703902: Perceptive Analytics - Advanced Data Ana... ✓ [Match: Perceptive Analytics]
+   Evaluating Post #247636807: SaaSFlex - Software Development Engineer... ✓ [Match: SaaSFlex]
+   Evaluating Post #247580205: SRIT Creations - Software Intern... ✓ [Match: SRIT Creations]
+   Evaluating Post #246961831: Skill floor solutions - AI Intern (2025,... ✓ [Match: Skill floor solutions]
+   Evaluating Post #246056153: GROWLOC - Software Developer Intern... ✓ [Match: GROWLOC]
+   Evaluating Post #245231923: Paytm - Intern - Backend... ✓ [Match: Paytm]
+   Evaluating Post #244877266: Crazy For Success Foundation - AI Prompt... ✓ [Match: Crazy For Success Foundation]
+   Evaluating Post #243399842: InAmigos Foundation - AI Data Analytics... ✓ [Match: InAmigos Foundation]
+   Evaluating Post #243184832: Venxr - Generative AI Engineering Intern... ✓ [Match: Venxr]
+
+🎯 Processing 22 Skill-Matched Companies:
+   🌐 Launched persistent Chrome session for fast batch discovery.
+
+[1/22] 🏢 COMPANY: Universal Printers (Post #278562998)
+   Matched Role : Universal Printers - Data Analyst Internship
+   Match Reason : The candidate is a 2026 CS fresher eligible for an internship, and their Python and data-related skills (RAG, Vector Databases) align with the Data Analyst role requirements.
+   Company LinkedIn : https://www.linkedin.com/company/upclinc
+   Official Domain  : microsoft.com
+   [Browser Search] Searching LinkedIn People for 'Universal Printers' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Universal Printers:
+      1. 🚀 [Tech] Rizwan Ansari          | Decision Maker at Universal Pr | ✉️ rizwan.ansari@microsoft.com | https://www.linkedin.com/in/rizwan-ansari-1b493a215/
+      2. 🚀 [Tech] Prashant Guha          | Decision Maker at Universal Pr | ✉️ prashant.guha@microsoft.com | https://www.linkedin.com/in/prashant-guha-9b45041a/
+      3. 🚀 [Tech] Amit Chauhan           | Decision Maker at Universal Pr | ✉️ amit.chauhan@microsoft.com | https://www.linkedin.com/in/amit-chauhan-45135157/
+      4. 🚀 [Tech] Lalit Kumar            | Decision Maker at Universal Pr | ✉️ lalit.kumar@microsoft.com | https://www.linkedin.com/in/lalit-kumar-491765219/
+      5. 🚀 [Tech] Debasish Mishra        | Decision Maker at Universal Pr | ✉️ debasish.mishra@microsoft.com | https://www.linkedin.com/in/debasish-mishra-187393187/
+      6. 🚀 [Tech] Niyaz Ansari           | Decision Maker at Universal Pr | ✉️ niyaz.ansari@microsoft.com | https://www.linkedin.com/in/niyazansari/
+      7. 🚀 [Tech] Sai Pranav Kanakamedala | Decision Maker at Universal Pr | ✉️ sai.kanakamedala@microsoft.com | https://www.linkedin.com/in/sai-pranav-kanakamedala/
+      8. 🚀 [Tech] Arnob Chakraborty      | Decision Maker at Universal Pr | ✉️ arnob.chakraborty@microsoft.com | https://www.linkedin.com/in/arnobchak/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[2/22] 🏢 COMPANY: VinciStack (Post #273630751)
+   Matched Role : VinciStack - Software Engineer Intern
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and AI/LLM skills that align with the Software Engineer Intern role, which is suitable for entry-level candidates.
+   Company LinkedIn : https://www.linkedin.com/company/vincistack
+   Official Domain  : vincistack.com
+   [Browser Search] Searching LinkedIn People for 'VinciStack' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for VinciStack:
+      1. 🚀 [Tech] Anusha Dharma Kattaya  | Decision Maker at VinciStack   | ✉️ anusha.kattaya@vincistack.com | https://www.linkedin.com/in/anushadk2/
+      2. 🚀 [Tech] R Yashwanth Reddy      | Decision Maker at VinciStack   | https://www.linkedin.com/in/rikka-yashwanth-reddy/
+      3. 🚀 [Tech] Kunwar Vidya Niwas     | Decision Maker at VinciStack   | ✉️ kunwar.niwas@vincistack.com | https://www.linkedin.com/in/kunwar-vidya-niwas-22b523202/
+      4. 🚀 [Tech] Anustup Mukherjee      | Decision Maker at VinciStack   | ✉️ anustup.mukherjee@vincistack.com | https://www.linkedin.com/in/anustupmukherjee/
+      5. 🚀 [Tech] Nakul Singh            | Decision Maker at VinciStack   | ✉️ nakul.singh@vincistack.com | https://www.linkedin.com/in/nakul-singh-506048205/
+      6. 🚀 [Tech] Rakesh R Panicker      | Decision Maker at VinciStack   | ✉️ rakesh.panicker@vincistack.com | https://www.linkedin.com/in/rakesh-r-panicker-302672183/
+      7. 🚀 [Tech] Amrish Kumar           | Decision Maker at VinciStack   | ✉️ amrish.kumar@vincistack.com | https://www.linkedin.com/in/amrish-kumar-5881197/
+      8. 🚀 [Tech] Ashish Meena           | Decision Maker at VinciStack   | ✉️ ashish.meena@vincistack.com | https://www.linkedin.com/in/ashishmeena8/
+   📬 Queued 7 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[3/22] 🏢 COMPANY: Optimspace (Post #265605259)
+   Matched Role : Optimspace - Data Science Intern
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and AI/ML skills (RAG, LLMs) that align with the Data Science Intern role, and the position does not require prior professional experience.
+   Company LinkedIn : https://www.linkedin.com/company/optimspace
+   Official Domain  : optimspace.com
+   [Browser Search] Searching LinkedIn People for 'Optimspace' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Optimspace:
+      1. 🚀 [Tech] Reetwika Banerjee Mukherjee | Decision Maker at Optimspace   | ✉️ reetwika.mukherjee@optimspace.com | https://www.linkedin.com/in/reetwika-banerjee-mukherjee-72888a20/
+      2. 🚀 [Tech] Vishad Sharma          | Decision Maker at Optimspace   | ✉️ vishad.sharma@optimspace.com | https://www.linkedin.com/in/vishad-sharma-74a991208/
+      3. 🚀 [Tech] Dr.Mariyakutty Mathew  | Decision Maker at Optimspace   | ✉️ dr.mathew@optimspace.com | https://www.linkedin.com/in/dr-mariyakutty-mathew-60a50455/
+      4. 🚀 [Tech] Shweta Kaushal Saikia  | Decision Maker at Optimspace   | ✉️ shweta.saikia@optimspace.com | https://www.linkedin.com/in/shweta-kaushal-saikia-aba651102/
+      5. 🚀 [Tech] LAXMAN SHINDE          | Decision Maker at Optimspace   | ✉️ laxman.shinde@optimspace.com | https://www.linkedin.com/in/laxman-shinde-ab3456152/
+      6. 🚀 [Tech] Themiya Wickramage     | Decision Maker at Optimspace   | ✉️ themiya.wickramage@optimspace.com | https://www.linkedin.com/in/themiya-wickramage-6babb812a/
+      7. 🚀 [Tech] Vincent Yeung          | Decision Maker at Optimspace   | ✉️ vincent.yeung@optimspace.com | https://www.linkedin.com/in/vyeung/
+      8. 🚀 [Tech] Jasim AL Shimmari      | Decision Maker at Optimspace   | ✉️ jasim.shimmari@optimspace.com | https://www.linkedin.com/in/jasim-al-shimmari-04326315/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[4/22] 🏢 COMPANY: She Can Foundation (Post #262389985)
+   Matched Role : She Can Foundation - Software Development
+   Match Reason : The candidate is a 2026 CS fresher with Python and backend skills, which aligns with the general software development requirements for this internship role.
+   Company LinkedIn : https://www.linkedin.com/company/she-can-foundation
+   Official Domain  : shecanfoundation.org
+   [Browser Search] Searching LinkedIn People for 'She Can Foundation' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for She Can Foundation:
+      1. 🚀 [Tech] Priya Dharshini.P      | Decision Maker at She Can Foun | ✉️ priya@shecanfoundation.org | https://www.linkedin.com/in/priya-dharshini-p-584b98299/
+      2. 🚀 [Tech] Arpita Keshari         | Decision Maker at She Can Foun | ✉️ arpita.keshari@shecanfoundation.org | https://www.linkedin.com/in/arpita-keshari-04906b328/
+      3. 🚀 [Tech] RISHABH KUMAR RAY      | Decision Maker at She Can Foun | ✉️ rishabh.ray@shecanfoundation.org | https://www.linkedin.com/in/rishabh-kumar-ray-b08b302a1/
+      4. 🚀 [Tech] Gaurav Jha             | Decision Maker at She Can Foun | ✉️ gaurav.jha@shecanfoundation.org | https://www.linkedin.com/in/gaurav-jha-9b4401215/
+      5. 🚀 [Tech] Shresth Pandey         | Decision Maker at She Can Foun | ✉️ shresth.pandey@shecanfoundation.org | https://www.linkedin.com/in/shresth-pandey-237574215/
+      6. 🚀 [Tech] Bharti Singh           | Decision Maker at She Can Foun | ✉️ bharti.singh@shecanfoundation.org | https://www.linkedin.com/in/bhartisingh29/
+      7. 🚀 [Tech] Shubham Shinde         | Decision Maker at She Can Foun | ✉️ shubham.shinde@shecanfoundation.org | https://www.linkedin.com/in/shubham-shinde-7110a5250/
+      8. 🚀 [Tech] Vaibhavi Sengar        | Decision Maker at She Can Foun | ✉️ vaibhavi.sengar@shecanfoundation.org | https://www.linkedin.com/in/vaibhavi-sengar-b41202278/
+   📬 Queued 1 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[5/22] 🏢 COMPANY: Crazy For Success Foundation (Post #258100620)
+   Matched Role : Crazy For Success Foundation - Software Testing
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills, which aligns with the technical fundamentals required for a software testing internship.
+   Company LinkedIn : https://www.linkedin.com/company/crazy-for-success
+   Official Domain  : wearecrazy.org
+   [Browser Search] Searching LinkedIn People for 'Crazy For Success Foundation' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Crazy For Success Foundation:
+      1. 🚀 [Tech] Vanshika Gupta         | Decision Maker at Crazy For Su | ✉️ vanshika.gupta@wearecrazy.org | https://www.linkedin.com/in/vanshika-gupta-a94725235/
+      2. 🚀 [Tech] Devansh Nanda          | Decision Maker at Crazy For Su | ✉️ devansh.nanda@wearecrazy.org | https://www.linkedin.com/in/devansh-nanda-812bb51a0/
+      3. 🚀 [Tech] Arpit Namdev           | Decision Maker at Crazy For Su | ✉️ arpit.namdev@wearecrazy.org | https://www.linkedin.com/in/arpitnamdev/
+      4. 🚀 [Tech] We Are Crazy           | Decision Maker at Crazy For Su | ✉️ we.crazy@wearecrazy.org | https://www.linkedin.com/in/we-are-crazy-871089209/
+      5. 🚀 [Tech] Manas Dewari           | Decision Maker at Crazy For Su | ✉️ manas.dewari@wearecrazy.org | https://www.linkedin.com/in/manas-dewari/
+      6. 🚀 [Tech] Vini Gupta Miglani     | Decision Maker at Crazy For Su | ✉️ vini.miglani@wearecrazy.org | https://www.linkedin.com/in/vini-gupta-miglani-884302204/
+      7. 🚀 [Tech] Deepali Singh          | Decision Maker at Crazy For Su | ✉️ deepali.singh@wearecrazy.org | https://www.linkedin.com/in/deepali-singh-506602178/
+      8. 🚀 [Tech] Shilpa Arora           | Decision Maker at Crazy For Su | ✉️ shilpa.arora@wearecrazy.org | https://www.linkedin.com/in/shilpa-arora-b27676191/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[6/22] 🏢 COMPANY: Alphanumeric Ideas Private Limited (Post #255225086)
+   Matched Role : Alphanumeric Ideas Private Limited - Full Stack Development
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills (FastAPI, RAG) that align with the full-stack development internship requirements.
+   Company LinkedIn : https://www.linkedin.com/company/alphanumeric-ideas-private-limited
+   Official Domain  : alphanumericideas.com
+   [Browser Search] Searching LinkedIn People for 'Alphanumeric Ideas Private Limited' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Alphanumeric Ideas Private Limited:
+      1. 🚀 [Tech] Anju R Nambiar         | Decision Maker at Alphanumeric | ✉️ anju.nambiar@alphanumericideas.com | https://www.linkedin.com/in/anju-r-nambiar-28a4b21b1/
+      2. 🚀 [Tech] Kamal Kishlay          | Decision Maker at Alphanumeric | ✉️ kamal.kishlay@alphanumericideas.com | https://www.linkedin.com/in/kamalkishlay/
+      3. 🚀 [Tech] Chiranjit C.           | Decision Maker at Alphanumeric | ✉️ chiranjit@alphanumericideas.com | https://www.linkedin.com/in/chiranjitchak/
+      4. 🚀 [Tech] Renu Chaurasiya        | Decision Maker at Alphanumeric | ✉️ renu.chaurasiya@alphanumericideas.com | https://www.linkedin.com/in/renukumari43/
+      5. 🚀 [Tech] Reeja S.               | Decision Maker at Alphanumeric | ✉️ reeja@alphanumericideas.com | https://www.linkedin.com/in/reeja-s-873b14228/
+      6. 🚀 [Tech] TAPASVI KAREKER        | Decision Maker at Alphanumeric | ✉️ tapasvi.kareker@alphanumericideas.com | https://www.linkedin.com/in/tapasvi-kareker-10b5b732a/
+      7. 🚀 [Tech] Bhoomi Prajapati       | Decision Maker at Alphanumeric | ✉️ bhoomi.prajapati@alphanumericideas.com | https://www.linkedin.com/in/bhoomi-prajapati-681887230/
+      8. 🚀 [Tech] Dr. Dayanand .         | Decision Maker at Alphanumeric | ✉️ dr.dayanand@alphanumericideas.com | https://www.linkedin.com/in/dayanandindia/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[7/22] 🏢 COMPANY: Apport Software Solutions Private Limited (Post #253997848)
+   Matched Role : Apport Software Solutions Private Limited - Quality Assurance Engineer
+   Match Reason : The candidate is a 2026 CS fresher suitable for an internship role, and their Python and backend skills provide a relevant foundation for Quality Assurance engineering tasks.
+   Company LinkedIn : https://www.linkedin.com/company/apport-software--private-limited
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Apport Software Solutions Private Limited' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Apport Software Solutions Private Limited:
+      1. 🚀 [Tech] Ben Thomo              | Decision Maker at Apport Softw | https://www.linkedin.com/in/benthomo17/
+      2. 🚀 [Tech] Prabhu Manoharan       | Decision Maker at Apport Softw | https://www.linkedin.com/in/prabhumanoc/
+      3. 🚀 [Tech] Josianne Marsan        | Decision Maker at Apport Softw | https://www.linkedin.com/in/josiannemarsan/
+      4. 🚀 [Tech] Elliott G.             | Decision Maker at Apport Softw | https://www.linkedin.com/in/elliott-gooding/
+      5. 🚀 [Tech] Hanae Sebti            | Decision Maker at Apport Softw | https://www.linkedin.com/in/hanae-sebti-973195a7/
+      6. 🚀 [Tech] Mahek Gandhi           | Decision Maker at Apport Softw | https://www.linkedin.com/in/mahek-gandhi-90ba3752/
+      7. 🚀 [Tech] Eva Gouel              | Decision Maker at Apport Softw | https://www.linkedin.com/in/eva-gouel/
+      8. 🚀 [Tech] Dr. Ing. Marianna Charitonidou | Decision Maker at Apport Softw | https://www.linkedin.com/in/dr-ing-marianna-charitonidou-287469aa/
+
+[8/22] 🏢 COMPANY: Honeywell Technologies (Post #253773685)
+   Matched Role : Honeywell Technologies - Intern Bachelors Software Eng
+   Match Reason : Candidate is a 2026 CS fresher with strong Python and backend skills, which aligns with the requirements for a Bachelor's Software Engineering internship.
+   Company LinkedIn : https://www.linkedin.com/company/honeywell
+   Official Domain  : honeywell.com
+   [Browser Search] Searching LinkedIn People for 'Honeywell Technologies' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Honeywell Technologies:
+      1. 🚀 [Tech] Hindu S.               | Decision Maker at Honeywell Te | ✉️ hindu@honeywell.com | https://www.linkedin.com/in/hindu-s-6632071a0/
+      2. 🚀 [Tech] Puja Rawani            | Decision Maker at Honeywell Te | ✉️ puja.rawani@honeywell.com | https://www.linkedin.com/in/puja-rawani-hr/
+      3. 🚀 [Tech] Jannat S               | Decision Maker at Honeywell Te | ✉️ jannat@honeywell.com | https://www.linkedin.com/in/jannat-s-446180292/
+      4. 🚀 [Tech] Mrityunjay Chatterjee  | Decision Maker at Honeywell Te | ✉️ mrityunjay.chatterjee@honeywell.com | https://www.linkedin.com/in/mrityunjaychatterjee/
+      5. 🚀 [Tech] Aditi Gupta            | Decision Maker at Honeywell Te | ✉️ aditi.gupta@honeywell.com | https://www.linkedin.com/in/aditi-gupta-470660146/
+      6. 🚀 [Tech] Aanya Garg             | Decision Maker at Honeywell Te | ✉️ aanya.garg@honeywell.com | https://www.linkedin.com/in/aanya-garg-37ab77327/
+      7. 🚀 [Tech] Vivek Sharma           | Decision Maker at Honeywell Te | ✉️ vivek.sharma@honeywell.com | https://www.linkedin.com/in/vivek-sharma-525b401b/
+      8. 🚀 [Tech] Sonal Katyal           | Decision Maker at Honeywell Te | ✉️ sonal.katyal@honeywell.com | https://www.linkedin.com/in/sonal-katyal-436712123/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[9/22] 🏢 COMPANY: Nextloop Technologies LLP (Post #253254512)
+   Matched Role : Nextloop Technologies LLP - Backend Development Internship in Indore
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills (FastAPI, SQLite) that align with the internship role, and the position does not require prior professional experience.
+   Company LinkedIn : https://www.linkedin.com/company/nextloop-technologies-llp
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Nextloop Technologies LLP' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Nextloop Technologies LLP:
+      1. 🚀 [Tech] Shomyla Khan           | Decision Maker at Nextloop Tec | https://www.linkedin.com/in/shomyla-khan-0b69032b5/
+      2. 🚀 [Tech] Shruti Shrivastava     | Decision Maker at Nextloop Tec | https://www.linkedin.com/in/shrivastava-shruti/
+      3. 🚀 [Tech] Puja Rawani            | Decision Maker at Nextloop Tec | https://www.linkedin.com/in/puja-rawani-hr/
+      4. 🚀 [Tech] Firdos Liyakat Ali     | Decision Maker at Nextloop Tec | https://www.linkedin.com/in/firdos-liyakat-ali-7a94652a0/
+      5. 🚀 [Tech] Priyanka Nayak         | Decision Maker at Nextloop Tec | https://www.linkedin.com/in/priyanka-nayak-934946319/
+      6. 🚀 [Tech] Naman Soni             | Decision Maker at Nextloop Tec | https://www.linkedin.com/in/naman-soni-1109/
+      7. 🚀 [Tech] Sundaram Mishra        | Decision Maker at Nextloop Tec | https://www.linkedin.com/in/sundaram-mishra-a24585272/
+      8. 🚀 [Tech] Niveditaa Singh        | Decision Maker at Nextloop Tec | https://www.linkedin.com/in/niveditaa-singh-b9b4911b0/
+
+[10/22] 🏢 COMPANY: WEINTERN PVT LIMITED (Post #252037497)
+   Matched Role : WEINTERN PVT LIMITED - AI/ML Intern
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and AI/ML skills (RAG, LLMs) that align with the AI/ML Intern role, which is suitable for entry-level candidates.
+   Company LinkedIn : https://www.linkedin.com/company/weintern--limited
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'WEINTERN PVT LIMITED' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for WEINTERN PVT LIMITED:
+      1. 🚀 [Tech] Chetan Singh           | Decision Maker at WEINTERN PVT | https://www.linkedin.com/in/cs1502/
+      2. 🚀 [Tech] Ashwin Gopinath        | Decision Maker at WEINTERN PVT | https://www.linkedin.com/in/ashgopi/
+      3. 🚀 [Tech] Sourabh Gupta          | Decision Maker at WEINTERN PVT | https://www.linkedin.com/in/sourabhsg/
+      4. 🚀 [Tech] Nandini Meharia        | Decision Maker at WEINTERN PVT | https://www.linkedin.com/in/nandini-meharia/
+      5. 🚀 [Tech] Zaheer Adenwala        | Decision Maker at WEINTERN PVT | https://www.linkedin.com/in/zaheer-adenwala-0181421a/
+      6. 🚀 [Tech] Shipra Singh           | Decision Maker at WEINTERN PVT | https://www.linkedin.com/in/shiprasingh22/
+      7. 🚀 [Tech] Anjali Sinha           | Decision Maker at WEINTERN PVT | https://www.linkedin.com/in/anjali-sinha-2416bb1b9/
+      8. 🚀 [Tech] Sakshi G.              | Decision Maker at WEINTERN PVT | https://www.linkedin.com/in/sakshi-g-7325321b/
+
+[11/22] 🏢 COMPANY: Webenoid Inc (Post #250164528)
+   Matched Role : Webenoid Inc - Software Development Internship
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills, which aligns with the requirements for a software development internship.
+   Company LinkedIn : https://www.linkedin.com/company/webenoid
+   Official Domain  : webenoid.com
+   [Browser Search] Searching LinkedIn People for 'Webenoid Inc' in logged-in Chrome...
+   ✅ Browser search discovered 7 LinkedIn profile(s)!
+
+   📋 Discovered 7 Decision-Makers for Webenoid Inc:
+      1. 🚀 [Tech] Jijo Thomas            | Decision Maker at Webenoid Inc | ✉️ jijo.thomas@webenoid.com | https://www.linkedin.com/in/clickonjijothomas/
+      2. 🚀 [Tech] Surya Parida           | Decision Maker at Webenoid Inc | ✉️ surya.parida@webenoid.com | https://www.linkedin.com/in/suryaparida/
+      3. 🚀 [Tech] Prateek Sachan         | Decision Maker at Webenoid Inc | ✉️ prateek.sachan@webenoid.com | https://www.linkedin.com/in/prateek-sachan/
+      4. 🚀 [Tech] Rishabh Kirti Sinha    | Decision Maker at Webenoid Inc | ✉️ rishabh.sinha@webenoid.com | https://www.linkedin.com/in/rishabh-kirti-sinha-27369b197/
+      5. 🚀 [Tech] Pratima Yadav          | Decision Maker at Webenoid Inc | ✉️ pratima.yadav@webenoid.com | https://www.linkedin.com/in/pratima-yadav-4033b7217/
+      6. 🚀 [Tech] Abhinav Sunil          | Decision Maker at Webenoid Inc | ✉️ abhinav.sunil@webenoid.com | https://www.linkedin.com/in/abhinavsunilabs/
+      7. 🚀 [Tech] Joseph Joseph          | Decision Maker at Webenoid Inc | ✉️ joseph.joseph@webenoid.com | https://www.linkedin.com/in/joseph-joseph-ab7884216/
+   📬 Queued 7 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[12/22] 🏢 COMPANY: Kweesha (Post #248414117)
+   Matched Role : Kweesha - Backend Web Development  – Night Shift (US Live Projects)
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills (FastAPI, SQLite) that align with the internship-level backend web development role.
+   Company LinkedIn : https://www.linkedin.com/company/kweesha
+   Official Domain  : ipaddress.com
+   [Browser Search] Searching LinkedIn People for 'Kweesha' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Kweesha:
+      1. 🚀 [Tech] Kesha Trivedi          | Decision Maker at Kweesha      | ✉️ kesha.trivedi@ipaddress.com | https://www.linkedin.com/in/kesha-trivedi-b174ab24a/
+      2. 🚀 [Tech] Chauhan Ajay           | Decision Maker at Kweesha      | ✉️ chauhan.ajay@ipaddress.com | https://www.linkedin.com/in/chauhan-ajay-53120793/
+      3. 🚀 [Tech] Jai Yadav              | Decision Maker at Kweesha      | ✉️ jai.yadav@ipaddress.com | https://www.linkedin.com/in/jai-yadav-a59147212/
+      4. 🚀 [Tech] HR Kesha               | Decision Maker at Kweesha      | ✉️ hr.kesha@ipaddress.com | https://www.linkedin.com/in/hr-kesha-37b534364/
+      5. 🚀 [Tech] Kesha Singh            | Decision Maker at Kweesha      | ✉️ kesha.singh@ipaddress.com | https://www.linkedin.com/in/kesha-singh-851290174/
+      6. 🚀 [Tech] Rashi Goswami          | Decision Maker at Kweesha      | ✉️ rashi.goswami@ipaddress.com | https://www.linkedin.com/in/rashi-goswami-5517a2182/
+      7. 🚀 [Tech] kesha joshi            | Decision Maker at Kweesha      | ✉️ kesha.joshi@ipaddress.com | https://www.linkedin.com/in/kesha-joshi-11a94721a/
+      8. 🚀 [Tech] Ankit Kanojiya         | Decision Maker at Kweesha      | ✉️ ankit.kanojiya@ipaddress.com | https://www.linkedin.com/in/ankitkanojiya07/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[13/22] 🏢 COMPANY: Shure India (Post #248013926)
+   Matched Role : Shure India - Software Development Intern
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills, which aligns with the requirements for a Software Development Intern role.
+   Company LinkedIn : https://www.linkedin.com/company/shure-india
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Shure India' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Shure India:
+      1. 🚀 [Tech] Rohith Mukundan        | Decision Maker at Shure India  | https://www.linkedin.com/in/rohith-mukundan-99122318b/
+      2. 🚀 [Tech] Naren S                | Decision Maker at Shure India  | https://www.linkedin.com/in/narensethuram/
+      3. 🚀 [Tech] Karan B                | Decision Maker at Shure India  | https://www.linkedin.com/in/karan-b-035642224/
+      4. 🚀 [Tech] Ranjita P.             | Decision Maker at Shure India  | https://www.linkedin.com/in/ranjita-p-70333186/
+      5. 🚀 [Tech] Nishant Sahay          | Decision Maker at Shure India  | https://www.linkedin.com/in/nishant-sahay-3a426020/
+      6. 🚀 [Tech] Udhay Ganesan          | Decision Maker at Shure India  | https://www.linkedin.com/in/udhay-ganesan-31351b91/
+      7. 🚀 [Tech] Sravani L              | Decision Maker at Shure India  | https://www.linkedin.com/in/sravani-l/
+      8. 🚀 [Tech] Aditi Gupta            | Decision Maker at Shure India  | https://www.linkedin.com/in/aditi-gupta-470660146/
+
+[14/22] 🏢 COMPANY: Perceptive Analytics (Post #247703902)
+   Matched Role : Perceptive Analytics - Advanced Data Analytics Intern
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and AI/ML skills (RAG, LLMs) that align with the data analytics and software engineering fundamentals required for an internship role.
+   Company LinkedIn : https://www.linkedin.com/company/perceptive-analytics
+   Official Domain  : perceptive-analytics.com
+   [Browser Search] Searching LinkedIn People for 'Perceptive Analytics' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Perceptive Analytics:
+      1. 🚀 [Tech] Gagarin Rout           | Decision Maker at Perceptive A | ✉️ gagarin.rout@perceptive-analytics.com | https://www.linkedin.com/in/gagarin-rout/
+      2. 🚀 [Tech] Rishabh Kirti Sinha    | Decision Maker at Perceptive A | ✉️ rishabh.sinha@perceptive-analytics.com | https://www.linkedin.com/in/rishabh-kirti-sinha-27369b197/
+      3. 🚀 [Tech] Sandeep Adusumilly     | Decision Maker at Perceptive A | ✉️ sandeep.adusumilly@perceptive-analytics.com | https://www.linkedin.com/in/sandeep-adusumilly-bb97a346/
+      4. 🚀 [Tech] Niyaz Ansari           | Decision Maker at Perceptive A | ✉️ niyaz.ansari@perceptive-analytics.com | https://www.linkedin.com/in/niyazansari/
+      5. 🚀 [Tech] Sampreeti Sarkar       | Decision Maker at Perceptive A | ✉️ sampreeti.sarkar@perceptive-analytics.com | https://www.linkedin.com/in/sampreeti-sarkar/
+      6. 🚀 [Tech] Marlyn Lourine Sequeira | Decision Maker at Perceptive A | ✉️ marlyn.sequeira@perceptive-analytics.com | https://www.linkedin.com/in/marlyn-lourine-sequeira-1878b374/
+      7. 🚀 [Tech] Keerthanaa J           | Decision Maker at Perceptive A | ✉️ keerthanaa@perceptive-analytics.com | https://www.linkedin.com/in/keerthanaaj/
+      8. 🚀 [Tech] Tanishka Mittal        | Decision Maker at Perceptive A | ✉️ tanishka.mittal@perceptive-analytics.com | https://www.linkedin.com/in/tanishka-mittal/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[15/22] 🏢 COMPANY: SaaSFlex (Post #247636807)
+   Matched Role : SaaSFlex - Software Development Engineer (SDE) Intern - ClockFlex
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills (FastAPI, RAG) that align with the SDE Intern role requirements.
+   Company LinkedIn : https://www.linkedin.com/company/saasflex
+   Official Domain  : saasflex.co
+   [Browser Search] Searching LinkedIn People for 'SaaSFlex' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for SaaSFlex:
+      1. 🚀 [Tech] KARTHICK RAJAN         | Decision Maker at SaaSFlex     | ✉️ karthick.rajan@saasflex.co | https://www.linkedin.com/in/karthick-rajan-259846160/
+      2. 🚀 [Tech] Vivek Pandian.C        | Decision Maker at SaaSFlex     | ✉️ vivek@saasflex.co | https://www.linkedin.com/in/vivek-pandian-c-9049282b/
+      3. 🚀 [Tech] Bhagya Sri S           | Decision Maker at SaaSFlex     | ✉️ bhagya@saasflex.co | https://www.linkedin.com/in/bhagya-sri-s-722a6a1b6/
+      4. 🚀 [Tech] Gunjan Das             | Decision Maker at SaaSFlex     | ✉️ gunjan.das@saasflex.co | https://www.linkedin.com/in/gunjan-das-081514b4/
+      5. 🚀 [Tech] Shiffana Mk            | Decision Maker at SaaSFlex     | ✉️ shiffana.mk@saasflex.co | https://www.linkedin.com/in/shiffanamk/
+      6. 🚀 [Tech] PALLAVI SAHU           | Decision Maker at SaaSFlex     | ✉️ pallavi.sahu@saasflex.co | https://www.linkedin.com/in/pallavisahu-/
+      7. 🚀 [Tech] Boyini Chandra Shekar  | Decision Maker at SaaSFlex     | ✉️ boyini.shekar@saasflex.co | https://www.linkedin.com/in/boyini-chandra-shekar-25506376/
+      8. 🚀 [Tech] CHANDRAKANTH S         | Decision Maker at SaaSFlex     | ✉️ chandrakanth@saasflex.co | https://www.linkedin.com/in/chandrakanth-s-1b6245ab/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[16/22] 🏢 COMPANY: SRIT Creations (Post #247580205)
+   Matched Role : SRIT Creations - Software Intern
+   Match Reason : The candidate is a 2026 CS fresher with Python and backend skills, which aligns with the requirements for a Software Intern role.
+   Company LinkedIn : https://www.linkedin.com/company/silicon-creations
+   Official Domain  : sritcreations.com
+   [Browser Search] Searching LinkedIn People for 'SRIT Creations' in logged-in Chrome...
+   ✅ Browser search discovered 6 LinkedIn profile(s)!
+
+   📋 Discovered 6 Decision-Makers for SRIT Creations:
+      1. 🚀 [Tech] Chitta Ranjan Das      | Decision Maker at SRIT Creatio | ✉️ chitta.das@sritcreations.com | https://www.linkedin.com/in/iamchittaranjandas/
+      2. 🚀 [Tech] PALLAVI SAHU           | Decision Maker at SRIT Creatio | ✉️ pallavi.sahu@sritcreations.com | https://www.linkedin.com/in/pallavisahu-/
+      3. 🚀 [Tech] Umar C                 | Decision Maker at SRIT Creatio | ✉️ umar@sritcreations.com | https://www.linkedin.com/in/umar-c-53b9a14b/
+      4. 🚀 [Tech] Patibandla Lakshmi Venkata Koteswara Rao | Decision Maker at SRIT Creatio | ✉️ patibandla.rao@sritcreations.com | https://www.linkedin.com/in/patibandla-lakshmi-venkata-koteswara-rao-ba148bb6/
+      5. 🚀 [Tech] Sambhu SK              | Decision Maker at SRIT Creatio | ✉️ sambhu.sk@sritcreations.com | https://www.linkedin.com/in/sambhu-sk-938510383/
+      6. 🚀 [Tech] Vandana Ramannavar     | Decision Maker at SRIT Creatio | ✉️ vandana.ramannavar@sritcreations.com | https://www.linkedin.com/in/vandana-ramannavar-50881066/
+   📬 Queued 6 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[17/22] 🏢 COMPANY: Skill floor solutions (Post #246961831)
+   Matched Role : Skill floor solutions - AI Intern (2025,2026 Graduates)
+   Match Reason : Candidate is a 2026 CS graduate eligible for the internship and possesses relevant AI/LLM skills (Python, RAG, LangChain) that align with the role.
+   Company LinkedIn : https://www.linkedin.com/company/skillfloor
+   Official Domain  : skillfloor.com
+   [Browser Search] Searching LinkedIn People for 'Skill floor solutions' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Skill floor solutions:
+      1. 🚀 [Tech] Ayushi Rawal           | Decision Maker at Skill floor  | ✉️ ayushi.rawal@skillfloor.com | https://www.linkedin.com/in/ayushi-rawal-928153171/
+      2. 🚀 [Tech] Shilpa Arora           | Decision Maker at Skill floor  | ✉️ shilpa.arora@skillfloor.com | https://www.linkedin.com/in/shilpa-arora-b27676191/
+      3. 🚀 [Tech] Suhani Bhat            | Decision Maker at Skill floor  | ✉️ suhani.bhat@skillfloor.com | https://www.linkedin.com/in/suhanibhat/
+      4. 🚀 [Tech] Siddhant Deepak Malhotra | Decision Maker at Skill floor  | ✉️ siddhant.malhotra@skillfloor.com | https://www.linkedin.com/in/siddhant-malhotra/
+      5. 🚀 [Tech] Rashmi R Rathor        | Decision Maker at Skill floor  | ✉️ rashmi.rathor@skillfloor.com | https://www.linkedin.com/in/rashmi-r-rathor-7140b312/
+      6. 🚀 [Tech] Pavithra SM Murugan    | Decision Maker at Skill floor  | ✉️ pavithra.murugan@skillfloor.com | https://www.linkedin.com/in/pavithra3010/
+      7. 🚀 [Tech] Shakshi Shukla         | Decision Maker at Skill floor  | ✉️ shakshi.shukla@skillfloor.com | https://www.linkedin.com/in/shakshi-shukla-6314b322b/
+      8. 🚀 [Tech] Eram Qudsia            | Decision Maker at Skill floor  | ✉️ eram.qudsia@skillfloor.com | https://www.linkedin.com/in/eram-qudsia-86131521/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[18/22] 🏢 COMPANY: GROWLOC (Post #246056153)
+   Matched Role : GROWLOC - Software Developer Intern
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills (FastAPI, RAG) that align with the Software Developer Intern role.
+   Company LinkedIn : https://www.linkedin.com/company/growloc
+   Official Domain  : growloc.com
+   [Browser Search] Searching LinkedIn People for 'GROWLOC' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for GROWLOC:
+      1. 🚀 [Tech] Hema Pinate            | Decision Maker at GROWLOC      | ✉️ hema.pinate@growloc.com | https://www.linkedin.com/in/hema-pinate-1440661a0/
+      2. 🚀 [Tech] PATIL SAKSHI           | Decision Maker at GROWLOC      | ✉️ patil.sakshi@growloc.com | https://www.linkedin.com/in/patil-sakshi-2a40012a3/
+      3. 🚀 [Tech] Sanjana sinha          | Decision Maker at GROWLOC      | ✉️ sanjana.sinha@growloc.com | https://www.linkedin.com/in/sanjana-sinha-7889611b0/
+      4. 🚀 [Tech] Abhijeet Nunia         | Decision Maker at GROWLOC      | ✉️ abhijeet.nunia@growloc.com | https://www.linkedin.com/in/abhijeet-nunia-b141b5206/
+      5. 🚀 [Tech] Vaishnavi Ugale        | Decision Maker at GROWLOC      | ✉️ vaishnavi.ugale@growloc.com | https://www.linkedin.com/in/vaishnaviugale30/
+      6. 🚀 [Tech] Praveen Kumar          | Decision Maker at GROWLOC      | ✉️ praveen.kumar@growloc.com | https://www.linkedin.com/in/praveenkumarpk/
+      7. 🚀 [Tech] Pallavi Gupta          | Decision Maker at GROWLOC      | ✉️ pallavi.gupta@growloc.com | https://www.linkedin.com/in/pallavi-gupta-614417136/
+      8. 🚀 [Tech] Shreyas Singh Gaharwar | Decision Maker at GROWLOC      | ✉️ shreyas.gaharwar@growloc.com | https://www.linkedin.com/in/4shreyassingh5/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[19/22] 🏢 COMPANY: Paytm (Post #245231923)
+   Matched Role : Paytm - Intern - Backend
+   Match Reason : Candidate is a 2026 CS fresher with strong Python and backend skills (FastAPI, SQLite) that align with the internship role requirements.
+   Company LinkedIn : https://www.linkedin.com/company/paytm
+   Official Domain  : paytm.com
+   [Browser Search] Searching LinkedIn People for 'Paytm' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Paytm:
+      1. 🚀 [Tech] Ayush Gupta            | Decision Maker at Paytm        | ✉️ ayush.gupta@paytm.com | https://www.linkedin.com/in/ayush-gupta-a53406222/
+      2. 🚀 [Tech] Pallavi Borkar         | Decision Maker at Paytm        | ✉️ pallavi.borkar@paytm.com | https://www.linkedin.com/in/pallavi-borkar1/
+      3. 🚀 [Tech] Komal Rathore          | Decision Maker at Paytm        | ✉️ komal.rathore@paytm.com | https://www.linkedin.com/in/komal-rathore-0308b9312/
+      4. 🚀 [Tech] RICHA SINGH            | Decision Maker at Paytm        | ✉️ richa.singh@paytm.com | https://www.linkedin.com/in/richa-singh-032062196/
+      5. 🚀 [Tech] Rohit Sharma           | Decision Maker at Paytm        | ✉️ rohit.sharma@paytm.com | https://www.linkedin.com/in/rohit5504/
+      6. 🚀 [Tech] Priyanshi Chaudhary    | Decision Maker at Paytm        | ✉️ priyanshi.chaudhary@paytm.com | https://www.linkedin.com/in/priyanshi-chaudhary-273b9a259/
+      7. 🚀 [Tech] Mohammad Yusuf ALi     | Decision Maker at Paytm        | ✉️ mohammad.ali@paytm.com | https://www.linkedin.com/in/mohammadyusufali/
+      8. 🚀 [Tech] Sayyam Gupta           | Decision Maker at Paytm        | ✉️ sayyam.gupta@paytm.com | https://www.linkedin.com/in/sayyam-gupta-84b662327/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[20/22] 🏢 COMPANY: Crazy For Success Foundation (Post #244877266)
+   Matched Role : Crazy For Success Foundation - AI Prompt Engineer
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and LLM/RAG skills that align with the AI Prompt Engineer internship role.
+   Company LinkedIn : https://www.linkedin.com/company/crazy-for-success-foundation
+   Official Domain  : wearecrazy.org
+   [Browser Search] Searching LinkedIn People for 'Crazy For Success Foundation' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Crazy For Success Foundation:
+      1. 🚀 [Tech] Vanshika Gupta         | Decision Maker at Crazy For Su | ✉️ vanshika.gupta@wearecrazy.org | https://www.linkedin.com/in/vanshika-gupta-a94725235/
+      2. 🚀 [Tech] Devansh Nanda          | Decision Maker at Crazy For Su | ✉️ devansh.nanda@wearecrazy.org | https://www.linkedin.com/in/devansh-nanda-812bb51a0/
+      3. 🚀 [Tech] Arpit Namdev           | Decision Maker at Crazy For Su | ✉️ arpit.namdev@wearecrazy.org | https://www.linkedin.com/in/arpitnamdev/
+      4. 🚀 [Tech] We Are Crazy           | Decision Maker at Crazy For Su | ✉️ we.crazy@wearecrazy.org | https://www.linkedin.com/in/we-are-crazy-871089209/
+      5. 🚀 [Tech] Manas Dewari           | Decision Maker at Crazy For Su | ✉️ manas.dewari@wearecrazy.org | https://www.linkedin.com/in/manas-dewari/
+      6. 🚀 [Tech] Vini Gupta Miglani     | Decision Maker at Crazy For Su | ✉️ vini.miglani@wearecrazy.org | https://www.linkedin.com/in/vini-gupta-miglani-884302204/
+      7. 🚀 [Tech] Deepali Singh          | Decision Maker at Crazy For Su | ✉️ deepali.singh@wearecrazy.org | https://www.linkedin.com/in/deepali-singh-506602178/
+      8. 🚀 [Tech] Shilpa Arora           | Decision Maker at Crazy For Su | ✉️ shilpa.arora@wearecrazy.org | https://www.linkedin.com/in/shilpa-arora-b27676191/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[21/22] 🏢 COMPANY: InAmigos Foundation (Post #243399842)
+   Matched Role : InAmigos Foundation - AI Data Analytics
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and AI/ML skills (RAG, LLMs) that align with the AI Data Analytics internship role.
+   Company LinkedIn : https://www.linkedin.com/company/inamigos-foundation
+   Official Domain  : inamigosfoundation.org.in
+   [Browser Search] Searching LinkedIn People for 'InAmigos Foundation' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for InAmigos Foundation:
+      1. 🚀 [Tech] Sagarika Jaiswal       | Decision Maker at InAmigos Fou | ✉️ sagarika.jaiswal@inamigosfoundation.org.in | https://www.linkedin.com/in/sagarika-jaiswal12/
+      2. 🚀 [Tech] Dev Khemani            | Decision Maker at InAmigos Fou | ✉️ dev.khemani@inamigosfoundation.org.in | https://www.linkedin.com/in/dev-khemani-spjimr/
+      3. 🚀 [Tech] Pratyush Raj           | Decision Maker at InAmigos Fou | ✉️ pratyush.raj@inamigosfoundation.org.in | https://www.linkedin.com/in/pratyush-raj-542a2821a/
+      4. 🚀 [Tech] Anshul Saini           | Decision Maker at InAmigos Fou | ✉️ anshul.saini@inamigosfoundation.org.in | https://www.linkedin.com/in/anshul-saini-63894732b/
+      5. 🚀 [Tech] Aditya Choudhary       | Decision Maker at InAmigos Fou | ✉️ aditya.choudhary@inamigosfoundation.org.in | https://www.linkedin.com/in/aditya-choudhary-28aug2006/
+      6. 🚀 [Tech] surabhi pandey         | Decision Maker at InAmigos Fou | ✉️ surabhi.pandey@inamigosfoundation.org.in | https://www.linkedin.com/in/surabhi-pandey-350539244/
+      7. 🚀 [Tech] Devyanshi Singh        | Decision Maker at InAmigos Fou | ✉️ devyanshi.singh@inamigosfoundation.org.in | https://www.linkedin.com/in/devyanshi-singh-581094310/
+      8. 🚀 [Tech] Naman Aggarwal         | Decision Maker at InAmigos Fou | ✉️ naman.aggarwal@inamigosfoundation.org.in | https://www.linkedin.com/in/naman-aggarwal-b97320230/
+
+[22/22] 🏢 COMPANY: Venxr (Post #243184832)
+   Matched Role : Venxr - Generative AI Engineering Intern — Venxr
+   Match Reason : The candidate is a 2026 CS fresher with strong skills in Python, LLM orchestration, and RAG, which directly aligns with the Generative AI Engineering Intern role.
+   Company LinkedIn : https://www.linkedin.com/company/venxr
+   Official Domain  : venxr.ai
+   [Browser Search] Searching LinkedIn People for 'Venxr' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Venxr:
+      1. 🚀 [Tech] Prerona Dutta          | Decision Maker at Venxr        | ✉️ prerona.dutta@venxr.ai | https://www.linkedin.com/in/prerona-dutta-9a9920201/
+      2. 🚀 [Tech] Firdos Liyakat Ali     | Decision Maker at Venxr        | ✉️ firdos.ali@venxr.ai | https://www.linkedin.com/in/firdos-liyakat-ali-7a94652a0/
+      3. 🚀 [Tech] Shagun Singh           | Decision Maker at Venxr        | ✉️ shagun.singh@venxr.ai | https://www.linkedin.com/in/shagun-singh-b120322b6/
+      4. 🚀 [Tech] Komal Rathore          | Decision Maker at Venxr        | ✉️ komal.rathore@venxr.ai | https://www.linkedin.com/in/komal-rathore-0308b9312/
+      5. 🚀 [Tech] Rincy Jain             | Decision Maker at Venxr        | ✉️ rincy.jain@venxr.ai | https://www.linkedin.com/in/rincy-jain/
+      6. 🚀 [Tech] Rhishikesh Joshi       | Decision Maker at Venxr        | ✉️ rhishikesh.joshi@venxr.ai | https://www.linkedin.com/in/rhishikesh-joshi-b12abb75/
+      7. 🚀 [Tech] Ankit Kanojiya         | Decision Maker at Venxr        | ✉️ ankit.kanojiya@venxr.ai | https://www.linkedin.com/in/ankitkanojiya07/
+      8. 🚀 [Tech] MAHESH KAMBALE         | Decision Maker at Venxr        | ✉️ mahesh.kambale@venxr.ai | https://www.linkedin.com/in/mahesh-kambale-9407a0209/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+📄 Exported 452 leads to CSV: C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.csv
+📊 Generated Interactive HTML Dashboard: C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.html
+
+=================================================================
+🎉 LINKEDIN ENRICHMENT COMPLETED SUCCESSFULLY
+Total Decision-Makers & Tech Leaders Discovered: 173
+Reports Generated:
+  • CSV Report  : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.csv
+  • HTML Report : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.html
+=================================================================
+
+=================================================================
+[13:57:28] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP (Daily Limit: 200)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.outreach.mailer --limit 200
+=================================================================
+
+📊 Today's Outreach Budget: 0/200 sent today (200 remaining for today).
+
+=================================================================
+🚀 LIVE COLD EMAIL SENDING (WATERFALL STRATEGY)
+=================================================================
+Contacts in Queue       : 205 (Sending up to: 200)
+Daily Cap Remaining     : 200/200 emails
+Max Capacity per Account: 200 emails
+Sending Priority:
+  1. Account 1: sparshgoyal199@gmail.com (Primary 1)
+  2. Account 2: rahilgoyal127@gmail.com (Primary 2)
+  3. Account 3: sparsh198@gmail.com (Primary 3)
+-----------------------------------------------------------------
+[1/200] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ pushpendra.tripathi@cynbit.in (Pushpendra Tripathi) ... ✅ SENT
+[2/200] [Account 1: sparshgoyal199@gmail.com (2/200)] ➔ deepika.khobragadhe@cynbit.in (Deepika Khobragadhe) ... ✅ SENT
+[3/200] [Account 1: sparshgoyal199@gmail.com (3/200)] ➔ pravallika.reddy@complyance.com (PRAVALLIKA REDDY) ... ✅ SENT
+[4/200] [Account 1: sparshgoyal199@gmail.com (4/200)] ➔ ambarish@complyance.com (AMBARISH C) ... ✅ SENT
+[5/200] [Account 1: sparshgoyal199@gmail.com (5/200)] ➔ niyaz.ansari@complyance.com (Niyaz Ansari) ... ✅ SENT
+[6/200] [Account 1: sparshgoyal199@gmail.com (6/200)] ➔ lucia.alvarado@complyance.com (Lucia Alvarado) ... ✅ SENT
+[7/200] [Account 1: sparshgoyal199@gmail.com (7/200)] ➔ rashi.tyagi@complyance.com (Rashi Tyagi) ... ✅ SENT
+[8/200] [Account 1: sparshgoyal199@gmail.com (8/200)] ➔ pushpendra.tripathi@complyance.com (Pushpendra Tripathi) ... ✅ SENT
+[9/200] [Account 1: sparshgoyal199@gmail.com (9/200)] ➔ deepika.khobragadhe@complyance.com (Deepika Khobragadhe) ... ✅ SENT
+[10/200] [Account 1: sparshgoyal199@gmail.com (10/200)] ➔ arushi.singh@complyance.com (arushi singh) ... ✅ SENT
+[11/200] [Account 1: sparshgoyal199@gmail.com (11/200)] ➔ aman.ishwar@lascade.com (Aman Ishwar) ... ✅ SENT
+[12/200] [Account 1: sparshgoyal199@gmail.com (12/200)] ➔ chesin.raj@lascade.com (Chesin Raj) ... ✅ SENT
+[13/200] [Account 1: sparshgoyal199@gmail.com (13/200)] ➔ afnidha@lascade.com (Afnidha k) ... ✅ SENT
+[14/200] [Account 1: sparshgoyal199@gmail.com (14/200)] ➔ jishnu@lascade.com (Jishnu M M) ... ✅ SENT
+[15/200] [Account 1: sparshgoyal199@gmail.com (15/200)] ➔ vasanth@lascade.com (Vasanth R) ... ✅ SENT
+[16/200] [Account 1: sparshgoyal199@gmail.com (16/200)] ➔ muhammed.shazi@lascade.com (Muhammed Nauman Shazi) ... ✅ SENT
+[17/200] [Account 1: sparshgoyal199@gmail.com (17/200)] ➔ dhipin.das@lascade.com (Dhipin K. Das) ... ✅ SENT
+[18/200] [Account 1: sparshgoyal199@gmail.com (18/200)] ➔ gvinay.yadav@myinternships.in (Gvinay yadav) ... ✅ SENT
+[19/200] [Account 1: sparshgoyal199@gmail.com (19/200)] ➔ khushi.bansal@myinternships.in (Khushi Bansal) ... ✅ SENT
+[20/200] [Account 1: sparshgoyal199@gmail.com (20/200)] ➔ abhyanand.jha@myinternships.in (Abhyanand Jha) ... ✅ SENT
+[21/200] [Account 1: sparshgoyal199@gmail.com (21/200)] ➔ arpitha.kn@myinternships.in (Arpitha KN) ... ✅ SENT
+[22/200] [Account 1: sparshgoyal199@gmail.com (22/200)] ➔ arushi.singh@myinternships.in (arushi singh) ... ✅ SENT
+[23/200] [Account 1: sparshgoyal199@gmail.com (23/200)] ➔ sonal.katyal@myinternships.in (Sonal Katyal) ... ✅ SENT
+[24/200] [Account 1: sparshgoyal199@gmail.com (24/200)] ➔ sonam.bargujjar@myinternships.in (Sonam Bargujjar) ... ✅ SENT
+[25/200] [Account 1: sparshgoyal199@gmail.com (25/200)] ➔ rashi.tyagi@myinternships.in (Rashi Tyagi) ... ✅ SENT
+[26/200] [Account 1: sparshgoyal199@gmail.com (26/200)] ➔ trevor.mentos@vortenza.com (Trevor Mentos) ... ✅ SENT
+[27/200] [Account 1: sparshgoyal199@gmail.com (27/200)] ➔ aditi.chhabra@pineswift.com (Aditi Chhabra) ... ✅ SENT
+[28/200] [Account 1: sparshgoyal199@gmail.com (28/200)] ➔ ashish.meena@pineswift.com (Ashish Meena) ... ✅ SENT
+[29/200] [Account 1: sparshgoyal199@gmail.com (29/200)] ➔ jayeeta.sutradhar@pineswift.com (Jayeeta Sutradhar) ... ✅ SENT
+[30/200] [Account 1: sparshgoyal199@gmail.com (30/200)] ➔ palkeet.kour@pineswift.com (Palkeet Kour) ... ✅ SENT
+[31/200] [Account 1: sparshgoyal199@gmail.com (31/200)] ➔ karan.sharma@pineswift.com (Karan sharma) ... ✅ SENT
+[32/200] [Account 1: sparshgoyal199@gmail.com (32/200)] ➔ sheetal.raina@pineswift.com (Sheetal Raina) ... ✅ SENT
+[33/200] [Account 1: sparshgoyal199@gmail.com (33/200)] ➔ yatharth.tyagi@pineswift.com (Yatharth Tyagi) ... ✅ SENT
+[34/200] [Account 1: sparshgoyal199@gmail.com (34/200)] ➔ akash.kumar@pineswift.com (Akash Kumar) ... ✅ SENT
+[35/200] [Account 1: sparshgoyal199@gmail.com (35/200)] ➔ nandhini@revvity.com (Nandhini N) ... ✅ SENT
+[36/200] [Account 1: sparshgoyal199@gmail.com (36/200)] ➔ sneha@revvity.com (sneha .S) ... ✅ SENT
+[37/200] [Account 1: sparshgoyal199@gmail.com (37/200)] ➔ ya.topal@revvity.com (Yağmur Subaşı Topal) ... ✅ SENT
+[38/200] [Account 1: sparshgoyal199@gmail.com (38/200)] ➔ rupal.dixit@revvity.com (Rupal Dixit) ... ✅ SENT
+[39/200] [Account 1: sparshgoyal199@gmail.com (39/200)] ➔ rashi.tyagi@revvity.com (Rashi Tyagi) ... ✅ SENT
+[40/200] [Account 1: sparshgoyal199@gmail.com (40/200)] ➔ pushpendra.tripathi@revvity.com (Pushpendra Tripathi) ... ✅ SENT
+[41/200] [Account 1: sparshgoyal199@gmail.com (41/200)] ➔ deepika.khobragadhe@revvity.com (Deepika Khobragadhe) ... ✅ SENT
+[42/200] [Account 1: sparshgoyal199@gmail.com (42/200)] ➔ khushi.bansal@revvity.com (Khushi Bansal) ... ✅ SENT
+[43/200] [Account 1: sparshgoyal199@gmail.com (43/200)] ➔ prachi.panwar@toxsl.com (Prachi Panwar) ... ✅ SENT
+[44/200] [Account 1: sparshgoyal199@gmail.com (44/200)] ➔ naman.soni@toxsl.com (Naman Soni) ... ✅ SENT
+[45/200] [Account 1: sparshgoyal199@gmail.com (45/200)] ➔ aarti.koul@toxsl.com (Aarti Koul) ... ✅ SENT
+[46/200] [Account 1: sparshgoyal199@gmail.com (46/200)] ➔ ritik.sharma@toxsl.com (ritik sharma) ... ✅ SENT
+[47/200] [Account 1: sparshgoyal199@gmail.com (47/200)] ➔ deepak.arora@toxsl.com (Deepak Arora) ... ✅ SENT
+[48/200] [Account 1: sparshgoyal199@gmail.com (48/200)] ➔ rashi.goswami@toxsl.com (Rashi Goswami) ... ✅ SENT
+[49/200] [Account 1: sparshgoyal199@gmail.com (49/200)] ➔ poonam.kumari@toxsl.com (Poonam Kumari) ... ✅ SENT
+[50/200] [Account 1: sparshgoyal199@gmail.com (50/200)] ➔ seetaram.dudi@inamigosfoundation.org.in (Seetaram Dudi) ... ✅ SENT
+[51/200] [Account 1: sparshgoyal199@gmail.com (51/200)] ➔ jitesh.singh@inamigosfoundation.org.in (Jitesh Singh) ... ✅ SENT
+[52/200] [Account 1: sparshgoyal199@gmail.com (52/200)] ➔ lakshith.sivan@inamigosfoundation.org.in (Lakshith Sivan) ... ✅ SENT
+[53/200] [Account 1: sparshgoyal199@gmail.com (53/200)] ➔ kavitha.acharya@discoverdollar.com (Kavitha Acharya) ... ✅ SENT
+[54/200] [Account 1: sparshgoyal199@gmail.com (54/200)] ➔ prajna@discoverdollar.com (Prajna S V) ... ✅ SENT
+[55/200] [Account 1: sparshgoyal199@gmail.com (55/200)] ➔ shweta.dwivedi@discoverdollar.com (SHWETA DWIVEDI) ... ✅ SENT
+[56/200] [Account 1: sparshgoyal199@gmail.com (56/200)] ➔ puja.rawani@discoverdollar.com (Puja Rawani) ... ✅ SENT
+[57/200] [Account 1: sparshgoyal199@gmail.com (57/200)] ➔ firdos.ali@discoverdollar.com (Firdos Liyakat Ali) ... ✅ SENT
+[58/200] [Account 1: sparshgoyal199@gmail.com (58/200)] ➔ sk.shaheed@discoverdollar.com (SK SHAHEED) ... ✅ SENT
+[59/200] [Account 1: sparshgoyal199@gmail.com (59/200)] ➔ vishnu@discoverdollar.com (Vishnu A.) ... ✅ SENT
+[60/200] [Account 1: sparshgoyal199@gmail.com (60/200)] ➔ rupali.goel@discoverdollar.com (Rupali Goel) ... ✅ SENT
+[61/200] [Account 1: sparshgoyal199@gmail.com (61/200)] ➔ arpita.pahwa@pledgeindiafoundation.org (Arpita Pahwa) ... ✅ SENT
+[62/200] [Account 1: sparshgoyal199@gmail.com (62/200)] ➔ adarsh.tripathi@pledgeindiafoundation.org (Adarsh Tripathi) ... ✅ SENT
+[63/200] [Account 1: sparshgoyal199@gmail.com (63/200)] ➔ vaibhavi.sengar@pledgeindiafoundation.org (Vaibhavi Sengar) ... ✅ SENT
+[64/200] [Account 1: sparshgoyal199@gmail.com (64/200)] ➔ sakshi.sharma@pledgeindiafoundation.org (Sakshi Sharma) ... ✅ SENT
+[65/200] [Account 1: sparshgoyal199@gmail.com (65/200)] ➔ harshita.kothari@pledgeindiafoundation.org (Harshita Kothari) ... ✅ SENT
+[66/200] [Account 1: sparshgoyal199@gmail.com (66/200)] ➔ naman.soni@pledgeindiafoundation.org (Naman Soni) ... ✅ SENT
+[67/200] [Account 1: sparshgoyal199@gmail.com (67/200)] ➔ yashvi.raghuvanshi@pledgeindiafoundation.org (Yashvi Raghuvanshi) ... ✅ SENT
+[68/200] [Account 1: sparshgoyal199@gmail.com (68/200)] ➔ raja.badavath@pledgeindiafoundation.org (Raja Karthik Badavath) ... ✅ SENT
+[69/200] [Account 1: sparshgoyal199@gmail.com (69/200)] ➔ careers@experionglobal.com (Hiring Team) ... ✅ SENT
+[70/200] [Account 1: sparshgoyal199@gmail.com (70/200)] ➔ careers@agasty.ai (Hiring Team) ... ✅ SENT
+[71/200] [Account 1: sparshgoyal199@gmail.com (71/200)] ➔ careers@accelflowsystems.com (Hiring Team) ... ✅ SENT
+[72/200] [Account 1: sparshgoyal199@gmail.com (72/200)] ➔ careers@infolexus.com (Hiring Team) ... ✅ SENT
+[73/200] [Account 1: sparshgoyal199@gmail.com (73/200)] ➔ careers@kalpcorporate.com (Hiring Team) ... ✅ SENT
+[74/200] [Account 1: sparshgoyal199@gmail.com (74/200)] ➔ hr@mgcsinfo.com (Hiring Team) ... ✅ SENT
+[75/200] [Account 1: sparshgoyal199@gmail.com (75/200)] ➔ careers@maxposuremedia.com (Hiring Team) ... ✅ SENT
+[76/200] [Account 1: sparshgoyal199@gmail.com (76/200)] ➔ workforcedev@list.ti.com (Hiring Team) ... ✅ SENT
+[77/200] [Account 1: sparshgoyal199@gmail.com (77/200)] ➔ careers@nagarro.com (Hiring Team) ... ✅ SENT
+[78/200] [Account 1: sparshgoyal199@gmail.com (78/200)] ➔ careers@cgi.com (Hiring Team) ... ✅ SENT
+[79/200] [Account 1: sparshgoyal199@gmail.com (79/200)] ➔ careers@globallogic.com (Hiring Team) ... ✅ SENT
+[80/200] [Account 1: sparshgoyal199@gmail.com (80/200)] ➔ careers@nykaa.com (Hiring Team) ... ✅ SENT
+[81/200] [Account 1: sparshgoyal199@gmail.com (81/200)] ➔ careers@sparxitsolutions.com (Hiring Team) ... ✅ SENT
+[82/200] [Account 1: sparshgoyal199@gmail.com (82/200)] ➔ careers@persistent.com (Hiring Team) ... ✅ SENT
+[83/200] [Account 1: sparshgoyal199@gmail.com (83/200)] ➔ careers@abs.com (Hiring Team) ... ✅ SENT
+[84/200] [Account 1: sparshgoyal199@gmail.com (84/200)] ➔ careers@idx.us (Hiring Team) ... ✅ SENT
+[85/200] [Account 1: sparshgoyal199@gmail.com (85/200)] ➔ careers@olx.in (Hiring Team) ... ✅ SENT
+[86/200] [Account 1: sparshgoyal199@gmail.com (86/200)] ➔ careers@healthfirst.org (Hiring Team) ... ✅ SENT
+[87/200] [Account 1: sparshgoyal199@gmail.com (87/200)] ➔ careers@drsunitamishra.com (Hiring Team) ... ✅ SENT
+[88/200] [Account 1: sparshgoyal199@gmail.com (88/200)] ➔ careers@weybee.com (Hiring Team) ... ✅ SENT
+[89/200] [Account 1: sparshgoyal199@gmail.com (89/200)] ➔ rizwan.ansari@microsoft.com (Rizwan Ansari) ... ✅ SENT
+[90/200] [Account 1: sparshgoyal199@gmail.com (90/200)] ➔ prashant.guha@microsoft.com (Prashant Guha) ... ✅ SENT
+[91/200] [Account 1: sparshgoyal199@gmail.com (91/200)] ➔ amit.chauhan@microsoft.com (Amit Chauhan) ... ✅ SENT
+[92/200] [Account 1: sparshgoyal199@gmail.com (92/200)] ➔ lalit.kumar@microsoft.com (Lalit Kumar) ... ✅ SENT
+[93/200] [Account 1: sparshgoyal199@gmail.com (93/200)] ➔ debasish.mishra@microsoft.com (Debasish Mishra) ... ✅ SENT
+[94/200] [Account 1: sparshgoyal199@gmail.com (94/200)] ➔ niyaz.ansari@microsoft.com (Niyaz Ansari) ... ✅ SENT
+[95/200] [Account 1: sparshgoyal199@gmail.com (95/200)] ➔ sai.kanakamedala@microsoft.com (Sai Pranav Kanakamedala) ... ✅ SENT
+[96/200] [Account 1: sparshgoyal199@gmail.com (96/200)] ➔ arnob.chakraborty@microsoft.com (Arnob Chakraborty) ... ✅ SENT
+[97/200] [Account 1: sparshgoyal199@gmail.com (97/200)] ➔ anusha.kattaya@vincistack.com (Anusha Dharma Kattaya) ... ✅ SENT
+[98/200] [Account 1: sparshgoyal199@gmail.com (98/200)] ➔ kunwar.niwas@vincistack.com (Kunwar Vidya Niwas) ... ✅ SENT
+[99/200] [Account 1: sparshgoyal199@gmail.com (99/200)] ➔ anustup.mukherjee@vincistack.com (Anustup Mukherjee) ... ✅ SENT
+[100/200] [Account 1: sparshgoyal199@gmail.com (100/200)] ➔ nakul.singh@vincistack.com (Nakul Singh) ... ✅ SENT
+[101/200] [Account 1: sparshgoyal199@gmail.com (101/200)] ➔ rakesh.panicker@vincistack.com (Rakesh R Panicker) ... ✅ SENT
+[102/200] [Account 1: sparshgoyal199@gmail.com (102/200)] ➔ amrish.kumar@vincistack.com (Amrish Kumar) ... ✅ SENT
+[103/200] [Account 1: sparshgoyal199@gmail.com (103/200)] ➔ ashish.meena@vincistack.com (Ashish Meena) ... ✅ SENT
+[104/200] [Account 1: sparshgoyal199@gmail.com (104/200)] ➔ reetwika.mukherjee@optimspace.com (Reetwika Banerjee Mukherjee) ... ✅ SENT
+[105/200] [Account 1: sparshgoyal199@gmail.com (105/200)] ➔ vishad.sharma@optimspace.com (Vishad Sharma) ... ✅ SENT
+[106/200] [Account 1: sparshgoyal199@gmail.com (106/200)] ➔ dr.mathew@optimspace.com (Dr.Mariyakutty Mathew) ... ✅ SENT
+[107/200] [Account 1: sparshgoyal199@gmail.com (107/200)] ➔ shweta.saikia@optimspace.com (Shweta Kaushal Saikia) ... ✅ SENT
+[108/200] [Account 1: sparshgoyal199@gmail.com (108/200)] ➔ laxman.shinde@optimspace.com (LAXMAN SHINDE) ... ✅ SENT
+[109/200] [Account 1: sparshgoyal199@gmail.com (109/200)] ➔ themiya.wickramage@optimspace.com (Themiya Wickramage) ... ✅ SENT
+[110/200] [Account 1: sparshgoyal199@gmail.com (110/200)] ➔ vincent.yeung@optimspace.com (Vincent Yeung) ... ✅ SENT
+[111/200] [Account 1: sparshgoyal199@gmail.com (111/200)] ➔ jasim.shimmari@optimspace.com (Jasim AL Shimmari) ... ✅ SENT
+[112/200] [Account 1: sparshgoyal199@gmail.com (112/200)] ➔ arpita.keshari@shecanfoundation.org (Arpita Keshari) ... ✅ SENT
+[113/200] [Account 1: sparshgoyal199@gmail.com (113/200)] ➔ vanshika.gupta@wearecrazy.org (Vanshika Gupta) ... ✅ SENT
+[114/200] [Account 1: sparshgoyal199@gmail.com (114/200)] ➔ devansh.nanda@wearecrazy.org (Devansh Nanda) ... ✅ SENT
+[115/200] [Account 1: sparshgoyal199@gmail.com (115/200)] ➔ arpit.namdev@wearecrazy.org (Arpit Namdev) ... ✅ SENT
+[116/200] [Account 1: sparshgoyal199@gmail.com (116/200)] ➔ we.crazy@wearecrazy.org (We Are Crazy) ... ✅ SENT
+[117/200] [Account 1: sparshgoyal199@gmail.com (117/200)] ➔ manas.dewari@wearecrazy.org (Manas Dewari) ... ✅ SENT
+[118/200] [Account 1: sparshgoyal199@gmail.com (118/200)] ➔ vini.miglani@wearecrazy.org (Vini Gupta Miglani) ... ✅ SENT
+[119/200] [Account 1: sparshgoyal199@gmail.com (119/200)] ➔ deepali.singh@wearecrazy.org (Deepali Singh) ... ✅ SENT
+[120/200] [Account 1: sparshgoyal199@gmail.com (120/200)] ➔ shilpa.arora@wearecrazy.org (Shilpa Arora) ... ✅ SENT
+[121/200] [Account 1: sparshgoyal199@gmail.com (121/200)] ➔ anju.nambiar@alphanumericideas.com (Anju R Nambiar) ... ✅ SENT
+[122/200] [Account 1: sparshgoyal199@gmail.com (122/200)] ➔ kamal.kishlay@alphanumericideas.com (Kamal Kishlay) ... ✅ SENT
+[123/200] [Account 1: sparshgoyal199@gmail.com (123/200)] ➔ chiranjit@alphanumericideas.com (Chiranjit C.) ... ✅ SENT
+[124/200] [Account 1: sparshgoyal199@gmail.com (124/200)] ➔ renu.chaurasiya@alphanumericideas.com (Renu Chaurasiya) ... ✅ SENT
+[125/200] [Account 1: sparshgoyal199@gmail.com (125/200)] ➔ reeja@alphanumericideas.com (Reeja S.) ... ✅ SENT
+[126/200] [Account 1: sparshgoyal199@gmail.com (126/200)] ➔ tapasvi.kareker@alphanumericideas.com (TAPASVI KAREKER) ... ✅ SENT
+[127/200] [Account 1: sparshgoyal199@gmail.com (127/200)] ➔ bhoomi.prajapati@alphanumericideas.com (Bhoomi Prajapati) ... ✅ SENT
+[128/200] [Account 1: sparshgoyal199@gmail.com (128/200)] ➔ dr.dayanand@alphanumericideas.com (Dr. Dayanand .) ... ✅ SENT
+[129/200] [Account 1: sparshgoyal199@gmail.com (129/200)] ➔ hindu@honeywell.com (Hindu S.) ... ✅ SENT
+[130/200] [Account 1: sparshgoyal199@gmail.com (130/200)] ➔ puja.rawani@honeywell.com (Puja Rawani) ... ✅ SENT
+[131/200] [Account 1: sparshgoyal199@gmail.com (131/200)] ➔ jannat@honeywell.com (Jannat S) ... ✅ SENT
+[132/200] [Account 1: sparshgoyal199@gmail.com (132/200)] ➔ mrityunjay.chatterjee@honeywell.com (Mrityunjay Chatterjee) ... ✅ SENT
+[133/200] [Account 1: sparshgoyal199@gmail.com (133/200)] ➔ aditi.gupta@honeywell.com (Aditi Gupta) ... ✅ SENT
+[134/200] [Account 1: sparshgoyal199@gmail.com (134/200)] ➔ aanya.garg@honeywell.com (Aanya Garg) ... ✅ SENT
+[135/200] [Account 1: sparshgoyal199@gmail.com (135/200)] ➔ vivek.sharma@honeywell.com (Vivek Sharma) ... ✅ SENT
+[136/200] [Account 1: sparshgoyal199@gmail.com (136/200)] ➔ sonal.katyal@honeywell.com (Sonal Katyal) ... ✅ SENT
+[137/200] [Account 1: sparshgoyal199@gmail.com (137/200)] ➔ jijo.thomas@webenoid.com (Jijo Thomas) ... ✅ SENT
+[138/200] [Account 1: sparshgoyal199@gmail.com (138/200)] ➔ surya.parida@webenoid.com (Surya Parida) ... ✅ SENT
+[139/200] [Account 1: sparshgoyal199@gmail.com (139/200)] ➔ prateek.sachan@webenoid.com (Prateek Sachan) ... ✅ SENT
+[140/200] [Account 1: sparshgoyal199@gmail.com (140/200)] ➔ rishabh.sinha@webenoid.com (Rishabh Kirti Sinha) ... ✅ SENT
+[141/200] [Account 1: sparshgoyal199@gmail.com (141/200)] ➔ pratima.yadav@webenoid.com (Pratima Yadav) ... ✅ SENT
+[142/200] [Account 1: sparshgoyal199@gmail.com (142/200)] ➔ abhinav.sunil@webenoid.com (Abhinav Sunil) ... ✅ SENT
+[143/200] [Account 1: sparshgoyal199@gmail.com (143/200)] ➔ joseph.joseph@webenoid.com (Joseph Joseph) ... ✅ SENT
+[144/200] [Account 1: sparshgoyal199@gmail.com (144/200)] ➔ kesha.trivedi@ipaddress.com (Kesha Trivedi) ... ✅ SENT
+[145/200] [Account 1: sparshgoyal199@gmail.com (145/200)] ➔ chauhan.ajay@ipaddress.com (Chauhan Ajay) ... ✅ SENT
+[146/200] [Account 1: sparshgoyal199@gmail.com (146/200)] ➔ jai.yadav@ipaddress.com (Jai Yadav) ... ✅ SENT
+[147/200] [Account 1: sparshgoyal199@gmail.com (147/200)] ➔ hr.kesha@ipaddress.com (HR Kesha) ... ✅ SENT
+[148/200] [Account 1: sparshgoyal199@gmail.com (148/200)] ➔ kesha.singh@ipaddress.com (Kesha Singh) ... ✅ SENT
+[149/200] [Account 1: sparshgoyal199@gmail.com (149/200)] ➔ rashi.goswami@ipaddress.com (Rashi Goswami) ... ✅ SENT
+[150/200] [Account 1: sparshgoyal199@gmail.com (150/200)] ➔ kesha.joshi@ipaddress.com (kesha joshi) ... ✅ SENT
+[151/200] [Account 1: sparshgoyal199@gmail.com (151/200)] ➔ ankit.kanojiya@ipaddress.com (Ankit Kanojiya) ... ✅ SENT
+[152/200] [Account 1: sparshgoyal199@gmail.com (152/200)] ➔ gagarin.rout@perceptive-analytics.com (Gagarin Rout) ... ✅ SENT
+[153/200] [Account 1: sparshgoyal199@gmail.com (153/200)] ➔ rishabh.sinha@perceptive-analytics.com (Rishabh Kirti Sinha) ... ✅ SENT
+[154/200] [Account 1: sparshgoyal199@gmail.com (154/200)] ➔ sandeep.adusumilly@perceptive-analytics.com (Sandeep Adusumilly) ... ✅ SENT
+[155/200] [Account 1: sparshgoyal199@gmail.com (155/200)] ➔ niyaz.ansari@perceptive-analytics.com (Niyaz Ansari) ... ✅ SENT
+[156/200] [Account 1: sparshgoyal199@gmail.com (156/200)] ➔ sampreeti.sarkar@perceptive-analytics.com (Sampreeti Sarkar) ... ✅ SENT
+[157/200] [Account 1: sparshgoyal199@gmail.com (157/200)] ➔ marlyn.sequeira@perceptive-analytics.com (Marlyn Lourine Sequeira) ... ✅ SENT
+[158/200] [Account 1: sparshgoyal199@gmail.com (158/200)] ➔ keerthanaa@perceptive-analytics.com (Keerthanaa J) ... ✅ SENT
+[159/200] [Account 1: sparshgoyal199@gmail.com (159/200)] ➔ tanishka.mittal@perceptive-analytics.com (Tanishka Mittal) ... ✅ SENT
+[160/200] [Account 1: sparshgoyal199@gmail.com (160/200)] ➔ karthick.rajan@saasflex.co (KARTHICK RAJAN) ... ✅ SENT
+[161/200] [Account 1: sparshgoyal199@gmail.com (161/200)] ➔ vivek@saasflex.co (Vivek Pandian.C) ... ✅ SENT
+[162/200] [Account 1: sparshgoyal199@gmail.com (162/200)] ➔ bhagya@saasflex.co (Bhagya Sri S) ... ✅ SENT
+[163/200] [Account 1: sparshgoyal199@gmail.com (163/200)] ➔ gunjan.das@saasflex.co (Gunjan Das) ... ✅ SENT
+[164/200] [Account 1: sparshgoyal199@gmail.com (164/200)] ➔ shiffana.mk@saasflex.co (Shiffana Mk) ... ✅ SENT
+[165/200] [Account 1: sparshgoyal199@gmail.com (165/200)] ➔ pallavi.sahu@saasflex.co (PALLAVI SAHU) ... ✅ SENT
+[166/200] [Account 1: sparshgoyal199@gmail.com (166/200)] ➔ boyini.shekar@saasflex.co (Boyini Chandra Shekar) ... ✅ SENT
+[167/200] [Account 1: sparshgoyal199@gmail.com (167/200)] ➔ chandrakanth@saasflex.co (CHANDRAKANTH S) ... ✅ SENT
+[168/200] [Account 1: sparshgoyal199@gmail.com (168/200)] ➔ chitta.das@sritcreations.com (Chitta Ranjan Das) ... ✅ SENT
+[169/200] [Account 1: sparshgoyal199@gmail.com (169/200)] ➔ pallavi.sahu@sritcreations.com (PALLAVI SAHU) ... ✅ SENT
+[170/200] [Account 1: sparshgoyal199@gmail.com (170/200)] ➔ umar@sritcreations.com (Umar C) ... ✅ SENT
+[171/200] [Account 1: sparshgoyal199@gmail.com (171/200)] ➔ patibandla.rao@sritcreations.com (Patibandla Lakshmi Venkata Koteswara Rao) ... ✅ SENT
+[172/200] [Account 1: sparshgoyal199@gmail.com (172/200)] ➔ sambhu.sk@sritcreations.com (Sambhu SK) ... ✅ SENT
+[173/200] [Account 1: sparshgoyal199@gmail.com (173/200)] ➔ vandana.ramannavar@sritcreations.com (Vandana Ramannavar) ... ✅ SENT
+[174/200] [Account 1: sparshgoyal199@gmail.com (174/200)] ➔ ayushi.rawal@skillfloor.com (Ayushi Rawal) ... ✅ SENT
+[175/200] [Account 1: sparshgoyal199@gmail.com (175/200)] ➔ shilpa.arora@skillfloor.com (Shilpa Arora) ... ✅ SENT
+[176/200] [Account 1: sparshgoyal199@gmail.com (176/200)] ➔ suhani.bhat@skillfloor.com (Suhani Bhat) ... ✅ SENT
+[177/200] [Account 1: sparshgoyal199@gmail.com (177/200)] ➔ siddhant.malhotra@skillfloor.com (Siddhant Deepak Malhotra) ... ✅ SENT
+[178/200] [Account 1: sparshgoyal199@gmail.com (178/200)] ➔ rashmi.rathor@skillfloor.com (Rashmi R Rathor) ... ✅ SENT
+[179/200] [Account 1: sparshgoyal199@gmail.com (179/200)] ➔ pavithra.murugan@skillfloor.com (Pavithra SM Murugan) ... ✅ SENT
+[180/200] [Account 1: sparshgoyal199@gmail.com (180/200)] ➔ shakshi.shukla@skillfloor.com (Shakshi Shukla) ... ✅ SENT
+[181/200] [Account 1: sparshgoyal199@gmail.com (181/200)] ➔ eram.qudsia@skillfloor.com (Eram Qudsia) ... ✅ SENT
+[182/200] [Account 1: sparshgoyal199@gmail.com (182/200)] ➔ hema.pinate@growloc.com (Hema Pinate) ... ✅ SENT
+[183/200] [Account 1: sparshgoyal199@gmail.com (183/200)] ➔ patil.sakshi@growloc.com (PATIL SAKSHI) ... ✅ SENT
+[184/200] [Account 1: sparshgoyal199@gmail.com (184/200)] ➔ sanjana.sinha@growloc.com (Sanjana sinha) ... ✅ SENT
+[185/200] [Account 1: sparshgoyal199@gmail.com (185/200)] ➔ abhijeet.nunia@growloc.com (Abhijeet Nunia) ... ✅ SENT
+[186/200] [Account 1: sparshgoyal199@gmail.com (186/200)] ➔ vaishnavi.ugale@growloc.com (Vaishnavi Ugale) ... ✅ SENT
+[187/200] [Account 1: sparshgoyal199@gmail.com (187/200)] ➔ praveen.kumar@growloc.com (Praveen Kumar) ... ✅ SENT
+[188/200] [Account 1: sparshgoyal199@gmail.com (188/200)] ➔ pallavi.gupta@growloc.com (Pallavi Gupta) ... ✅ SENT
+[189/200] [Account 1: sparshgoyal199@gmail.com (189/200)] ➔ shreyas.gaharwar@growloc.com (Shreyas Singh Gaharwar) ... ✅ SENT
+[190/200] [Account 1: sparshgoyal199@gmail.com (190/200)] ➔ ayush.gupta@paytm.com (Ayush Gupta) ... ✅ SENT
+[191/200] [Account 1: sparshgoyal199@gmail.com (191/200)] ➔ pallavi.borkar@paytm.com (Pallavi Borkar) ... ✅ SENT
+[192/200] [Account 1: sparshgoyal199@gmail.com (192/200)] ➔ komal.rathore@paytm.com (Komal Rathore) ... ✅ SENT
+[193/200] [Account 1: sparshgoyal199@gmail.com (193/200)] ➔ richa.singh@paytm.com (RICHA SINGH) ... ✅ SENT
+[194/200] [Account 1: sparshgoyal199@gmail.com (194/200)] ➔ rohit.sharma@paytm.com (Rohit Sharma) ... ✅ SENT
+[195/200] [Account 1: sparshgoyal199@gmail.com (195/200)] ➔ priyanshi.chaudhary@paytm.com (Priyanshi Chaudhary) ... ✅ SENT
+[196/200] [Account 1: sparshgoyal199@gmail.com (196/200)] ➔ mohammad.ali@paytm.com (Mohammad Yusuf ALi) ... ✅ SENT
+[197/200] [Account 1: sparshgoyal199@gmail.com (197/200)] ➔ sayyam.gupta@paytm.com (Sayyam Gupta) ... ✅ SENT
+[198/200] [Account 1: sparshgoyal199@gmail.com (198/200)] ➔ prerona.dutta@venxr.ai (Prerona Dutta) ... ✅ SENT
+[199/200] [Account 1: sparshgoyal199@gmail.com (199/200)] ➔ firdos.ali@venxr.ai (Firdos Liyakat Ali) ... ✅ SENT
+[200/200] [Account 1: sparshgoyal199@gmail.com (200/200)] ➔ shagun.singh@venxr.ai (Shagun Singh) ... ✅ SENT
+
+=================================================================
+OUTREACH RUN COMPLETE (WATERFALL)
+  Successfully Sent : 200
+  Failed            : 0
+
+Database Status:
+  • pending: 5
+  • sent: 1099
+  • skipped: 11
+=================================================================
+
+=================================================================
+[14:20:15] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.reporting.dashboard --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 2968
+  ✉️  Email Outreach Available : 586 jobs
+  👉 Action: Manual Portal     : 2382 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  LinkedIn Leads Dashboard     : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 2459.8s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261027_133917.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================

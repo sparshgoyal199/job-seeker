@@ -1,0 +1,502 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-25 18:14:27
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261025_181426.log
+=================================================================
+
+=================================================================
+[18:14:27] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 2869 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... received 100 posts (Total in WP: 1185, Pages: 12)
+  Processed 100 posts: +0 new to DB, page completed.
+Encountered already-synced post ID. Incremental sync complete!
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 1
+Brand new posts added        : 0
+Total listings in database   : 2869
+Total matches (pre-filtered) : 717
+Total detail records ready   : 2869
+============================================================
+
+=================================================================
+[18:14:29] STEP: 1b/6 Ingest Open Hiring Postings from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.multi_portal --limit 40
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL OPEN HIRING INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+Target : 40 jobs per portal (Total: ~120 jobs)
+=================================================================
+🌐 [Internshala] Fetching active internships across pages (target: 40)...
+   ✅ Internshala: Discovered 40 active hiring companies.
+🌐 [LinkedIn Jobs] Querying public postings across pages (target: 40)...
+   ✅ LinkedIn Jobs: Discovered 40 active hiring companies.
+🌐 [Indeed India] Launching browser to scan active postings (target: 40)...
+   ✅ Indeed India: Discovered 15 active hiring companies.
+
+=================================================================
+SUMMARY: Gathered 95 candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 2
+   🔄 Existing Jobs Refreshed: 93
+   🎯 Total Ready for Decision-Maker Enrichment: 95
+
+=================================================================
+[18:14:49] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[18:14:55] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 225
+   Contacts in DB (total)  : 578
+   Pending (not mailed yet): 15
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[18:14:56] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.portal_contacts --limit 50
+=================================================================
+=================================================================
+🔍 RECRUITER CONTACT DISCOVERY & ENRICHMENT ENGINE
+=================================================================
+Unattempted Portal Jobs without emails : 2150
+Jobs Selected for this batch           : 50
+Mode                                   : LIVE ENRICHMENT
+-----------------------------------------------------------------
+[1/50] Post #11214 | 🚗IntelliCredence Hiring: Automation ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@intellicredence.com>
+       Domain   : intellicredence.com
+[2/50] Post #11212 | Deepmindz Innovations ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@deepmindz.co>
+       Domain   : deepmindz.co
+[3/50] Post #11207 | HighRadius ... ❌ No verified contact found (Requires manual portal apply)
+[4/50] Post #11204 | Flex ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@flexpowertools.com>
+       Domain   : flexpowertools.com
+[5/50] Post #11201 | The Reliable Jobs ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@thereliablejobs.com>
+       Domain   : thereliablejobs.com
+[6/50] Post #11198 | QA Engineer ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@qajobboard.com>
+       Domain   : qajobboard.com
+[7/50] Post #11195 | Infosys ... 🎯 FOUND via Company Cache (careers@infosys.com)!
+[8/50] Post #11190 | QuoteNXT Consulting Services Private Limited ... ❌ No verified contact found (Requires manual portal apply)
+[9/50] Post #11187 | Bright IT Solution ... ❌ No verified contact found (Requires manual portal apply)
+[10/50] Post #11184 | Techno Particle ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@technoparticles.com>
+       Domain   : technoparticles.com
+[11/50] Post #11181 | TechTroop Solutions ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@techtroop.tech>
+       Domain   : techtroop.tech
+[12/50] Post #11174 | Mphasis ... 🎯 FOUND via Company Cache (careers@mphasis.com)!
+[13/50] Post #11171 | EY Internship 2026: ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@ey.com>
+       Domain   : ey.com
+[14/50] Post #11168 | Rapid Acceleration Partners ... ❌ No verified contact found (Requires manual portal apply)
+[15/50] Post #11163 | Microsoft ... ❌ No verified contact found (Requires manual portal apply)
+[16/50] Post #11157 | #Barclays | QA ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@barclays.bank.in>
+       Domain   : barclays.bank.in
+[17/50] Post #11154 | Barclays ... ❌ No verified contact found (Requires manual portal apply)
+[18/50] Post #11152 | Coforge | QA ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@coforge.com>
+       Domain   : coforge.com
+[19/50] Post #11149 | Cognizant Returnship Program ... ❌ No verified contact found (Requires manual portal apply)
+[20/50] Post #11146 | EY ... 🎯 FOUND via Company Cache (careers@ey.com)!
+[21/50] Post #11142 | Capgemini ... 🎯 FOUND via Company Cache (careers@capgemini.com)!
+[22/50] Post #11140 | HDFC Bank ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@hdfc.bank.in>
+       Domain   : hdfc.bank.in
+[23/50] Post #11132 | Infosys ... 🎯 FOUND via Company Cache (careers@infosys.com)!
+[24/50] Post #11129 | PwC ... ❌ No verified contact found (Requires manual portal apply)
+[25/50] Post #11126 | Virtusa Direct ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@virtusa.com>
+       Domain   : virtusa.com
+[26/50] Post #11124 | Intellyk Inc. ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@intellyk.com>
+       Domain   : intellyk.com
+[27/50] Post #11122 | ServiceNow ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@servicenow.com>
+       Domain   : servicenow.com
+[28/50] Post #11119 | Franklin Templeton ... ❌ No verified contact found (Requires manual portal apply)
+[29/50] Post #11116 | Aspirox ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@aspirox.co.in>
+       Domain   : aspirox.co.in
+[30/50] Post #11114 | 🎮Indium & iXie ... ❌ No verified contact found (Requires manual portal apply)
+[31/50] Post #11111 | Autodesk ... ❌ No verified contact found (Requires manual portal apply)
+[32/50] Post #11104 | Ascendion ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careers@ascendion.com>
+       Domain   : ascendion.com
+[33/50] Post #11101 | Harness ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@harness.io>
+       Domain   : harness.io
+[34/50] Post #11095 | LTIMindtree ... ❌ No verified contact found (Requires manual portal apply)
+[35/50] Post #11092 | 🍎Apple Hiring: Software ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@apple.com>
+       Domain   : apple.com
+[36/50] Post #11087 | UST ... 🎯 FOUND via Company Cache (priya.gusain@ust.com)!
+[37/50] Post #11084 | Capgemini ... 🎯 FOUND via Company Cache (careers@capgemini.com)!
+[38/50] Post #11081 | Slate ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@slate.com>
+       Domain   : slate.com
+[39/50] Post #11079 | DevLabs Technology ... 🎯 FOUND via Company Cache (careers@devlabstechnology.com)!
+[40/50] Post #11077 | Infosys ... 🎯 FOUND via Company Cache (careers@infosys.com)!
+[41/50] Post #11075 | Deloitte Referral ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@deloitte.com>
+       Domain   : deloitte.com
+[42/50] Post #11072 | 🎮Indium Software Hiring ... ❌ No verified contact found (Requires manual portal apply)
+[43/50] Post #11070 | CrestWin ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@crestwin.in>
+       Domain   : crestwin.in
+[44/50] Post #11067 | Telstra ... ❌ No verified contact found (Requires manual portal apply)
+[45/50] Post #11065 | OnGraph ... ❌ No verified contact found (Requires manual portal apply)
+[46/50] Post #11062 | UST ... 🎯 FOUND via Company Cache (priya.gusain@ust.com)!
+[47/50] Post #11057 | Publicis Sapient ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@publicissapient.com>
+       Domain   : publicissapient.com
+[48/50] Post #11054 | Infineon Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[49/50] Post #11051 | LanceSoft ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@lancesoft.com>
+       Domain   : lancesoft.com
+[50/50] Post #11048 | Digitrix Software LLP ... 🎯 FOUND via Company Cache (careers@digitrixsoft.com)!
+
+=================================================================
+ENRICHMENT SUMMARY
+  Processed Jobs       : 50
+  New Emails Discovered: 34
+  ✅ Added 34 new recruiter email(s) into hr_contacts table!
+  They will now be included in your cold email queue and dashboard.
+=================================================================
+
+=================================================================
+[18:25:37] STEP: 4b/6 Discover Decision-Maker LinkedIn Profiles & Emails (49 waiting, targeting ~151 more)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.linkedin_leads --limit 50 --method auto
+=================================================================
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\src\enrichment\linkedin_leads.py", line 882, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\src\enrichment\linkedin_leads.py", line 873, in main
+    enrich_skill_matched_companies(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        limit=args.limit,
+        ^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        target_company=args.company
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\src\enrichment\linkedin_leads.py", line 774, in enrich_skill_matched_companies
+    leads = get_company_decision_makers(c_name, c_linkedin, method=method, max_items=8)
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\src\enrichment\linkedin_leads.py", line 489, in get_company_decision_makers
+    candidates = fetch_decision_makers_browser(company_name, max_items=max_items)
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\src\enrichment\linkedin_leads.py", line 466, in fetch_decision_makers_browser
+    context.close()
+    ~~~~~~~~~~~~~^^
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Lib\site-packages\playwright\sync_api\_generated.py", line 2201, in close
+    self._sync(self._impl_obj.close(reason=reason))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 111, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 568, in close
+    await self.request.dispose(reason=reason)
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Lib\site-packages\playwright\_impl\_fetch.py", line 129, in dispose
+    await self._channel.send("dispose", None, {"reason": reason})
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Lib\site-packages\playwright\_impl\_connection.py", line 78, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Lib\site-packages\playwright\_impl\_connection.py", line 636, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+Exception: BrowserContext.close: Connection closed while reading from the driver
+
+=================================================================
+🚀 LINKEDIN DECISION-MAKER & TECH LEADER ENRICHMENT ENGINE
+=================================================================
+Candidate Profile : Sparsh Goyal (B.Sc CS Hansraj College, 2026)
+Core Skills       : Python, FastAPI, RAG, LangChain, MCP Server, LLM Orchestration, SQLite, Vector Databases
+Discovery Method  : AUTO (Apify + Logged-in Chrome)
+=================================================================
+
+🔍 Screening database listings for Strict Resume & Skill Matches...
+   ✓ [Match] Post #296498554 | DigiPlus IT: DigiPlus IT - Software Engineer Intern
+   ✓ [Match] Post #295711852 | ImmverseAI: ImmverseAI - AI/ML Internship + PPO
+   ✓ [Match] Post #293818185 | We-intern: We-intern - Data Analyst Intern
+   ✓ [Match] Post #293248385 | Lexsi Labs: Lexsi Labs - AI Agent Engineer Intern
+   ✓ [Match] Post #293132754 | MediNex Workforce: MediNex Workforce - Python Developer Intern (Remote)
+   ✓ [Match] Post #292962732 | Web3task PVT LTD: Web3task PVT LTD - Full Stack Intern
+   ✓ [Match] Post #291868261 | Women First India Foundation: Women First India Foundation - Artificial Intelligence (AI)
+   ✓ [Match] Post #290939790 | InAmigos Foundation: InAmigos Foundation - AI & Machine Learning
+   ✓ [Match] Post #290152745 | WEINTERN PVT LTD: WeIntern Pvt Ltd - AI/ML Intern
+   ✓ [Match] Post #289478094 | The SmartBridge: The SmartBridge - AI Engineer Intern
+   ✓ [Match] Post #288512703 | CraticAI: CraticAI - Founder's Office – Fullstack AI/ML Developer Intern
+   ✓ [Match] Post #287947903 | She Can Foundation: She Can Foundation - Artificial Intelligence (AI)
+   ✓ [Match] Post #287386861 | Codeatrix: Codeatrix - AI/ML
+   ✓ [Match] Post #284115521 | InAmigos Foundation: InAmigos Foundation - Artificial Intelligence (AI)
+   ✓ [Match] Post #283427680 | Sahayak Associates: Sahayak Associates - Full Stack Development Internship in New Chandigarh, Panchkula, Chandigarh, Zirakpur, Kharar, Mohali
+   ✓ [Match] Post #283070173 | MEL Systems and Services Ltd.: MEL Systems and Services Ltd. - Software Developer Intern
+   ✓ [Match] Post #282504471 | Arthrex India: Arthrex India - AI / Computer Vision Intern
+   ✓ [Match] Post #281307210 | THERMAL ENGINEERS & INSULATORS PRIVATE LIMITED: THERMAL ENGINEERS & INSULATORS PRIVATE LIMITED - Full Stack Development Internship in Delhi
+   ✓ [Match] Post #281157834 | Heads Up For Tails: Heads Up For Tails - Software Engineering Intern
+   ✓ [Match] Post #280773616 | Hope Behind Tails Foundation: Hope Behind Tails Foundation - Machine Learning
+   ✓ [Match] Post #278439969 | Faclon Labs: Faclon Labs - AI Intern
+   ✓ [Match] Post #277861040 | AryaXAI: AryaXAI - AI Agent Engineer Intern
+   ✓ [Match] Post #277059785 | Welcon Financials Pvt Ltd: Welcon Financials Pvt Ltd - Intern Software Engineer
+   ✓ [Match] Post #276671794 | Microsoft: Microsoft - Data Science INTERN
+   ✓ [Match] Post #276544265 | The SmartBridge: The SmartBridge - Data Analyst Intern
+   ✓ [Match] Post #274415157 | AImagic Technologies: AImagic Technologies - AI/ML Engineer Intern
+   ✓ [Match] Post #273630751 | VinciStack: VinciStack - Software Engineer Intern
+   ✓ [Match] Post #273187823 | ByteDance: ByteDance - Data Analyst Project Intern (Training & Quality) - 2026 Start (BS/MS)
+   ✓ [Match] Post #273091139 | RecruitBots AI: RecruitBots AI - GenAI Developer Intern
+   ✓ [Match] Post #272098527 | Optimspace: Optimspace - Machine Learning Intern
+   ✓ [Match] Post #271757792 | InAmigos Foundation: InAmigos Foundation - AI Research
+   ✓ [Match] Post #271182464 | Hope Behind Tails Foundation: Hope Behind Tails Foundation - Artificial Intelligence (AI)
+   ✓ [Match] Post #270278800 | Kavi India: Kavi India - Intern – Full Stack Developer
+   ✓ [Match] Post #270085369 | Credgenics: Credgenics - Technology Intern
+   ✓ [Match] Post #270060051 | WEINTERN PRIVATE LIMITED: WEINTERN PRIVATE LIMITED - AI Intern
+   ✓ [Match] Post #269942626 | Develop & Train: Transform data science prototypes into production-ready machine learning models.: Develop & Train: Transform data science prototypes into production-ready machine learning models. - AI Engineer InternEasily applyTPNRemoteUp to ₹5,000 a month
+   ✓ [Match] Post #268996757 | Tecnod8.AI: Tecnod8.AI - 2026 B.Tech Graduates: Gurgaon: Intern Full Stack (Agentic AI Applications) Development
+   ✓ [Match] Post #268699106 | Cynbit Technologies: Cynbit Technologies - Backend Developer Intern
+   ✓ [Match] Post #267329022 | Complyance: Complyance - Full Stack Engineering Intern
+   ✓ [Match] Post #266560678 | Weekday (YC W21): Weekday (YC W21) - Software Engineer Intern
+   ✓ [Match] Post #266259159 | Lascade: Lascade - Software Engineer Intern (Web & Mobile)
+   ✓ [Match] Post #265605259 | Optimspace: Optimspace - Data Science Intern
+   ✓ [Match] Post #263890999 | Zetheta Algorithms Private Limited: Zetheta Algorithms Private Limited - Full Stack Engineer
+   ✓ [Match] Post #262177213 | Vortenza Systems: Vortenza Systems - FULLSTACK WEB DEVELOPMENT INTERN
+   ✓ [Match] Post #261515926 | Pineswift Technologies: Pineswift Technologies - Tech Intern
+   ✓ [Match] Post #261466962 | Revvity: Revvity - Full-Stack AI Engineering Intern
+   ✓ [Match] Post #260899095 | ToXSL Technologies: ToXSL Technologies - Python/Django Development Internship in Chandigarh, Mohali, Haryana
+   ✓ [Match] Post #259793453 | Sirma Business Consulting India Private Ltd.,: Sirma Business Consulting India Private Ltd., - Backend Developer Intern with Devops Knowledge (Intership 6 months )In-Office Role
+   ✓ [Match] Post #259207649 | Discover Dollar Inc: Discover Dollar Inc - AI Engineer Intern
+   ✓ [Match] Post #258772171 | Pledge India Foundation: Pledge India Foundation - Machine Learning
+
+🎯 Processing 50 Skill-Matched Companies:
+
+[1/50] 🏢 COMPANY: DigiPlus IT (Post #296498554)
+   Matched Role : DigiPlus IT - Software Engineer Intern
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills (FastAPI, RAG) that align with the Software Engineer Intern role, which is suitable for entry-level candidates.
+   Company LinkedIn : https://www.linkedin.com/company/digiplusit
+   Official Domain  : digiplus.com.ph
+   [Browser Search] Searching LinkedIn People for 'DigiPlus IT' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for DigiPlus IT:
+      1. 🚀 [Tech] Smriti Dube            | Decision Maker at DigiPlus IT  | ✉️ smriti.dube@digiplus.com.ph | https://www.linkedin.com/in/smriti-dube/
+      2. 🚀 [Tech] Eram Qudsia            | Decision Maker at DigiPlus IT  | ✉️ eram.qudsia@digiplus.com.ph | https://www.linkedin.com/in/eram-qudsia-86131521/
+      3. 🚀 [Tech] Shanice Passanha       | Decision Maker at DigiPlus IT  | ✉️ shanice.passanha@digiplus.com.ph | https://www.linkedin.com/in/shanicepassanha/
+      4. 🚀 [Tech] Abhyanand Jha          | Decision Maker at DigiPlus IT  | ✉️ abhyanand.jha@digiplus.com.ph | https://www.linkedin.com/in/abhyanand-jha-9392a0209/
+      5. 🚀 [Tech] Ankit Kanojiya         | Decision Maker at DigiPlus IT  | ✉️ ankit.kanojiya@digiplus.com.ph | https://www.linkedin.com/in/ankitkanojiya07/
+      6. 🚀 [Tech] Diona Tan              | Decision Maker at DigiPlus IT  | ✉️ diona.tan@digiplus.com.ph | https://www.linkedin.com/in/diona-tan-013b90232/
+      7. 🚀 [Tech] Hsin T.                | Decision Maker at DigiPlus IT  | ✉️ hsin@digiplus.com.ph | https://www.linkedin.com/in/hsin-t-973240294/
+      8. 🚀 [Tech] Kritika Shukla         | Decision Maker at DigiPlus IT  | ✉️ kritika.shukla@digiplus.com.ph | https://www.linkedin.com/in/kritika0705/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[2/50] 🏢 COMPANY: ImmverseAI (Post #295711852)
+   Matched Role : ImmverseAI - AI/ML Internship + PPO
+   Match Reason : Candidate is a 2026 CS fresher with strong AI/ML and Python skills (RAG, LLMs) that align with the AI/ML Internship role.
+   Company LinkedIn : https://www.linkedin.com/company/immverseai
+   Official Domain  : immverse.ai
+   [Browser Search] Searching LinkedIn People for 'ImmverseAI' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for ImmverseAI:
+      1. 🚀 [Tech] Khushboo Khubnani      | Decision Maker at ImmverseAI   | ✉️ khushboo.khubnani@immverse.ai | https://www.linkedin.com/in/khushboo-khubnani-858a48259/
+      2. 🚀 [Tech] Ruchit Patel           | Decision Maker at ImmverseAI   | ✉️ ruchit.patel@immverse.ai | https://www.linkedin.com/in/ruchitpatel-engineer/
+      3. 🚀 [Tech] Ashish Kumar Patel     | Decision Maker at ImmverseAI   | ✉️ ashish.patel@immverse.ai | https://www.linkedin.com/in/ashishpatel56/
+      4. 🚀 [Tech] Vaishnavi Wandhare     | Decision Maker at ImmverseAI   | ✉️ vaishnavi.wandhare@immverse.ai | https://www.linkedin.com/in/vaishnavi-wandhare-728743221/
+      5. 🚀 [Tech] Akhil Chinta           | Decision Maker at ImmverseAI   | ✉️ akhil.chinta@immverse.ai | https://www.linkedin.com/in/akhil-chinta-5b96b4114/
+      6. 🚀 [Tech] Aastha Jaiswal         | Decision Maker at ImmverseAI   | ✉️ aastha.jaiswal@immverse.ai | https://www.linkedin.com/in/aastha-jaiswal-9426b71b7/
+      7. 🚀 [Tech] Pranjal Bhavsar        | Decision Maker at ImmverseAI   | ✉️ pranjal.bhavsar@immverse.ai | https://www.linkedin.com/in/pranjal-bhavsar-760522191/
+      8. 🚀 [Tech] Priti Kale             | Decision Maker at ImmverseAI   | ✉️ priti.kale@immverse.ai | https://www.linkedin.com/in/priti-kale-a16b9b214/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[3/50] 🏢 COMPANY: We-intern (Post #293818185)
+   Matched Role : We-intern - Data Analyst Intern
+   Match Reason : The candidate is a 2026 CS fresher suitable for an internship, and their Python and data-related skills (RAG, Vector Databases) align with the Data Analyst role requirements.
+   Company LinkedIn : https://www.linkedin.com/company/weinternx
+   Official Domain  : we-intern.in
+   [Browser Search] Searching LinkedIn People for 'We-intern' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for We-intern:
+      1. 🚀 [Tech] Naina S.               | Decision Maker at We-intern    | ✉️ naina@we-intern.in | https://www.linkedin.com/in/naina-s-786932285/
+      2. 🚀 [Tech] Jyoti Singh Jogi       | Decision Maker at We-intern    | ✉️ jyoti.jogi@we-intern.in | https://www.linkedin.com/in/jyoti-singh-jogi-639397229/
+      3. 🚀 [Tech] Nishtha Jaggi          | Decision Maker at We-intern    | ✉️ nishtha.jaggi@we-intern.in | https://www.linkedin.com/in/nishtha-jaggi/
+      4. 🚀 [Tech] Rupali Goel            | Decision Maker at We-intern    | ✉️ rupali.goel@we-intern.in | https://www.linkedin.com/in/goelrupali/
+      5. 🚀 [Tech] Pallavi Gupta          | Decision Maker at We-intern    | ✉️ pallavi.gupta@we-intern.in | https://www.linkedin.com/in/pallavi-gupta-614417136/
+      6. 🚀 [Tech] Poojitha Gudepu        | Decision Maker at We-intern    | ✉️ poojitha.gudepu@we-intern.in | https://www.linkedin.com/in/poojitha-gudepu-61569330b/
+      7. 🚀 [Tech] R Yashwanth Reddy      | Decision Maker at We-intern    | https://www.linkedin.com/in/rikka-yashwanth-reddy/
+      8. 🚀 [Tech] Nitin Sharma           | Decision Maker at We-intern    | ✉️ nitin.sharma@we-intern.in | https://www.linkedin.com/in/nitin-sharma-1802832a1/
+   📬 Queued 7 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[4/50] 🏢 COMPANY: Lexsi Labs (Post #293248385)
+   Matched Role : Lexsi Labs - AI Agent Engineer Intern
+   Match Reason : The candidate is a 2026 CS fresher with strong alignment in Python, LLM orchestration, and RAG, which directly matches the AI Agent Engineer Intern role requirements.
+   Company LinkedIn : https://www.linkedin.com/company/lexsi-labs
+   Official Domain  : lexsi.ai
+   [Browser Search] Searching LinkedIn People for 'Lexsi Labs' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Lexsi Labs:
+      1. 🚀 [Tech] Hardik Kuwar           | Decision Maker at Lexsi Labs   | ✉️ hardik.kuwar@lexsi.ai | https://www.linkedin.com/in/hardik-kuwar/
+      2. 🚀 [Tech] Geetha Prakash         | Decision Maker at Lexsi Labs   | ✉️ geetha.prakash@lexsi.ai | https://www.linkedin.com/in/geetha-prakash-7725481b2/
+      3. 🚀 [Tech] Linda VERZELE          | Decision Maker at Lexsi Labs   | ✉️ linda.verzele@lexsi.ai | https://www.linkedin.com/in/linda-verzele-ab58b333/
+      4. 🚀 [Tech] Sam GABBAI             | Decision Maker at Lexsi Labs   | ✉️ sam.gabbai@lexsi.ai | https://www.linkedin.com/in/sgabbai/
+      5. 🚀 [Tech] Sonia Dos Santos       | Decision Maker at Lexsi Labs   | ✉️ sonia.santos@lexsi.ai | https://www.linkedin.com/in/sonia-dos-santos-6a492989/
+      6. 🚀 [Tech] Audrey LAUNAY          | Decision Maker at Lexsi Labs   | ✉️ audrey.launay@lexsi.ai | https://www.linkedin.com/in/audreylaunay/
+      7. 🚀 [Tech] Lyssia BENMESSAOUD     | Decision Maker at Lexsi Labs   | ✉️ lyssia.benmessaoud@lexsi.ai | https://www.linkedin.com/in/lyssia-benmessaoud-26447a136/
+      8. 🚀 [Tech] Marc Rouvier           | Decision Maker at Lexsi Labs   | ✉️ marc.rouvier@lexsi.ai | https://www.linkedin.com/in/marcrouvier/
+   📬 Queued 8 corporate email(s) into hr_contacts for Step 5 cold mailing.
+
+[5/50] 🏢 COMPANY: MediNex Workforce (Post #293132754)
+   Matched Role : MediNex Workforce - Python Developer Intern (Remote)
+   Match Reason : The candidate is a 2026 CS fresher with strong Python and backend skills (FastAPI, RAG) that align perfectly with the Python Developer Intern role.
+   Company LinkedIn : https://www.linkedin.com/company/medinex-workforce
+   Official Domain  : medinexworkforce.in
+   [Browser Search] Searching LinkedIn People for 'MediNex Workforce' in logged-in Chrome...
+   ⚠️ Search error for 'MediNex Workforce HR': Page.goto: net::ERR_INSUFFICIENT_RESOURCES at https://www.linkedin.com/search/results/people/?keywords=MediNex+Workforce+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=MediNex+Workforce+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'MediNex Workforce Recruiter': Page.wait_for_timeout: Connection closed while reading from the driver
+   ⚠️ Search error for 'MediNex Workforce Engineering Manager': Page.goto: Connection closed while reading from the driver
+   ⚠️ Search error for 'MediNex Workforce CTO': Page.goto: Connection closed while reading from the driver
+
+⚠️  Step '4b/6 Discover Decision-Maker LinkedIn Profiles & Emails (49 waiting, targeting ~151 more)' exited with code 1
+
+=================================================================
+[18:31:10] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP (Daily Limit: 200)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.outreach.mailer --limit 200
+=================================================================
+
+📊 Today's Outreach Budget: 119/200 sent today (81 remaining for today).
+
+=================================================================
+🚀 LIVE COLD EMAIL SENDING (WATERFALL STRATEGY)
+=================================================================
+Contacts in Queue       : 64 (Sending up to: 64)
+Daily Cap Remaining     : 81/200 emails
+Max Capacity per Account: 200 emails
+Sending Priority:
+  1. Account 1: sparshgoyal199@gmail.com (Primary 1)
+  2. Account 2: rahilgoyal127@gmail.com (Primary 2)
+  3. Account 3: sparsh198@gmail.com (Primary 3)
+-----------------------------------------------------------------
+[1/64] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ vinodh.sanapala@datafoundry.ai (Vinodh Kumar Sanapala) ... ✅ SENT
+[2/64] [Account 1: sparshgoyal199@gmail.com (2/200)] ➔ somya.pandey@datafoundry.ai (Somya Pandey) ... ✅ SENT
+[3/64] [Account 1: sparshgoyal199@gmail.com (3/200)] ➔ niyaz.ansari@datafoundry.ai (Niyaz Ansari) ... ✅ SENT
+[4/64] [Account 1: sparshgoyal199@gmail.com (4/200)] ➔ jyothsna@datafoundry.ai (Jyothsna K) ... ✅ SENT
+[5/64] [Account 1: sparshgoyal199@gmail.com (5/200)] ➔ smita.satapathy@datafoundry.ai (Smita Satapathy) ... ✅ SENT
+[6/64] [Account 1: sparshgoyal199@gmail.com (6/200)] ➔ bhavya.yalamanchili@datafoundry.ai (Bhavya Yalamanchili) ... ✅ SENT
+[7/64] [Account 1: sparshgoyal199@gmail.com (7/200)] ➔ vishal.jain@datafoundry.ai (Vishal Jain) ... ✅ SENT
+[8/64] [Account 1: sparshgoyal199@gmail.com (8/200)] ➔ jyoti.singh@datafoundry.ai (Jyoti Singh) ... ✅ SENT
+[9/64] [Account 1: sparshgoyal199@gmail.com (9/200)] ➔ vaidehi@splashgain.com (Vaidehi M) ... ✅ SENT
+[10/64] [Account 1: sparshgoyal199@gmail.com (10/200)] ➔ harrish.boke@splashgain.com (Harrish Boke) ... ✅ SENT
+[11/64] [Account 1: sparshgoyal199@gmail.com (11/200)] ➔ swapnil.dharmadhikari@splashgain.com (Swapnil Dharmadhikari) ... ✅ SENT
+[12/64] [Account 1: sparshgoyal199@gmail.com (12/200)] ➔ apurva.ghate@splashgain.com (Apurva Ghate) ... ✅ SENT
+[13/64] [Account 1: sparshgoyal199@gmail.com (13/200)] ➔ tarun.kohli@splashgain.com (Tarun Kohli) ... ✅ SENT
+[14/64] [Account 1: sparshgoyal199@gmail.com (14/200)] ➔ rutuja.bhivgade@splashgain.com (Rutuja Bhivgade) ... ✅ SENT
+[15/64] [Account 1: sparshgoyal199@gmail.com (15/200)] ➔ jayesh.kumbhar@splashgain.com (Jayesh Kumbhar) ... ✅ SENT
+[16/64] [Account 1: sparshgoyal199@gmail.com (16/200)] ➔ careers@intellicredence.com (Hiring Team) ... ✅ SENT
+[17/64] [Account 1: sparshgoyal199@gmail.com (17/200)] ➔ careers@deepmindz.co (Hiring Team) ... ✅ SENT
+[18/64] [Account 1: sparshgoyal199@gmail.com (18/200)] ➔ careers@flexpowertools.com (Hiring Team) ... ✅ SENT
+[19/64] [Account 1: sparshgoyal199@gmail.com (19/200)] ➔ careers@thereliablejobs.com (Hiring Team) ... ✅ SENT
+[20/64] [Account 1: sparshgoyal199@gmail.com (20/200)] ➔ careers@qajobboard.com (Hiring Team) ... ✅ SENT
+[21/64] [Account 1: sparshgoyal199@gmail.com (21/200)] ➔ careers@technoparticles.com (Hiring Team) ... ✅ SENT
+[22/64] [Account 1: sparshgoyal199@gmail.com (22/200)] ➔ careers@techtroop.tech (Hiring Team) ... ✅ SENT
+[23/64] [Account 1: sparshgoyal199@gmail.com (23/200)] ➔ careers@barclays.bank.in (Hiring Team) ... ✅ SENT
+[24/64] [Account 1: sparshgoyal199@gmail.com (24/200)] ➔ careers@hdfc.bank.in (Hiring Team) ... ✅ SENT
+[25/64] [Account 1: sparshgoyal199@gmail.com (25/200)] ➔ careers@intellyk.com (Hiring Team) ... ✅ SENT
+[26/64] [Account 1: sparshgoyal199@gmail.com (26/200)] ➔ careers@servicenow.com (Hiring Team) ... ✅ SENT
+[27/64] [Account 1: sparshgoyal199@gmail.com (27/200)] ➔ careers@aspirox.co.in (Hiring Team) ... ✅ SENT
+[28/64] [Account 1: sparshgoyal199@gmail.com (28/200)] ➔ careers@ascendion.com (Hiring Team) ... ✅ SENT
+[29/64] [Account 1: sparshgoyal199@gmail.com (29/200)] ➔ careers@harness.io (Hiring Team) ... ✅ SENT
+[30/64] [Account 1: sparshgoyal199@gmail.com (30/200)] ➔ careers@slate.com (Hiring Team) ... ✅ SENT
+[31/64] [Account 1: sparshgoyal199@gmail.com (31/200)] ➔ careers@crestwin.in (Hiring Team) ... ✅ SENT
+[32/64] [Account 1: sparshgoyal199@gmail.com (32/200)] ➔ careers@publicissapient.com (Hiring Team) ... ✅ SENT
+[33/64] [Account 1: sparshgoyal199@gmail.com (33/200)] ➔ careers@lancesoft.com (Hiring Team) ... ✅ SENT
+[34/64] [Account 1: sparshgoyal199@gmail.com (34/200)] ➔ smriti.dube@digiplus.com.ph (Smriti Dube) ... ✅ SENT
+[35/64] [Account 1: sparshgoyal199@gmail.com (35/200)] ➔ eram.qudsia@digiplus.com.ph (Eram Qudsia) ... ✅ SENT
+[36/64] [Account 1: sparshgoyal199@gmail.com (36/200)] ➔ shanice.passanha@digiplus.com.ph (Shanice Passanha) ... ✅ SENT
+[37/64] [Account 1: sparshgoyal199@gmail.com (37/200)] ➔ abhyanand.jha@digiplus.com.ph (Abhyanand Jha) ... ✅ SENT
+[38/64] [Account 1: sparshgoyal199@gmail.com (38/200)] ➔ ankit.kanojiya@digiplus.com.ph (Ankit Kanojiya) ... ✅ SENT
+[39/64] [Account 1: sparshgoyal199@gmail.com (39/200)] ➔ diona.tan@digiplus.com.ph (Diona Tan) ... ✅ SENT
+[40/64] [Account 1: sparshgoyal199@gmail.com (40/200)] ➔ hsin@digiplus.com.ph (Hsin T.) ... ✅ SENT
+[41/64] [Account 1: sparshgoyal199@gmail.com (41/200)] ➔ kritika.shukla@digiplus.com.ph (Kritika Shukla) ... ✅ SENT
+[42/64] [Account 1: sparshgoyal199@gmail.com (42/200)] ➔ khushboo.khubnani@immverse.ai (Khushboo Khubnani) ... ✅ SENT
+[43/64] [Account 1: sparshgoyal199@gmail.com (43/200)] ➔ ruchit.patel@immverse.ai (Ruchit Patel) ... ✅ SENT
+[44/64] [Account 1: sparshgoyal199@gmail.com (44/200)] ➔ ashish.patel@immverse.ai (Ashish Kumar Patel) ... ✅ SENT
+[45/64] [Account 1: sparshgoyal199@gmail.com (45/200)] ➔ vaishnavi.wandhare@immverse.ai (Vaishnavi Wandhare) ... ✅ SENT
+[46/64] [Account 1: sparshgoyal199@gmail.com (46/200)] ➔ akhil.chinta@immverse.ai (Akhil Chinta) ... ✅ SENT
+[47/64] [Account 1: sparshgoyal199@gmail.com (47/200)] ➔ aastha.jaiswal@immverse.ai (Aastha Jaiswal) ... ✅ SENT
+[48/64] [Account 1: sparshgoyal199@gmail.com (48/200)] ➔ pranjal.bhavsar@immverse.ai (Pranjal Bhavsar) ... ✅ SENT
+[49/64] [Account 1: sparshgoyal199@gmail.com (49/200)] ➔ priti.kale@immverse.ai (Priti Kale) ... ✅ SENT
+[50/64] [Account 1: sparshgoyal199@gmail.com (50/200)] ➔ naina@we-intern.in (Naina S.) ... ✅ SENT
+[51/64] [Account 1: sparshgoyal199@gmail.com (51/200)] ➔ jyoti.jogi@we-intern.in (Jyoti Singh Jogi) ... ✅ SENT
+[52/64] [Account 1: sparshgoyal199@gmail.com (52/200)] ➔ nishtha.jaggi@we-intern.in (Nishtha Jaggi) ... ✅ SENT
+[53/64] [Account 1: sparshgoyal199@gmail.com (53/200)] ➔ rupali.goel@we-intern.in (Rupali Goel) ... ✅ SENT
+[54/64] [Account 1: sparshgoyal199@gmail.com (54/200)] ➔ pallavi.gupta@we-intern.in (Pallavi Gupta) ... ✅ SENT
+[55/64] [Account 1: sparshgoyal199@gmail.com (55/200)] ➔ poojitha.gudepu@we-intern.in (Poojitha Gudepu) ... ✅ SENT
+[56/64] [Account 1: sparshgoyal199@gmail.com (56/200)] ➔ nitin.sharma@we-intern.in (Nitin Sharma) ... ✅ SENT
+[57/64] [Account 1: sparshgoyal199@gmail.com (57/200)] ➔ hardik.kuwar@lexsi.ai (Hardik Kuwar) ... ✅ SENT
+[58/64] [Account 1: sparshgoyal199@gmail.com (58/200)] ➔ geetha.prakash@lexsi.ai (Geetha Prakash) ... ✅ SENT
+[59/64] [Account 1: sparshgoyal199@gmail.com (59/200)] ➔ linda.verzele@lexsi.ai (Linda VERZELE) ... ✅ SENT
+[60/64] [Account 1: sparshgoyal199@gmail.com (60/200)] ➔ sam.gabbai@lexsi.ai (Sam GABBAI) ... ✅ SENT
+[61/64] [Account 1: sparshgoyal199@gmail.com (61/200)] ➔ sonia.santos@lexsi.ai (Sonia Dos Santos) ... ✅ SENT
+[62/64] [Account 1: sparshgoyal199@gmail.com (62/200)] ➔ audrey.launay@lexsi.ai (Audrey LAUNAY) ... ✅ SENT
+[63/64] [Account 1: sparshgoyal199@gmail.com (63/200)] ➔ lyssia.benmessaoud@lexsi.ai (Lyssia BENMESSAOUD) ... ✅ SENT
+[64/64] [Account 1: sparshgoyal199@gmail.com (64/200)] ➔ marc.rouvier@lexsi.ai (Marc Rouvier) ... ✅ SENT
+
+=================================================================
+OUTREACH RUN COMPLETE (WATERFALL)
+  Successfully Sent : 64
+  Failed            : 0
+
+Database Status:
+  • sent: 643
+=================================================================
+
+=================================================================
+[18:38:09] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.reporting.dashboard --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 2871
+  ✉️  Email Outreach Available : 480 jobs
+  👉 Action: Manual Portal     : 2391 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 1423.5s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261025_181426.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================

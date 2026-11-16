@@ -1,0 +1,618 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-23 23:56:59
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_235658.log
+=================================================================
+
+=================================================================
+[23:56:59] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 2782 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... received 100 posts (Total in WP: 1172, Pages: 12)
+  Processed 100 posts: +0 new to DB, page completed.
+Encountered already-synced post ID. Incremental sync complete!
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 1
+Brand new posts added        : 0
+Total listings in database   : 2782
+Total matches (pre-filtered) : 630
+Total detail records ready   : 2782
+============================================================
+
+=================================================================
+[23:57:03] STEP: 1b/6 Ingest Open Hiring Postings from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.multi_portal --limit 40
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL OPEN HIRING INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+Target : 40 jobs per portal (Total: ~120 jobs)
+=================================================================
+🌐 [Internshala] Fetching active internships across pages (target: 40)...
+   ✅ Internshala: Discovered 40 active hiring companies.
+🌐 [LinkedIn Jobs] Querying public postings across pages (target: 40)...
+   ✅ LinkedIn Jobs: Discovered 40 active hiring companies.
+🌐 [Indeed India] Launching browser to scan active postings (target: 40)...
+   ✅ Indeed India: Discovered 15 active hiring companies.
+
+=================================================================
+SUMMARY: Gathered 95 candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 32
+   🔄 Existing Jobs Refreshed: 63
+   🎯 Total Ready for Decision-Maker Enrichment: 95
+
+=================================================================
+[23:57:31] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[23:57:39] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 216
+   Contacts in DB (total)  : 323
+   Pending (not mailed yet): 146
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[23:57:39] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.portal_contacts --limit 50
+=================================================================
+=================================================================
+🔍 RECRUITER CONTACT DISCOVERY & ENRICHMENT ENGINE
+=================================================================
+Unattempted Portal Jobs without emails : 2346
+Jobs Selected for this batch           : 50
+Mode                                   : LIVE ENRICHMENT
+-----------------------------------------------------------------
+[1/50] Post #12069 | Coditas Is ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@coditas.com>
+       Domain   : coditas.com
+[2/50] Post #12054 | Swiggy Instamart Is ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@swiggy.com>
+       Domain   : swiggy.com
+[3/50] Post #12039 | Futurism Technologies ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@futurism.com>
+       Domain   : futurism.com
+[4/50] Post #12027 | Electronic Arts (EA) ... 🎯 FOUND via Company Cache (careers@jobs.ea.com)!
+[5/50] Post #12022 | Nexlifie Private Limited ... ❌ No verified contact found (Requires manual portal apply)
+[6/50] Post #12017 | Wolters Kluwer Is ... ❌ No verified contact found (Requires manual portal apply)
+[7/50] Post #12001 | QA Intern Recruitment ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careers@myinternships.in>
+       Domain   : myinternships.in
+[8/50] Post #11995 | PatSeer ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <hr@patseer.com>
+       Domain   : patseer.com
+[9/50] Post #11989 | Internship Opportunities at ... ❌ No verified contact found (Requires manual portal apply)
+[10/50] Post #11985 | Alphawizz Technologies Pvt. Ltd. ... ❌ No verified contact found (Requires manual portal apply)
+[11/50] Post #11977 | Danfoss Is ... ❌ No verified contact found (Requires manual portal apply)
+[12/50] Post #11973 | Thinkitive Technologies Is ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@thinkitive.com>
+       Domain   : thinkitive.com
+[13/50] Post #11969 | Operations Intern at ... ❌ No verified contact found (Requires manual portal apply)
+[14/50] Post #11931 | UST ... 🎯 FOUND via Company Cache (priya.gusain@ust.com)!
+[15/50] Post #11927 | Mphasis ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@mphasis.com>
+       Domain   : mphasis.com
+[16/50] Post #11924 | Rockwell Automation ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@rockwellautomation.com>
+       Domain   : rockwellautomation.com
+[17/50] Post #11921 | DevLabs Technology ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@devlabstechnology.com>
+       Domain   : devlabstechnology.com
+[18/50] Post #11918 | EY GDS ... ❌ No verified contact found (Requires manual portal apply)
+[19/50] Post #11913 | Innova ESI ... ❌ No verified contact found (Requires manual portal apply)
+[20/50] Post #11905 | TCS ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@tcs.com>
+       Domain   : tcs.com
+[21/50] Post #11902 | 🟠Concentrix Hiring 2026 ... ❌ No verified contact found (Requires manual portal apply)
+[22/50] Post #11899 | SAKON ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@sakon.com>
+       Domain   : sakon.com
+[23/50] Post #11896 | NTT DATA ... 🎯 FOUND via Company Cache (careers@nttdata.com)!
+[24/50] Post #11888 | Hidani Tech ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@hidanitech.com>
+       Domain   : hidanitech.com
+[25/50] Post #11885 | Young Minds Technology ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careers@ymtsindia.com>
+       Domain   : ymtsindia.com
+[26/50] Post #11879 | Bytize Technology Solutions ... ❌ No verified contact found (Requires manual portal apply)
+[27/50] Post #11875 | 🎮 TestYantra Hiring ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@alion.io>
+       Domain   : alion.io
+[28/50] Post #11869 | We’re Hiring in ... ❌ No verified contact found (Requires manual portal apply)
+[29/50] Post #11863 | Giri’s Tech Hub ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@techhubindia.org>
+       Domain   : techhubindia.org
+[30/50] Post #11860 | VensureHCM ... ❌ No verified contact found (Requires manual portal apply)
+[31/50] Post #11857 | KG CRM Solutions LLP ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@kgcrmsolutions.com>
+       Domain   : kgcrmsolutions.com
+[32/50] Post #11843 | BMC Helix ... ❌ No verified contact found (Requires manual portal apply)
+[33/50] Post #11840 | UST ... 🎯 FOUND via Company Cache (priya.gusain@ust.com)!
+[34/50] Post #11834 | NVIDIA ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <accessiblecareers@nvidia.com>
+       Domain   : nvidia.com
+[35/50] Post #11828 | SDET Tech ... ❌ No verified contact found (Requires manual portal apply)
+[36/50] Post #11822 | AiSensy ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@aisensy.com>
+       Domain   : aisensy.com
+[37/50] Post #11819 | American Express Global Business Travel ... ❌ No verified contact found (Requires manual portal apply)
+[38/50] Post #11816 | Kaplan ... ❌ No verified contact found (Requires manual portal apply)
+[39/50] Post #11812 | Blitz ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@blitz.gg>
+       Domain   : blitz.gg
+[40/50] Post #11807 | Airtel Digital ... ❌ No verified contact found (Requires manual portal apply)
+[41/50] Post #11804 | BlackBuck ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@blackbuck.com>
+       Domain   : blackbuck.com
+[42/50] Post #11801 | Photon ... ❌ No verified contact found (Requires manual portal apply)
+[43/50] Post #11798 | Telgoo5 ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@telgoo5.com>
+       Domain   : telgoo5.com
+[44/50] Post #11795 | EY ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@ey.com>
+       Domain   : ey.com
+[45/50] Post #11792 | Qualys ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@qualys.com>
+       Domain   : qualys.com
+[46/50] Post #11789 | UKG ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@ukg.com>
+       Domain   : ukg.com
+[47/50] Post #11786 | Deutsche Bank ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@db.com>
+       Domain   : db.com
+[48/50] Post #11783 | PwC ... ❌ No verified contact found (Requires manual portal apply)
+[49/50] Post #11780 | Global Payments ... ❌ No verified contact found (Requires manual portal apply)
+[50/50] Post #11777 | Deloitte ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@deloitte.com>
+       Domain   : deloitte.com
+
+=================================================================
+ENRICHMENT SUMMARY
+  Processed Jobs       : 50
+  New Emails Discovered: 30
+  ✅ Added 30 new recruiter email(s) into hr_contacts table!
+  They will now be included in your cold email queue and dashboard.
+=================================================================
+
+=================================================================
+[00:07:48] STEP: 4b/6 Discover Decision-Maker Emails via LinkedIn & X-Ray (176 waiting, targeting ~24 more)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.linkedin_decision_makers --limit 15
+=================================================================
+=================================================================
+🚀 LINKEDIN DECISION-MAKER ENRICHMENT PIPELINE
+=================================================================
+Target Companies Selected : 15
+Mode                      : LIVE PRODUCTION
+=================================================================
+
+=================================================================
+🏢 COMPANY: T S AUTOMATION (Post #299707219)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/t-s-automation
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: NSU SECURE SOLUTIONS (Post #298958420)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/nsu-secure-solutions-pvt-ltd
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Prahari Technologies (Post #296616686)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : praharitechnologies.com
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: DigiPlus IT (Post #296498554)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/digiplus-it
+   • Domain   : digiplus.co.in
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for DigiPlus IT...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 1/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      ✅ Apify Token #1 successfully delivered 2 profiles!
+   ✅ Total candidate pool assembled: 2 decision-makers.
+   Received 2 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 2 candidates...
+   [1/2] Sahil Wagh               (digiplus.co.in) ... ❌ No verified mailbox found
+   [2/2] Altmash Siddique         (digiplus.co.in) ... ❌ No verified mailbox found
+
+⚠️ None of the 2 candidate mailboxes could be verified for digiplus.co.in.
+
+=================================================================
+🏢 COMPANY: ImmverseAI (Post #295711852)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/immverse-ai
+   • Domain   : immverse.ai
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for ImmverseAI...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 2/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      ✅ Apify Token #1 successfully delivered 10 profiles!
+   ✅ Total candidate pool assembled: 10 decision-makers.
+   Received 10 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 10 candidates...
+   [1/10] Priti Ramakrishnan       (immverse.ai) ... ✅ priti@immverse.ai [Score: 10]
+   [2/10] Ruchika Bobade           (immverse.ai) ... ✅ ruchika@immverse.ai [Score: 90]
+   [3/10] Raman Ramakrishnan       (immverse.ai) ... ❌ No verified mailbox found
+   [4/10] Sum…                     (immverse.ai) ... ❌ No verified mailbox found
+   [5/10] Sam…                     (immverse.ai) ... ❌ No verified mailbox found
+   [6/10] Adi…                     (immverse.ai) ... ❌ No verified mailbox found
+   [7/10] Ved…                     (immverse.ai) ... ❌ No verified mailbox found
+   [8/10] Man…                     (immverse.ai) ... ❌ No verified mailbox found
+   [9/10] Dr.…                     (immverse.ai) ... ❌ No verified mailbox found
+   [10/10] Har…                     (immverse.ai) ... ❌ No verified mailbox found
+
+🎯 Selected TOP 2 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Ruchika Bobade         | ruchika@immverse.ai          | |Associate-HR at Immverse Innovation ...
+   2. Priti Ramakrishnan     | priti@immverse.ai            | ImmverseAI
+
+✨ Successfully queued 2 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: Gateway Software Solutions (Post #295692236)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : gatewaysoftwaresolutions.com
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Basti Ki Pathshala Foundation (Post #295372021)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: We-intern (Post #293818185)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : we-intern.in
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: MediNex Workforce (Post #293132754)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/medinex-workforce
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Web3task PVT LTD (Post #292962732)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/web3task-pvt-ltd
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: MEL Systems and (Post #283070173)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/mel-systems-and-services-ltd
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Cliantha Research Limited (Post #282595097)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/cliantharesearch
+   • Domain   : cliantha.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Cliantha Research Limited...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 3/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      ✅ Apify Token #1 successfully delivered 10 profiles!
+   ✅ Total candidate pool assembled: 10 decision-makers.
+   Received 10 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 10 candidates...
+   [1/10] Richa Bhatt MBA, CHRP, CHRL (cliantha.com) ... ❌ No verified mailbox found
+   [2/10] Dr.Parth Joshi           (cliantha.com) ... ❌ No verified mailbox found
+   [3/10] Rahul Nijhawan           (cliantha.com) ... ❌ No verified mailbox found
+   [4/10] GAU…                     (cliantha.com) ... ❌ No verified mailbox found
+   [5/10] Pin…                     (cliantha.com) ... ❌ No verified mailbox found
+   [6/10] Nay…                     (cliantha.com) ... ❌ No verified mailbox found
+   [7/10] Mou…                     (cliantha.com) ... ❌ No verified mailbox found
+   [8/10] Cli…                     (cliantha.com) ... ❌ No verified mailbox found
+   [9/10] Hit…                     (cliantha.com) ... ❌ No verified mailbox found
+   [10/10] Dr …                     (cliantha.com) ... ❌ No verified mailbox found
+
+⚠️ None of the 10 candidate mailboxes could be verified for cliantha.com.
+
+=================================================================
+🏢 COMPANY: Heads Up For Tails (Post #281157834)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/heads-up-for-tails
+   • Domain   : headsupfortails.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Heads Up For Tails...
+   🎯 [Zero-Cost Success] Found 8 decision-makers via Free X-Ray. Zero Apify credits used ($0.00 spent)!
+   Received 8 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 8 candidates...
+   [1/8] Rashi Narang             (headsupfortails.com) ... ✅ rashi@headsupfortails.com [Score: 10]
+   [2/8] Rahul S.                 (headsupfortails.com) ... ✅ rahul@headsupfortails.com [Score: 10]
+   [3/8] Abhimanyu Verma          (headsupfortails.com) ... ❌ No verified mailbox found
+   [4/8] Cassie DON               (headsupfortails.com) ... ❌ No verified mailbox found
+   [5/8] Kritika Malhotra         (headsupfortails.com) ... ✅ kritika.malhotra@headsupfortails.com [Score: 10]
+   [6/8] Mannav Aildasani         (headsupfortails.com) ... ✅ mannav.aildasani@headsupfortails.com [Score: 10]
+   [7/8] Latha V Anand, PhD       (headsupfortails.com) ... ✅ latha@headsupfortails.com [Score: 10]
+   [8/8] Anant Khurana            (headsupfortails.com) ... ✅ anant.khurana@headsupfortails.com [Score: 10]
+
+🎯 Selected TOP 5 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Rashi Narang           | rashi@headsupfortails.com    | Heads Up For Tails
+   2. Rahul S.               | rahul@headsupfortails.com    | Operations at Heads Up For Tails
+   3. Kritika Malhotra       | kritika.malhotra@headsupfortails.com | Founding Team, Heads Up For Tails Middle
+   4. Mannav Aildasani       | mannav.aildasani@headsupfortails.com | Founding Heads Up For Tails in ...
+   5. Latha V Anand, PhD     | latha@headsupfortails.com    | Chief Scientific Officer at Heads up for
+
+✨ Successfully queued 5 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: VKFILL INDUSTRIES Private Limited (Post #278915981)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: xIoTz Private Limited (Post #277382547)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/xiotz-private-limited
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+ENRICHMENT BATCH COMPLETE
+Total Decision-Makers Added to Queue: 7
+Run: python cold_mailer.py --dry-run   to preview the new emails!
+=================================================================
+
+=================================================================
+[00:13:06] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP (Daily Limit: 200)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.outreach.mailer --limit 200
+=================================================================
+
+📊 Today's Outreach Budget: 0/200 sent today (200 remaining for today).
+
+=================================================================
+🚀 LIVE COLD EMAIL SENDING (WATERFALL STRATEGY)
+=================================================================
+Contacts in Queue       : 156 (Sending up to: 156)
+Daily Cap Remaining     : 200/200 emails
+Max Capacity per Account: 200 emails
+Sending Priority:
+  1. Account 1: sparshgoyal199@gmail.com (Primary 1)
+  2. Account 2: rahilgoyal127@gmail.com (Primary 2)
+  3. Account 3: sparsh198@gmail.com (Primary 3)
+-----------------------------------------------------------------
+[1/156] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ preethibliss4547@gmail.com (Hiring Team) ... ✅ SENT
+[2/156] [Account 1: sparshgoyal199@gmail.com (2/200)] ➔ techtrekexplorerers7@gmail.com (Hiring Team) ... ✅ SENT
+[3/156] [Account 1: sparshgoyal199@gmail.com (3/200)] ➔ vinobalakrish95@yahoo.com (Hiring Team) ... ✅ SENT
+[4/156] [Account 1: sparshgoyal199@gmail.com (4/200)] ➔ dushyanthnanubolu@gmail.com (Hiring Team) ... ✅ SENT
+[5/156] [Account 1: sparshgoyal199@gmail.com (5/200)] ➔ sachinkumar.koppad@cgi.com (Sachinkumar Koppad) ... ✅ SENT
+[6/156] [Account 1: sparshgoyal199@gmail.com (6/200)] ➔ ritika.kherata1@veersatech.com (Ritika) ... ✅ SENT
+[7/156] [Account 1: sparshgoyal199@gmail.com (7/200)] ➔ niharika.maddha@careernet.in (Niharika Maddha) ... ✅ SENT
+[8/156] [Account 1: sparshgoyal199@gmail.com (8/200)] ➔ posawant@teksystems.com (Posawant) ... ✅ SENT
+[9/156] [Account 1: sparshgoyal199@gmail.com (9/200)] ➔ chinmayh14@gmail.com (Hiring Team) ... ✅ SENT
+[10/156] [Account 1: sparshgoyal199@gmail.com (10/200)] ➔ spoorthi@niyatainfotech.com (Spoorthi) ... ✅ SENT
+[11/156] [Account 1: sparshgoyal199@gmail.com (11/200)] ➔ nancy@roxiler.com (Nancy) ... ✅ SENT
+[12/156] [Account 1: sparshgoyal199@gmail.com (12/200)] ➔ ashok.s@cgi.com (Ashok) ... ✅ SENT
+[13/156] [Account 1: sparshgoyal199@gmail.com (13/200)] ➔ vinoth.gopal@arcticwolf.com (Vinoth Gopal) ... ✅ SENT
+[14/156] [Account 1: sparshgoyal199@gmail.com (14/200)] ➔ vaishnavi.belgumpe@cgi.com (Vaishnavi Belgumpe) ... ✅ SENT
+[15/156] [Account 1: sparshgoyal199@gmail.com (15/200)] ➔ careers@stitch.co (Hiring Team) ... ✅ SENT
+[16/156] [Account 1: sparshgoyal199@gmail.com (16/200)] ➔ rasika.kshirsagar@bmwtechworks.in (Rasika Kshirsagar) ... ✅ SENT
+[17/156] [Account 1: sparshgoyal199@gmail.com (17/200)] ➔ Sidhant.Sharma1@in.ey.com (Sidhant) ... ✅ SENT
+[18/156] [Account 1: sparshgoyal199@gmail.com (18/200)] ➔ Surashree.Roy@in.ey.com (Surashree Roy) ... ✅ SENT
+[19/156] [Account 1: sparshgoyal199@gmail.com (19/200)] ➔ vishakha.gangurde@kiya.ai (Vishakha Gangurde) ... ✅ SENT
+[20/156] [Account 1: sparshgoyal199@gmail.com (20/200)] ➔ megha.s@kipplo.com (Megha) ... ✅ SENT
+[21/156] [Account 1: sparshgoyal199@gmail.com (21/200)] ➔ hiring@omfysgroup.com (Hiring Team) ... ✅ SENT
+[22/156] [Account 1: sparshgoyal199@gmail.com (22/200)] ➔ hr@pushkalit.com (Hiring Team) ... ✅ SENT
+[23/156] [Account 1: sparshgoyal199@gmail.com (23/200)] ➔ nikitha.jarugumalli@codinglimits.com (Nikitha Jarugumalli) ... ✅ SENT
+[24/156] [Account 1: sparshgoyal199@gmail.com (24/200)] ➔ deepali.dogra@akivna.com (Deepali Dogra) ... ✅ SENT
+[25/156] [Account 1: sparshgoyal199@gmail.com (25/200)] ➔ hrvranda@msgclub.net (Hrvranda) ... ✅ SENT
+[26/156] [Account 1: sparshgoyal199@gmail.com (26/200)] ➔ rhea.javed@dexian.com (Rhea Javed) ... ✅ SENT
+[27/156] [Account 1: sparshgoyal199@gmail.com (27/200)] ➔ hr@wanbuffer.in (Hiring Team) ... ✅ SENT
+[28/156] [Account 1: sparshgoyal199@gmail.com (28/200)] ➔ harshita.shukla@nagarro.com (Harshita Shukla) ... ✅ SENT
+[29/156] [Account 1: sparshgoyal199@gmail.com (29/200)] ➔ Saloni@cloudeagle.ai (Saloni) ... ✅ SENT
+[30/156] [Account 1: sparshgoyal199@gmail.com (30/200)] ➔ sanjanaadborn@gmail.com (Sanjanaadborn) ... ✅ SENT
+[31/156] [Account 1: sparshgoyal199@gmail.com (31/200)] ➔ hiring@heizen.work (Hiring Team) ... ✅ SENT
+[32/156] [Account 1: sparshgoyal199@gmail.com (32/200)] ➔ kashish.j@apideltech.com (Kashish) ... ✅ SENT
+[33/156] [Account 1: sparshgoyal199@gmail.com (33/200)] ➔ suchitra.oinam@workfall.com (Suchitra Oinam) ... ✅ SENT
+[34/156] [Account 1: sparshgoyal199@gmail.com (34/200)] ➔ hr@innovsol.ai (Hiring Team) ... ✅ SENT
+[35/156] [Account 1: sparshgoyal199@gmail.com (35/200)] ➔ hc@lpfintech.com (Hiring Team) ... ✅ SENT
+[36/156] [Account 1: sparshgoyal199@gmail.com (36/200)] ➔ talent@codknox.com (Hiring Team) ... ✅ SENT
+[37/156] [Account 1: sparshgoyal199@gmail.com (37/200)] ➔ chandrasekhar.v@datateach.ai (Chandrasekhar) ... ✅ SENT
+[38/156] [Account 1: sparshgoyal199@gmail.com (38/200)] ➔ anjani.gochade@roxiler.com (Anjani Gochade) ... ✅ SENT
+[39/156] [Account 1: sparshgoyal199@gmail.com (39/200)] ➔ shrey@questhiring.com (Shrey) ... ✅ SENT
+[40/156] [Account 1: sparshgoyal199@gmail.com (40/200)] ➔ manjima.r@se-mentor.com (Manjima) ... ✅ SENT
+[41/156] [Account 1: sparshgoyal199@gmail.com (41/200)] ➔ careers@spantag.com (Hiring Team) ... ✅ SENT
+[42/156] [Account 1: sparshgoyal199@gmail.com (42/200)] ➔ hemangis@godrej.com (Hemangis) ... ✅ SENT
+[43/156] [Account 1: sparshgoyal199@gmail.com (43/200)] ➔ careers@techilaservices.com (Hiring Team) ... ✅ SENT
+[44/156] [Account 1: sparshgoyal199@gmail.com (44/200)] ➔ careers@deftboxsolutions.com (Hiring Team) ... ✅ SENT
+[45/156] [Account 1: sparshgoyal199@gmail.com (45/200)] ➔ sanm@ciklum.com (Sanm) ... ✅ SENT
+[46/156] [Account 1: sparshgoyal199@gmail.com (46/200)] ➔ hr@caplixtechnologies.com (Hiring Team) ... ✅ SENT
+[47/156] [Account 1: sparshgoyal199@gmail.com (47/200)] ➔ sdarshini@virtusa.com (Sdarshini) ... ✅ SENT
+[48/156] [Account 1: sparshgoyal199@gmail.com (48/200)] ➔ jobs@kualitatem.com (Hiring Team) ... ✅ SENT
+[49/156] [Account 1: sparshgoyal199@gmail.com (49/200)] ➔ pinak.j@samcomtechnobrains.com (Pinak) ... ✅ SENT
+[50/156] [Account 1: sparshgoyal199@gmail.com (50/200)] ➔ info@codeseeds.in (Hiring Team) ... ✅ SENT
+[51/156] [Account 1: sparshgoyal199@gmail.com (51/200)] ➔ Simran@keyss.in (Simran) ... ✅ SENT
+[52/156] [Account 1: sparshgoyal199@gmail.com (52/200)] ➔ hr@significantinfotech.com (Hiring Team) ... ✅ SENT
+[53/156] [Account 1: sparshgoyal199@gmail.com (53/200)] ➔ fusiongyan29@gmail.com (Hiring Team) ... ✅ SENT
+[54/156] [Account 1: sparshgoyal199@gmail.com (54/200)] ➔ palak.chauhan@cmarix.com (Palak Chauhan) ... ✅ SENT
+[55/156] [Account 1: sparshgoyal199@gmail.com (55/200)] ➔ careers@pletratech.com (Hiring Team) ... ✅ SENT
+[56/156] [Account 1: sparshgoyal199@gmail.com (56/200)] ➔ Akanksha.mittal@chicmicstudios.in (Akanksha Mittal) ... ✅ SENT
+[57/156] [Account 1: sparshgoyal199@gmail.com (57/200)] ➔ rushikesharjun.g@infosys.com (Rushikesharjun) ... ✅ SENT
+[58/156] [Account 1: sparshgoyal199@gmail.com (58/200)] ➔ hr@rayoinnovations.com (Hiring Team) ... ✅ SENT
+[59/156] [Account 1: sparshgoyal199@gmail.com (59/200)] ➔ udhayasiga@krishpar.com (Udhayasiga) ... ✅ SENT
+[60/156] [Account 1: sparshgoyal199@gmail.com (60/200)] ➔ pavanr@unifytech.com (Pavanr) ... ✅ SENT
+[61/156] [Account 1: sparshgoyal199@gmail.com (61/200)] ➔ hr@simplitsolutions.in (Hiring Team) ... ✅ SENT
+[62/156] [Account 1: sparshgoyal199@gmail.com (62/200)] ➔ prachi.mittal@agasty.ai (Prachi Mittal) ... ✅ SENT
+[63/156] [Account 1: sparshgoyal199@gmail.com (63/200)] ➔ omkar.j@neopaceinfotech.com (Omkar) ... ✅ SENT
+[64/156] [Account 1: sparshgoyal199@gmail.com (64/200)] ➔ jeevan.j@neopaceinfotech.com (Jeevan) ... ✅ SENT
+[65/156] [Account 1: sparshgoyal199@gmail.com (65/200)] ➔ hr@crntechnosoft.com (Hiring Team) ... ✅ SENT
+[66/156] [Account 1: sparshgoyal199@gmail.com (66/200)] ➔ Careers@stamenssoftware.com (Hiring Team) ... ✅ SENT
+[67/156] [Account 1: sparshgoyal199@gmail.com (67/200)] ➔ Khushi.mishra@aayaninfotech.com (Khushi Mishra) ... ✅ SENT
+[68/156] [Account 1: sparshgoyal199@gmail.com (68/200)] ➔ aditya.k@zktechinc.com (Aditya) ... ✅ SENT
+[69/156] [Account 1: sparshgoyal199@gmail.com (69/200)] ➔ shaileshb@dewsolutions.in (Shaileshb) ... ✅ SENT
+[70/156] [Account 1: sparshgoyal199@gmail.com (70/200)] ➔ mahima.tripathi@uharvest.in (Mahima Tripathi) ... ✅ SENT
+[71/156] [Account 1: sparshgoyal199@gmail.com (71/200)] ➔ surabhi.shah@uharvest.in (Surabhi Shah) ... ✅ SENT
+[72/156] [Account 1: sparshgoyal199@gmail.com (72/200)] ➔ Ateeb.sajid@servosys.com (Ateeb Sajid) ... ✅ SENT
+[73/156] [Account 1: sparshgoyal199@gmail.com (73/200)] ➔ Aditi.Giri@366PiTech.com (Aditi Giri) ... ✅ SENT
+[74/156] [Account 1: sparshgoyal199@gmail.com (74/200)] ➔ siya@virtuxient.com (Siya) ... ✅ SENT
+[75/156] [Account 1: sparshgoyal199@gmail.com (75/200)] ➔ ritika.asudani@huemot.com (Ritika Asudani) ... ✅ SENT
+[76/156] [Account 1: sparshgoyal199@gmail.com (76/200)] ➔ tanya@yoekisoft.com (Tanya) ... ✅ SENT
+[77/156] [Account 1: sparshgoyal199@gmail.com (77/200)] ➔ pavan.techhead@flextenure.com (Pavan Techhead) ... ✅ SENT
+[78/156] [Account 1: sparshgoyal199@gmail.com (78/200)] ➔ techreferralpoint@gmail.com (Hiring Team) ... ✅ SENT
+[79/156] [Account 1: sparshgoyal199@gmail.com (79/200)] ➔ bhoomika.shetty@varite.com (Bhoomika Shetty) ... ✅ SENT
+[80/156] [Account 1: sparshgoyal199@gmail.com (80/200)] ➔ divya.tagaya@oaktreecloud.com (Divya Tagaya) ... ✅ SENT
+[81/156] [Account 1: sparshgoyal199@gmail.com (81/200)] ➔ recruitment@kytechservices.com (Recruitment) ... ✅ SENT
+[82/156] [Account 1: sparshgoyal199@gmail.com (82/200)] ➔ pooja.bajaj@omniscient.co.in (Pooja Bajaj) ... ✅ SENT
+[83/156] [Account 1: sparshgoyal199@gmail.com (83/200)] ➔ hariprakashm@s4carlisle.com (Hariprakashm) ... ✅ SENT
+[84/156] [Account 1: sparshgoyal199@gmail.com (84/200)] ➔ hr.chennai@s4carlisle.com (Hr Chennai) ... ✅ SENT
+[85/156] [Account 1: sparshgoyal199@gmail.com (85/200)] ➔ hr@zen4techsolutions.com (Hiring Team) ... ✅ SENT
+[86/156] [Account 1: sparshgoyal199@gmail.com (86/200)] ➔ a.krishna@iomarket.in (Krishna) ... ✅ SENT
+[87/156] [Account 1: sparshgoyal199@gmail.com (87/200)] ➔ neha.khode@intelizign.com (Neha Khode) ... ✅ SENT
+[88/156] [Account 1: sparshgoyal199@gmail.com (88/200)] ➔ hr@xomic.co.in (Hiring Team) ... ✅ SENT
+[89/156] [Account 1: sparshgoyal199@gmail.com (89/200)] ➔ sawarkarpooja2611@gmail.com (Hiring Team) ... ✅ SENT
+[90/156] [Account 1: sparshgoyal199@gmail.com (90/200)] ➔ nitika.jhamb@thewitslab.com (Nitika Jhamb) ... ✅ SENT
+[91/156] [Account 1: sparshgoyal199@gmail.com (91/200)] ➔ careers@webstrail.com (Hiring Team) ... ✅ SENT
+[92/156] [Account 1: sparshgoyal199@gmail.com (92/200)] ➔ anchal@moontechnolabs.com (Anchal) ... ✅ SENT
+[93/156] [Account 1: sparshgoyal199@gmail.com (93/200)] ➔ hr@adirastechnologies.com (Hiring Team) ... ✅ SENT
+[94/156] [Account 1: sparshgoyal199@gmail.com (94/200)] ➔ sanjana@adbornsolutions.com (Sanjana) ... ✅ SENT
+[95/156] [Account 1: sparshgoyal199@gmail.com (95/200)] ➔ akanksha.tiwari01@nagarro.com (Akanksha) ... ✅ SENT
+[96/156] [Account 1: sparshgoyal199@gmail.com (96/200)] ➔ Shreya.rani@questhiring.com (Shreya Rani) ... ✅ SENT
+[97/156] [Account 1: sparshgoyal199@gmail.com (97/200)] ➔ gdindms_hr@gi-de.com (Gdindms Hr) ... ✅ SENT
+[98/156] [Account 1: sparshgoyal199@gmail.com (98/200)] ➔ hr@devopslabs.tech (Hiring Team) ... ✅ SENT
+[99/156] [Account 1: sparshgoyal199@gmail.com (99/200)] ➔ bhavesh.patil2@cognizant.com (Bhavesh) ... ✅ SENT
+[100/156] [Account 1: sparshgoyal199@gmail.com (100/200)] ➔ deep@medianv.com (Deep) ... ✅ SENT
+[101/156] [Account 1: sparshgoyal199@gmail.com (101/200)] ➔ aditi.parchure@randstadusa.com (Aditi Parchure) ... ✅ SENT
+[102/156] [Account 1: sparshgoyal199@gmail.com (102/200)] ➔ hr@imwallet.in (Hiring Team) ... ✅ SENT
+[103/156] [Account 1: sparshgoyal199@gmail.com (103/200)] ➔ hr@keyss.in (Hiring Team) ... ✅ SENT
+[104/156] [Account 1: sparshgoyal199@gmail.com (104/200)] ➔ mohit.kumar@ksolves.com (Mohit Kumar) ... ✅ SENT
+[105/156] [Account 1: sparshgoyal199@gmail.com (105/200)] ➔ hanisha@amnex.com (Hanisha) ... ✅ SENT
+[106/156] [Account 1: sparshgoyal199@gmail.com (106/200)] ➔ amar@amnex.com (Amar) ... ✅ SENT
+[107/156] [Account 1: sparshgoyal199@gmail.com (107/200)] ➔ hr@gofintech.co.in (Hiring Team) ... ✅ SENT
+[108/156] [Account 1: sparshgoyal199@gmail.com (108/200)] ➔ sudhanshu@questhiring.com (Sudhanshu) ... ✅ SENT
+[109/156] [Account 1: sparshgoyal199@gmail.com (109/200)] ➔ simran@orogoo.com (Simran) ... ✅ SENT
+[110/156] [Account 1: sparshgoyal199@gmail.com (110/200)] ➔ HariniS3@hexaware.com (Hiring Team) ... ✅ SENT
+[111/156] [Account 1: sparshgoyal199@gmail.com (111/200)] ➔ hire@ngauge.digital (Hire) ... ✅ SENT
+[112/156] [Account 1: sparshgoyal199@gmail.com (112/200)] ➔ quad-recruit@quadranttechnologies.com (Hiring Team) ... ✅ SENT
+[113/156] [Account 1: sparshgoyal199@gmail.com (113/200)] ➔ nirosha.v@toqsoft.com (Nirosha) ... ✅ SENT
+[114/156] [Account 1: sparshgoyal199@gmail.com (114/200)] ➔ priya.raychura@e2msolutions.com (Priya Raychura) ... ✅ SENT
+[115/156] [Account 1: sparshgoyal199@gmail.com (115/200)] ➔ ta2@winsolutions.co.in (Hiring Team) ... ✅ SENT
+[116/156] [Account 1: sparshgoyal199@gmail.com (116/200)] ➔ shivaraj.w@accelgrowthtech.com (Shivaraj) ... ✅ SENT
+[117/156] [Account 1: sparshgoyal199@gmail.com (117/200)] ➔ hinal.shah@kodytechnolab.com (Hinal Shah) ... ✅ SENT
+[118/156] [Account 1: sparshgoyal199@gmail.com (118/200)] ➔ pramod.patil@intelizign.com (Pramod Patil) ... ✅ SENT
+[119/156] [Account 1: sparshgoyal199@gmail.com (119/200)] ➔ mayuri.a@puretechnology.in (Mayuri) ... ✅ SENT
+[120/156] [Account 1: sparshgoyal199@gmail.com (120/200)] ➔ hr@manabh.com (Hiring Team) ... ✅ SENT
+[121/156] [Account 1: sparshgoyal199@gmail.com (121/200)] ➔ careers@infocusp.com (Hiring Team) ... ✅ SENT
+[122/156] [Account 1: sparshgoyal199@gmail.com (122/200)] ➔ hr@knowbee.app (Hiring Team) ... ✅ SENT
+[123/156] [Account 1: sparshgoyal199@gmail.com (123/200)] ➔ samarth@tlregtech.com (Samarth) ... ✅ SENT
+[124/156] [Account 1: sparshgoyal199@gmail.com (124/200)] ➔ careers@coditas.com (Hiring Team) ... ✅ SENT
+[125/156] [Account 1: sparshgoyal199@gmail.com (125/200)] ➔ careers@swiggy.com (Hiring Team) ... ✅ SENT
+[126/156] [Account 1: sparshgoyal199@gmail.com (126/200)] ➔ careers@futurism.com (Hiring Team) ... ✅ SENT
+[127/156] [Account 1: sparshgoyal199@gmail.com (127/200)] ➔ careers@myinternships.in (Hiring Team) ... ✅ SENT
+[128/156] [Account 1: sparshgoyal199@gmail.com (128/200)] ➔ hr@patseer.com (Hiring Team) ... ✅ SENT
+[129/156] [Account 1: sparshgoyal199@gmail.com (129/200)] ➔ careers@thinkitive.com (Hiring Team) ... ✅ SENT
+[130/156] [Account 1: sparshgoyal199@gmail.com (130/200)] ➔ careers@mphasis.com (Hiring Team) ... ✅ SENT
+[131/156] [Account 1: sparshgoyal199@gmail.com (131/200)] ➔ careers@rockwellautomation.com (Hiring Team) ... ✅ SENT
+[132/156] [Account 1: sparshgoyal199@gmail.com (132/200)] ➔ careers@devlabstechnology.com (Hiring Team) ... ✅ SENT
+[133/156] [Account 1: sparshgoyal199@gmail.com (133/200)] ➔ careers@tcs.com (Hiring Team) ... ✅ SENT
+[134/156] [Account 1: sparshgoyal199@gmail.com (134/200)] ➔ careers@sakon.com (Hiring Team) ... ✅ SENT
+[135/156] [Account 1: sparshgoyal199@gmail.com (135/200)] ➔ careers@hidanitech.com (Hiring Team) ... ✅ SENT
+[136/156] [Account 1: sparshgoyal199@gmail.com (136/200)] ➔ careers@ymtsindia.com (Hiring Team) ... ✅ SENT
+[137/156] [Account 1: sparshgoyal199@gmail.com (137/200)] ➔ careers@alion.io (Hiring Team) ... ✅ SENT
+[138/156] [Account 1: sparshgoyal199@gmail.com (138/200)] ➔ careers@techhubindia.org (Hiring Team) ... ✅ SENT
+[139/156] [Account 1: sparshgoyal199@gmail.com (139/200)] ➔ careers@kgcrmsolutions.com (Hiring Team) ... ✅ SENT
+[140/156] [Account 1: sparshgoyal199@gmail.com (140/200)] ➔ accessiblecareers@nvidia.com (Hiring Team) ... ✅ SENT
+[141/156] [Account 1: sparshgoyal199@gmail.com (141/200)] ➔ careers@aisensy.com (Hiring Team) ... ✅ SENT
+[142/156] [Account 1: sparshgoyal199@gmail.com (142/200)] ➔ careers@blitz.gg (Hiring Team) ... ✅ SENT
+[143/156] [Account 1: sparshgoyal199@gmail.com (143/200)] ➔ careers@blackbuck.com (Hiring Team) ... ✅ SENT
+[144/156] [Account 1: sparshgoyal199@gmail.com (144/200)] ➔ careers@telgoo5.com (Hiring Team) ... ✅ SENT
+[145/156] [Account 1: sparshgoyal199@gmail.com (145/200)] ➔ careers@ey.com (Hiring Team) ... ✅ SENT
+[146/156] [Account 1: sparshgoyal199@gmail.com (146/200)] ➔ careers@qualys.com (Hiring Team) ... ✅ SENT
+[147/156] [Account 1: sparshgoyal199@gmail.com (147/200)] ➔ careers@ukg.com (Hiring Team) ... ✅ SENT
+[148/156] [Account 1: sparshgoyal199@gmail.com (148/200)] ➔ careers@db.com (Hiring Team) ... ✅ SENT
+[149/156] [Account 1: sparshgoyal199@gmail.com (149/200)] ➔ careers@deloitte.com (Hiring Team) ... ✅ SENT
+[150/156] [Account 1: sparshgoyal199@gmail.com (150/200)] ➔ ruchika@immverse.ai (Ruchika Bobade) ... ✅ SENT
+[151/156] [Account 1: sparshgoyal199@gmail.com (151/200)] ➔ priti@immverse.ai (Priti Ramakrishnan) ... ✅ SENT
+[152/156] [Account 1: sparshgoyal199@gmail.com (152/200)] ➔ rashi@headsupfortails.com (Rashi Narang) ... ✅ SENT
+[153/156] [Account 1: sparshgoyal199@gmail.com (153/200)] ➔ rahul@headsupfortails.com (Rahul S.) ... ✅ SENT
+[154/156] [Account 1: sparshgoyal199@gmail.com (154/200)] ➔ kritika.malhotra@headsupfortails.com (Kritika Malhotra) ... ✅ SENT
+[155/156] [Account 1: sparshgoyal199@gmail.com (155/200)] ➔ mannav.aildasani@headsupfortails.com (Mannav Aildasani) ... ✅ SENT
+[156/156] [Account 1: sparshgoyal199@gmail.com (156/200)] ➔ latha@headsupfortails.com (Latha V Anand, PhD) ... ✅ SENT
+
+=================================================================
+OUTREACH RUN COMPLETE (WATERFALL)
+  Successfully Sent : 156
+  Failed            : 0
+
+Database Status:
+  • sent: 360
+=================================================================
+
+=================================================================
+[00:31:15] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.reporting.dashboard --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 2814
+  ✉️  Email Outreach Available : 308 jobs
+  👉 Action: Manual Portal     : 2506 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 2057.8s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_235658.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================

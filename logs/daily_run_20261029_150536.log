@@ -1,0 +1,75 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-29 15:05:37
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261029_150536.log
+=================================================================
+
+=================================================================
+[15:05:37] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 3090 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... Network error: HTTPSConnectionPool(host='jobviareferral.com', port=443): Max retries exceeded with url: /index.php/wp-json/wp/v2/posts?per_page=100&page=1&search=intern (Caused by NameResolutionError("HTTPSConnection(host='jobviareferral.com', port=443): Failed to resolve 'jobviareferral.com' ([Errno 11001] getaddrinfo failed)"))
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 0
+Brand new posts added        : 0
+Total listings in database   : 3090
+Total matches (pre-filtered) : 938
+Total detail records ready   : 3090
+============================================================
+
+=================================================================
+[15:05:51] STEP: 1b/6 Ingest Open Hiring Postings from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.multi_portal --limit 40
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL OPEN HIRING INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Remotive API, Arbeitnow API, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+Target : 40 fresh jobs per portal (Total: ~200 jobs)
+=================================================================
+📊 Pre-filtering against 3090 known DB entries to avoid duplicate scraping.
+
+🌐 [Internshala] Fetching active tech internships across targeted streams (target: 40)...
+   ⚠️ Internshala artificial-intelligence-ai-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/artificial-intelligence-ai-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Internshala computer-science-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/computer-science-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Internshala python-django-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/python-django-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Internshala data-science-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/data-science-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Internshala machine-learning-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/machine-learning-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Internshala web-development-internship page 1 scraping error: HTTPSConnectionPool(host='internshala.com', port=443): Max retries exceeded with url: /internships/web-development-internship/page-1/ (Caused by NameResolutionError("HTTPSConnection(host='internshala.com', port=443): Failed to resolve 'internshala.com' ([Errno 11001] getaddrinfo failed)"))
+   ✅ Internshala: Discovered 0 brand-new active hiring companies.
+🌐 [LinkedIn Jobs] Querying public postings across rotated search queries (target: 40)...
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Machine%20Learning%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Software%20Engineer%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=AI%20Engineer%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Backend%20Developer%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Generative%20AI&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%20Science%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ LinkedIn Jobs scraping error at start=0: HTTPSConnectionPool(host='www.linkedin.com', port=443): Max retries exceeded with url: /jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Python%20Developer%20Intern&location=India&start=0 (Caused by NameResolutionError("HTTPSConnection(host='www.linkedin.com', port=443): Failed to resolve 'www.linkedin.com' ([Errno 11001] getaddrinfo failed)"))
+   ✅ LinkedIn Jobs: Discovered 0 brand-new active hiring companies.
+🌐 [Remotive API] Fetching live remote developer & AI positions (target: 40)...
+   ⚠️ Remotive API error for category software-dev: HTTPSConnectionPool(host='remotive.com', port=443): Max retries exceeded with url: /api/remote-jobs?category=software-dev&limit=50 (Caused by NameResolutionError("HTTPSConnection(host='remotive.com', port=443): Failed to resolve 'remotive.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ Remotive API error for category data: HTTPSConnectionPool(host='remotive.com', port=443): Max retries exceeded with url: /api/remote-jobs?category=data&limit=50 (Caused by NameResolutionError("HTTPSConnection(host='remotive.com', port=443): Failed to resolve 'remotive.com' ([Errno 11001] getaddrinfo failed)"))
+   ✅ Remotive: Discovered 0 brand-new active hiring companies.
+🌐 [Arbeitnow API] Fetching live tech & developer positions (target: 40)...
+   ⚠️ Arbeitnow API error: HTTPSConnectionPool(host='www.arbeitnow.com', port=443): Max retries exceeded with url: /api/job-board-api (Caused by NameResolutionError("HTTPSConnection(host='www.arbeitnow.com', port=443): Failed to resolve 'www.arbeitnow.com' ([Errno 11001] getaddrinfo failed)"))
+   ✅ Arbeitnow: Discovered 0 brand-new active hiring companies.
+🌐 [Indeed India] Launching browser to scan active postings (target: 40)...
+   ✅ Indeed India: Discovered 0 brand-new active hiring companies.
+
+=================================================================
+SUMMARY: Gathered 0 brand-new candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 0
+   🔄 Existing Jobs Refreshed: 0
+   🎯 Total Ready for Decision-Maker Enrichment: 0
+
+=================================================================
+[15:06:08] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.evaluation.llm_judge
+=================================================================

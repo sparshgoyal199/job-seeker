@@ -1,0 +1,1151 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-31 10:55:39
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261031_105539.log
+=================================================================
+
+=================================================================
+[10:55:39] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 3330 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... No posts returned.
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 0
+Brand new posts added        : 0
+Total listings in database   : 3330
+Total matches (pre-filtered) : 1178
+Total detail records ready   : 3330
+============================================================
+
+=================================================================
+[10:55:43] STEP: 1b/6 Ingest Open Hiring Postings from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.ingestion.multi_portal --limit 40
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL OPEN HIRING INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Remotive API, Arbeitnow API, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+Target : 40 fresh jobs per portal (Total: ~200 jobs)
+=================================================================
+📊 Pre-filtering against 3330 known DB entries to avoid duplicate scraping.
+
+🌐 [Internshala] Fetching active tech internships across targeted streams (target: 40)...
+   ✅ Internshala: Discovered 40 brand-new active hiring companies.
+🌐 [LinkedIn Jobs] Querying public postings across rotated search queries (target: 40)...
+   ✅ LinkedIn Jobs: Discovered 40 brand-new active hiring companies.
+🌐 [Remotive API] Fetching live remote developer & AI positions (target: 40)...
+   ✅ Remotive: Discovered 0 brand-new active hiring companies.
+🌐 [Arbeitnow API] Fetching live tech & developer positions (target: 40)...
+   ✅ Arbeitnow: Discovered 40 brand-new active hiring companies.
+🌐 [Indeed India] Launching browser to scan active postings (target: 40)...
+   ⚠️ Indeed India returned 403 (Cloudflare block) — skipping Indeed.
+
+=================================================================
+SUMMARY: Gathered 120 brand-new candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 120
+   🔄 Existing Jobs Refreshed: 0
+   🎯 Total Ready for Decision-Maker Enrichment: 120
+
+=================================================================
+[10:56:48] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[10:56:56] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 230
+   Contacts in DB (total)  : 1667
+   Pending (not mailed yet): 52
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[10:56:57] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.portal_contacts --limit 50
+=================================================================
+=================================================================
+🔍 RECRUITER CONTACT DISCOVERY & ENRICHMENT ENGINE
+=================================================================
+Unattempted Portal Jobs without emails : 1803
+Jobs Selected for this batch           : 50
+Mode                                   : LIVE ENRICHMENT
+-----------------------------------------------------------------
+[1/50] Post #10019 | Aipxperts ... 🎯 FOUND via Company Cache (hr@aipxperts.com)!
+[2/50] Post #10010 | ZYBO Tech Lab ... 🎯 FOUND via Search Engine OSINT!
+       Recruiter: Hiring Team <jobs@zybotechlab.com>
+       Domain   : zybo.in
+[3/50] Post #10007 | Stamens Software Pvt. Ltd ... ❌ No verified contact found (Requires manual portal apply)
+[4/50] Post #10004 | American Chase ... 🎯 FOUND via Company Cache (careers@chase.com)!
+[5/50] Post #10001 | Taazaa ... 🎯 FOUND via Company Cache (abhishekk@taazaa.com)!
+[6/50] Post #9999 | MWIDM ... ❌ No verified contact found (Requires manual portal apply)
+[7/50] Post #9996 | 🎮Side Hiring | ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@thefarside.com>
+       Domain   : thefarside.com
+[8/50] Post #9991 | GE Vernova ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@gevernova.com>
+       Domain   : gevernova.com
+[9/50] Post #9988 | Craft Silicon ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@craftsilicon.com>
+       Domain   : craftsilicon.com
+[10/50] Post #9985 | Capco ... 🎯 FOUND via Company Cache (careers@capco.com)!
+[11/50] Post #9983 | Anther ... ❌ No verified contact found (Requires manual portal apply)
+[12/50] Post #9980 | Capgemini ... 🎯 FOUND via Company Cache (careers@capgemini.com)!
+[13/50] Post #9977 | Capgemini Engineering ... ❌ No verified contact found (Requires manual portal apply)
+[14/50] Post #9975 | Roboyo ... ❌ No verified contact found (Requires manual portal apply)
+[15/50] Post #9973 | Marquis Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[16/50] Post #9970 | Hudini ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@hudini.io>
+       Domain   : hudini.io
+[17/50] Post #9967 | Maruti Techlabs ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careers@marutitech.com>
+       Domain   : marutitech.com
+[18/50] Post #9962 | Codingmart Technologies ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@codingmart.com>
+       Domain   : codingmart.com
+[19/50] Post #9961 | Virtusa ... 🎯 FOUND via Company Cache (careers@virtusa.com)!
+[20/50] Post #9958 | Oakava Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[21/50] Post #9955 | Genpact ... 🎯 FOUND via Company Cache (hr.helpdeskexit@genpact.com)!
+[22/50] Post #9953 | Hiring Alert | ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@shutterstock.com>
+       Domain   : shutterstock.com
+[23/50] Post #9950 | SculptSoft ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <career@sculptsoft.com>
+       Domain   : sculptsoft.com
+[24/50] Post #9946 | Iware Software Solutions ... ❌ No verified contact found (Requires manual portal apply)
+[25/50] Post #9945 | Wipro ... 🎯 FOUND via Company Cache (careers@wipro.com)!
+[26/50] Post #9934 | NVIDIA ... 🎯 FOUND via Company Cache (accessiblecareers@nvidia.com)!
+[27/50] Post #9931 | Flipkart ... ❌ No verified contact found (Requires manual portal apply)
+[28/50] Post #9928 | VARAISYS ... ❌ No verified contact found (Requires manual portal apply)
+[29/50] Post #9925 | EXL ... 🎯 FOUND via Company Cache (careers@exlservice.com)!
+[30/50] Post #9924 | Bacancy ... ❌ No verified contact found (Requires manual portal apply)
+[31/50] Post #9921 | TestingXperts ... 🎯 FOUND via Company Cache (careers@testingxperts.com)!
+[32/50] Post #9915 | Atyantik Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[33/50] Post #9912 | Futentia Solutions ... ❌ No verified contact found (Requires manual portal apply)
+[34/50] Post #9906 | SDET Tech ... 🎯 FOUND via Company Cache (careers@sdettech.com)!
+[35/50] Post #9904 | We’re Hiring: Software ... ❌ No verified contact found (Requires manual portal apply)
+[36/50] Post #9901 | Harjai Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[37/50] Post #9898 | PwC ... ❌ No verified contact found (Requires manual portal apply)
+[38/50] Post #9891 | GE HealthCare ... 🎯 FOUND via Company Cache (ravikannan@gehealthcare.com)!
+[39/50] Post #9887 | Publicis Groupe ... ❌ No verified contact found (Requires manual portal apply)
+[40/50] Post #9884 | Glow Apps Pvt. Ltd. ... ❌ No verified contact found (Requires manual portal apply)
+[41/50] Post #9881 | Infosys ... 🎯 FOUND via Company Cache (careers@infosys.com)!
+[42/50] Post #9878 | GAMMASTACK ... 🎯 FOUND via Company Cache (careers@gammastack.com)!
+[43/50] Post #9875 | ZecData Technology ... ❌ No verified contact found (Requires manual portal apply)
+[44/50] Post #9872 | Niotechone Software Solution ... ❌ No verified contact found (Requires manual portal apply)
+[45/50] Post #9869 | QAble Testlab ... ❌ No verified contact found (Requires manual portal apply)
+[46/50] Post #9866 | Comcast ... ❌ No verified contact found (Requires manual portal apply)
+[47/50] Post #9863 | Citi ... 🎯 FOUND via Company Cache (careers@citi.com)!
+[48/50] Post #9857 | Associate Quality Assurance ... ❌ No verified contact found (Requires manual portal apply)
+[49/50] Post #9854 | Young Minds Technology Solutions Pvt Ltd ... ❌ No verified contact found (Requires manual portal apply)
+[50/50] Post #9848 | Saanvi Technologies ... ❌ No verified contact found (Requires manual portal apply)
+
+=================================================================
+ENRICHMENT SUMMARY
+  Processed Jobs       : 50
+  New Emails Discovered: 25
+  ✅ Added 25 new recruiter email(s) into hr_contacts table!
+  They will now be included in your cold email queue and dashboard.
+=================================================================
+
+=================================================================
+[11:05:05] STEP: 4b/6 Discover Decision-Maker LinkedIn Profiles & Emails (77 waiting, targeting ~123 more)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.enrichment.linkedin_leads --limit 31 --method auto
+=================================================================
+
+=================================================================
+🚀 LINKEDIN DECISION-MAKER & TECH LEADER ENRICHMENT ENGINE
+=================================================================
+Candidate Profile : Sparsh Goyal (B.Sc CS Hansraj College, 2026)
+Core Skills       : Python, FastAPI, RAG, LangChain, MCP Server, LLM Orchestration, SQLite, Vector Databases
+Discovery Method  : AUTO (Apify + Logged-in Chrome)
+=================================================================
+
+🔍 Screening candidate listings for Strict Resume Fit (Target: 31 companies)...
+   Evaluating Post #299968258: Queens Of Change Foundation - Python Dev... ✓ [Match: Queens Of Change Foundation]
+   Evaluating Post #299074910: Megaminds IT Services - Robotics Interns... ✓ [Match: Megaminds IT Services]
+   Evaluating Post #298925685: Codeatrix - Full Stack Development... ✓ [Match: Codeatrix]
+   Evaluating Post #298881219: Citi - Generative AI Software Engineer... ✓ [Match: Citi]
+   Evaluating Post #298515042: Electronic Arts (EA) - JAVA Software Eng... ✓ [Match: Electronic Arts (EA)]
+   Evaluating Post #298216102: Encord - Forward Deployed Software Engin... ✓ [Match: Encord]
+   Evaluating Post #298161620: Basti Ki Pathshala Foundation - Python D... ✓ [Match: Basti Ki Pathshala Foundation]
+   Evaluating Post #296722384: Polestar Analytics - Generative AI Engin... ✓ [Match: Polestar Analytics]
+   Evaluating Post #296675094: Quest Global - Generative AI Engineer... ✓ [Match: Quest Global]
+   Evaluating Post #296649431: Kenmark ITan Solutions - Front End Devel... ✓ [Match: Kenmark ITan Solutions]
+   Evaluating Post #296493885: Airwallex - Director, International Expa... ✓ [Match: Airwallex]
+   Evaluating Post #296069670: IQ Plus AG - Senior Softwareentwickler M... ✓ [Match: IQ Plus AG]
+   Evaluating Post #295951304: adjoe - Senior iOS Developer (f/m/d)... ✓ [Match: adjoe]
+   Evaluating Post #295692236: Gateway Software Solutions - Flutter Dev... ✓ [Match: Gateway Software Solutions]
+   Evaluating Post #295566936: bp - Senior Software Engineer... ✓ [Match: bp]
+   Evaluating Post #293686937: Grivaa Consultancy Services - AI Video E... ✓ [Match: Grivaa Consultancy Services]
+   Evaluating Post #293582826: Kpler - Senior Data Engineer - Financial... ✓ [Match: Kpler]
+   Evaluating Post #293323368: Gateway Software Solutions - Machine Lea... ✓ [Match: Gateway Software Solutions]
+   Evaluating Post #293244322: Alphanumeric Ideas Private Limited - AI ... ✓ [Match: Alphanumeric Ideas Private Limited]
+   Evaluating Post #291486740: NudgiFi Technologies (Ancona, Italy) - M... ✓ [Match: NudgiFi Technologies (Ancona, Italy)]
+   Evaluating Post #290745835: Capco - Generative AI Engineer... ✓ [Match: Capco]
+   Evaluating Post #290318241: She Can Foundation - AI Web Development... ✓ [Match: She Can Foundation]
+   Evaluating Post #290134218: Skillzen Loop - Software Developer Inter... ✓ [Match: Skillzen Loop]
+   Evaluating Post #289373985: Edri - Senior AI/ML Engineer (m/f/d)... ✓ [Match: Edri]
+   Evaluating Post #287592196: Lemon.io - Senior React Full-stack Devel... ✓ [Match: Lemon.io]
+   Evaluating Post #287215753: Jobs4PanIndia - Data Science Intern... ✓ [Match: Jobs4PanIndia]
+   Evaluating Post #286489186: SumUp - Senior Backend Engineer - Run & ... ✓ [Match: SumUp]
+   Evaluating Post #286320980: UST - AI Engineer... ✓ [Match: UST]
+   Evaluating Post #286098570: BlitzenX - UI Developer Intern... ✓ [Match: BlitzenX]
+   Evaluating Post #285984433: Alaika - Associate Partner - Financial S... ✓ [Match: Alaika]
+   Evaluating Post #285799034: Women First India Foundation - SQL Devel... ✓ [Match: Women First India Foundation]
+
+🎯 Processing 31 Skill-Matched Companies:
+   🌐 Launched persistent Chrome session for fast batch discovery.
+
+[1/31] 🏢 COMPANY: Queens Of Change Foundation (Post #299968258)
+   Matched Role : Queens Of Change Foundation - Python Development
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/queens-of-change-foundation
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Queens Of Change Foundation' in logged-in Chrome...
+   ⚠️ Search error for 'Queens Of Change Foundation HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Queens+Of+Change+Foundation+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Queens+Of+Change+Foundation+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Queens Of Change Foundation Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Queens+Of+Change+Foundation+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Queens+Of+Change+Foundation+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Queens Of Change Foundation Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Queens+Of+Change+Foundation+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Queens+Of+Change+Foundation+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Queens Of Change Foundation CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Queens+Of+Change+Foundation+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Queens+Of+Change+Foundation+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/queens-of-change-foundation...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/queens-of-change-foundation...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/queens-of-change-foundation...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/queens-of-change-foundation...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/queens-of-change-foundation...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/queens-of-change-foundation...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[2/31] 🏢 COMPANY: Megaminds IT Services (Post #299074910)
+   Matched Role : Megaminds IT Services - Robotics Internship in Hyderabad, Mumbai (Hybrid)
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/megaminds-it-services
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Megaminds IT Services' in logged-in Chrome...
+   ⚠️ Search error for 'Megaminds IT Services HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Megaminds+IT+Services+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Megaminds+IT+Services+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Megaminds IT Services Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Megaminds+IT+Services+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Megaminds+IT+Services+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Megaminds IT Services Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Megaminds+IT+Services+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Megaminds+IT+Services+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Megaminds IT Services CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Megaminds+IT+Services+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Megaminds+IT+Services+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/megaminds-it-services...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/megaminds-it-services...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/megaminds-it-services...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/megaminds-it-services...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/megaminds-it-services...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/megaminds-it-services...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[3/31] 🏢 COMPANY: Codeatrix (Post #298925685)
+   Matched Role : Codeatrix - Full Stack Development
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/codeatrix
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Codeatrix' in logged-in Chrome...
+   ⚠️ Search error for 'Codeatrix HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Codeatrix+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Codeatrix+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Codeatrix Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Codeatrix+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Codeatrix+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Codeatrix Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Codeatrix+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Codeatrix+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Codeatrix CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Codeatrix+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Codeatrix+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/codeatrix...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/codeatrix...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/codeatrix...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/codeatrix...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/codeatrix...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/codeatrix...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[4/31] 🏢 COMPANY: Citi (Post #298881219)
+   Matched Role : Citi - Generative AI Software Engineer
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/citi
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Citi' in logged-in Chrome...
+   ⚠️ Search error for 'Citi HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Citi+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Citi+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Citi Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Citi+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Citi+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Citi Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Citi+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Citi+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Citi CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Citi+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Citi+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/citi...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/citi...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/citi...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/citi...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/citi...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/citi...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[5/31] 🏢 COMPANY: Electronic Arts (EA) (Post #298515042)
+   Matched Role : Electronic Arts (EA) - JAVA Software Engineer Intern
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/electronic-arts-ea
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Electronic Arts (EA)' in logged-in Chrome...
+   ⚠️ Search error for 'Electronic Arts (EA) HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Electronic+Arts+%28EA%29+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Electronic+Arts+%28EA%29+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Electronic Arts (EA) Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Electronic+Arts+%28EA%29+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Electronic+Arts+%28EA%29+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Electronic Arts (EA) Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Electronic+Arts+%28EA%29+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Electronic+Arts+%28EA%29+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Electronic Arts (EA) CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Electronic+Arts+%28EA%29+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Electronic+Arts+%28EA%29+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/electronic-arts-ea...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/electronic-arts-ea...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/electronic-arts-ea...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/electronic-arts-ea...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/electronic-arts-ea...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/electronic-arts-ea...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[6/31] 🏢 COMPANY: Encord (Post #298216102)
+   Matched Role : Encord - Forward Deployed Software Engineer
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/encord
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Encord' in logged-in Chrome...
+   ⚠️ Search error for 'Encord HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Encord+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Encord+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Encord Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Encord+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Encord+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Encord Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Encord+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Encord+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Encord CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Encord+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Encord+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/encord...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/encord...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/encord...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/encord...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/encord...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/encord...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[7/31] 🏢 COMPANY: Basti Ki Pathshala Foundation (Post #298161620)
+   Matched Role : Basti Ki Pathshala Foundation - Python Development
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/basti-ki-pathshala-foundation
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Basti Ki Pathshala Foundation' in logged-in Chrome...
+   ⚠️ Search error for 'Basti Ki Pathshala Foundation HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Basti+Ki+Pathshala+Foundation+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Basti+Ki+Pathshala+Foundation+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Basti Ki Pathshala Foundation Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Basti+Ki+Pathshala+Foundation+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Basti+Ki+Pathshala+Foundation+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Basti Ki Pathshala Foundation Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Basti+Ki+Pathshala+Foundation+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Basti+Ki+Pathshala+Foundation+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Basti Ki Pathshala Foundation CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Basti+Ki+Pathshala+Foundation+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Basti+Ki+Pathshala+Foundation+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/basti-ki-pathshala-foundation...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/basti-ki-pathshala-foundation...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/basti-ki-pathshala-foundation...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/basti-ki-pathshala-foundation...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/basti-ki-pathshala-foundation...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/basti-ki-pathshala-foundation...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[8/31] 🏢 COMPANY: Polestar Analytics (Post #296722384)
+   Matched Role : Polestar Analytics - Generative AI Engineer
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/polestar-analytics
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Polestar Analytics' in logged-in Chrome...
+   ⚠️ Search error for 'Polestar Analytics HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Polestar+Analytics+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Polestar+Analytics+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Polestar Analytics Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Polestar+Analytics+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Polestar+Analytics+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Polestar Analytics Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Polestar+Analytics+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Polestar+Analytics+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Polestar Analytics CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Polestar+Analytics+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Polestar+Analytics+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/polestar-analytics...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/polestar-analytics...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/polestar-analytics...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/polestar-analytics...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/polestar-analytics...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/polestar-analytics...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[9/31] 🏢 COMPANY: Quest Global (Post #296675094)
+   Matched Role : Quest Global - Generative AI Engineer
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/quest-global
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Quest Global' in logged-in Chrome...
+   ⚠️ Search error for 'Quest Global HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Quest+Global+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Quest+Global+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Quest Global Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Quest+Global+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Quest+Global+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Quest Global Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Quest+Global+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Quest+Global+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Quest Global CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Quest+Global+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Quest+Global+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/quest-global...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/quest-global...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/quest-global...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/quest-global...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/quest-global...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/quest-global...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[10/31] 🏢 COMPANY: Kenmark ITan Solutions (Post #296649431)
+   Matched Role : Kenmark ITan Solutions - Front End Development Internship in Mumbai
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/kenmark-itan
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Kenmark ITan Solutions' in logged-in Chrome...
+   ⚠️ Search error for 'Kenmark ITan HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Kenmark+ITan+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Kenmark+ITan+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Kenmark ITan Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Kenmark+ITan+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Kenmark+ITan+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Kenmark ITan Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Kenmark+ITan+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Kenmark+ITan+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Kenmark ITan CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Kenmark+ITan+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Kenmark+ITan+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/kenmark-itan...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/kenmark-itan...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/kenmark-itan...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/kenmark-itan...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/kenmark-itan...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/kenmark-itan...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[11/31] 🏢 COMPANY: Airwallex (Post #296493885)
+   Matched Role : Airwallex - Director, International Expansion — CEO Office
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/airwallex
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Airwallex' in logged-in Chrome...
+   ⚠️ Search error for 'Airwallex HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Airwallex+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Airwallex+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Airwallex Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Airwallex+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Airwallex+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Airwallex Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Airwallex+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Airwallex+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'Airwallex CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=Airwallex+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=Airwallex+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/airwallex...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/airwallex...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/airwallex...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/airwallex...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/airwallex...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/airwallex...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[12/31] 🏢 COMPANY: IQ Plus AG (Post #296069670)
+   Matched Role : IQ Plus AG - Senior Softwareentwickler Microsoft Dynamics 365 F&amp;O / X++ (m/w/d), 80–100% (16032)
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/iq-plus-ag
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'IQ Plus AG' in logged-in Chrome...
+   ⚠️ Search error for 'IQ Plus AG HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=IQ+Plus+AG+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=IQ+Plus+AG+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'IQ Plus AG Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=IQ+Plus+AG+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=IQ+Plus+AG+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'IQ Plus AG Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=IQ+Plus+AG+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=IQ+Plus+AG+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'IQ Plus AG CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=IQ+Plus+AG+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=IQ+Plus+AG+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/iq-plus-ag...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/iq-plus-ag...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/iq-plus-ag...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/iq-plus-ag...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/iq-plus-ag...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/iq-plus-ag...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[13/31] 🏢 COMPANY: adjoe (Post #295951304)
+   Matched Role : adjoe - Senior iOS Developer (f/m/d)
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/adjoe
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'adjoe' in logged-in Chrome...
+   ⚠️ Search error for 'adjoe HR': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=adjoe+HR
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=adjoe+HR", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'adjoe Recruiter': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=adjoe+Recruiter
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=adjoe+Recruiter", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'adjoe Engineering Manager': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=adjoe+Engineering+Manager
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=adjoe+Engineering+Manager", waiting until "domcontentloaded"
+
+   ⚠️ Search error for 'adjoe CTO': Page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.linkedin.com/search/results/people/?keywords=adjoe+CTO
+Call log:
+  - navigating to "https://www.linkedin.com/search/results/people/?keywords=adjoe+CTO", waiting until "domcontentloaded"
+
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/adjoe...
+   ⚠️ Apify Token #1 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_Jbqp9vP5gt2eciNG6a4iClwM7xwbNv2yZJ24 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #2/6] Querying memo23 on https://www.linkedin.com/company/adjoe...
+   ⚠️ Apify Token #2 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bapHeSmdD4FFThoovdhvcaxEHG2k2k0ZIlMG (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #3/6] Querying memo23 on https://www.linkedin.com/company/adjoe...
+   ⚠️ Apify Token #3 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_1HcYmwtAqLTgdg88arYxxeVVhvgGIN2wydH1 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #4/6] Querying memo23 on https://www.linkedin.com/company/adjoe...
+   ⚠️ Apify Token #4 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_qUEIzRUInxhTdebHyQgJ4jWdvgd1031MVIM3 (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #5/6] Querying memo23 on https://www.linkedin.com/company/adjoe...
+   ⚠️ Apify Token #5 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_bhvUa2YgYeOpnxo2hD4AYIsENhyOcU47AzbJ (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   [Apify Token #6/6] Querying memo23 on https://www.linkedin.com/company/adjoe...
+   ⚠️ Apify Token #6 error: HTTPSConnectionPool(host='api.apify.com', port=443): Max retries exceeded with url: /v2/acts/memo23~linkedin-company-people-scraper/run-sync-get-dataset-items?token=apify_api_NiGKNwrFbTdFPX1j3tocdhuRXZYa8m1IVHBI (Caused by NameResolutionError("HTTPSConnection(host='api.apify.com', port=443): Failed to resolve 'api.apify.com' ([Errno 11001] getaddrinfo failed)"))
+   ⚠️ No decision-makers discovered for this company.
+
+[14/31] 🏢 COMPANY: Gateway Software Solutions (Post #295692236)
+   Matched Role : Gateway Software Solutions - Flutter Development
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/gateway-software
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Gateway Software Solutions' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Gateway Software Solutions:
+      1. 🚀 [Tech] Anisha Jain            | Decision Maker at Gateway Soft | https://www.linkedin.com/in/hr-anisha-jain/
+      2. 🚀 [Tech] Raghav Sharma          | Decision Maker at Gateway Soft | https://www.linkedin.com/in/raghav-sharma-94096rs/
+      3. 🚀 [Tech] Gateway Software SolutionS HR Head | Decision Maker at Gateway Soft | https://www.linkedin.com/in/gatewaysoftwaresolutionscbe/
+      4. 🚀 [Tech] Abhishek Pawar         | Decision Maker at Gateway Soft | https://www.linkedin.com/in/recruiter-abhishek/
+      5. 🚀 [Tech] Firdos Liyakat Ali     | Decision Maker at Gateway Soft | https://www.linkedin.com/in/firdos-liyakat-ali-7a94652a0/
+      6. 🚀 [Tech] Harini U.S             | Decision Maker at Gateway Soft | https://www.linkedin.com/in/harini-u-s-940a642a4/
+      7. 🚀 [Tech] Preetha Ramachandran   | Decision Maker at Gateway Soft | https://www.linkedin.com/in/preetharamachandranhr/
+      8. 🚀 [Tech] Mathanraj M            | Decision Maker at Gateway Soft | https://www.linkedin.com/in/mathanraj-m24/
+
+[15/31] 🏢 COMPANY: bp (Post #295566936)
+   Matched Role : bp - Senior Software Engineer
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/bp
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'bp' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for bp:
+      1. 🚀 [Tech] Monica S               | Decision Maker at bp           | https://www.linkedin.com/in/monica-s-51a556227/
+      2. 🚀 [Tech] Puja Rawani            | Decision Maker at bp           | https://www.linkedin.com/in/puja-rawani-hr/
+      3. 🚀 [Tech] Subrato D              | Decision Maker at bp           | https://www.linkedin.com/in/subrato-d-899506224/
+      4. 🚀 [Tech] Pavithra SM Murugan    | Decision Maker at bp           | https://www.linkedin.com/in/pavithra3010/
+      5. 🚀 [Tech] Balasaheb L. Yeole     | Decision Maker at bp           | https://www.linkedin.com/in/balasaheb-l-yeole-37652512a/
+      6. 🚀 [Tech] Prasanna Varpe         | Decision Maker at bp           | https://www.linkedin.com/in/prasanna-varpe-628693215/
+      7. 🚀 [Tech] Lovely S.              | Decision Maker at bp           | https://www.linkedin.com/in/lovely-s-9783a582/
+      8. 🚀 [Tech] Shiffana Mk            | Decision Maker at bp           | https://www.linkedin.com/in/shiffanamk/
+
+[16/31] 🏢 COMPANY: Grivaa Consultancy Services (Post #293686937)
+   Matched Role : Grivaa Consultancy Services - AI Video Editing (YouTube + Reels)
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/grivaa-capital
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Grivaa Consultancy Services' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Grivaa Consultancy Services:
+      1. 🚀 [Tech] Ayushi Agarwal         | Decision Maker at Grivaa Consu | https://www.linkedin.com/in/ayushi-agarwal-644370189/
+      2. 🚀 [Tech] Jayanti Sharma         | Decision Maker at Grivaa Consu | https://www.linkedin.com/in/jayantisharmaa/
+      3. 🚀 [Tech] Firdos Liyakat Ali     | Decision Maker at Grivaa Consu | https://www.linkedin.com/in/firdos-liyakat-ali-7a94652a0/
+      4. 🚀 [Tech] Panagiotis Grivas      | Decision Maker at Grivaa Consu | https://www.linkedin.com/in/panagiotis-grivas-bb5464104/
+      5. 🚀 [Tech] Jonathan Grivas        | Decision Maker at Grivaa Consu | https://www.linkedin.com/in/jonathan-grivas/
+      6. 🚀 [Tech] Konstantinos Grivas, PhD | Decision Maker at Grivaa Consu | https://www.linkedin.com/in/konstantinos-grivas-ph-d/
+      7. 🚀 [Tech] Xanthe Peterson (Grivas) | Decision Maker at Grivaa Consu | https://www.linkedin.com/in/xanthe-peterson-grivas-7bb28b6/
+      8. 🚀 [Tech] Rochelle Greayer       | Decision Maker at Grivaa Consu | https://www.linkedin.com/in/rochellegreayer/
+
+[17/31] 🏢 COMPANY: Kpler (Post #293582826)
+   Matched Role : Kpler - Senior Data Engineer - Financial Flows
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/kpler
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Kpler' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Kpler:
+      1. 🚀 [Tech] Nikhil Gaikwad         | Decision Maker at Kpler        | https://www.linkedin.com/in/nikhilgaikwad10/
+      2. 🚀 [Tech] Venetia S.             | Decision Maker at Kpler        | https://www.linkedin.com/in/venetia-stamopoulou/
+      3. 🚀 [Tech] Charlie Tulip          | Decision Maker at Kpler        | https://www.linkedin.com/in/charlietulip/
+      4. 🚀 [Tech] Niyaz Ansari           | Decision Maker at Kpler        | https://www.linkedin.com/in/niyazansari/
+      5. 🚀 [Tech] Zhiyuan L.             | Decision Maker at Kpler        | https://www.linkedin.com/in/zhiyuan-l-793562172/
+      6. 🚀 [Tech] Aasim Ziad             | Decision Maker at Kpler        | https://www.linkedin.com/in/aasimziad/
+      7. 🚀 [Tech] Cheryl C.              | Decision Maker at Kpler        | https://www.linkedin.com/in/cherylcsl/
+      8. 🚀 [Tech] Louise M.              | Decision Maker at Kpler        | https://www.linkedin.com/in/louisemosseline/
+
+[18/31] 🏢 COMPANY: Gateway Software Solutions (Post #293323368)
+   Matched Role : Gateway Software Solutions - Machine Learning
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/gateway-software
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Gateway Software Solutions' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Gateway Software Solutions:
+      1. 🚀 [Tech] Anisha Jain            | Decision Maker at Gateway Soft | https://www.linkedin.com/in/hr-anisha-jain/
+      2. 🚀 [Tech] Raghav Sharma          | Decision Maker at Gateway Soft | https://www.linkedin.com/in/raghav-sharma-94096rs/
+      3. 🚀 [Tech] Gateway Software SolutionS HR Head | Decision Maker at Gateway Soft | https://www.linkedin.com/in/gatewaysoftwaresolutionscbe/
+      4. 🚀 [Tech] Abhishek Pawar         | Decision Maker at Gateway Soft | https://www.linkedin.com/in/recruiter-abhishek/
+      5. 🚀 [Tech] Firdos Liyakat Ali     | Decision Maker at Gateway Soft | https://www.linkedin.com/in/firdos-liyakat-ali-7a94652a0/
+      6. 🚀 [Tech] Harini U.S             | Decision Maker at Gateway Soft | https://www.linkedin.com/in/harini-u-s-940a642a4/
+      7. 🚀 [Tech] Preetha Ramachandran   | Decision Maker at Gateway Soft | https://www.linkedin.com/in/preetharamachandranhr/
+      8. 🚀 [Tech] Mathanraj M            | Decision Maker at Gateway Soft | https://www.linkedin.com/in/mathanraj-m24/
+
+[19/31] 🏢 COMPANY: Alphanumeric Ideas Private Limited (Post #293244322)
+   Matched Role : Alphanumeric Ideas Private Limited - AI Agent Development
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/alphanumeric-ideas-private-limited
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Alphanumeric Ideas Private Limited' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Alphanumeric Ideas Private Limited:
+      1. 🚀 [Tech] Anju R Nambiar         | Decision Maker at Alphanumeric | https://www.linkedin.com/in/anju-r-nambiar-28a4b21b1/
+      2. 🚀 [Tech] Kamal Kishlay          | Decision Maker at Alphanumeric | https://www.linkedin.com/in/kamalkishlay/
+      3. 🚀 [Tech] Dr. Dayanand .         | Decision Maker at Alphanumeric | https://www.linkedin.com/in/dayanandindia/
+      4. 🚀 [Tech] TAPASVI KAREKER        | Decision Maker at Alphanumeric | https://www.linkedin.com/in/tapasvi-kareker-10b5b732a/
+      5. 🚀 [Tech] Bhoomi Prajapati       | Decision Maker at Alphanumeric | https://www.linkedin.com/in/bhoomi-prajapati-681887230/
+      6. 🚀 [Tech] Renu Chaurasiya        | Decision Maker at Alphanumeric | https://www.linkedin.com/in/renukumari43/
+      7. 🚀 [Tech] Chiranjit C.           | Decision Maker at Alphanumeric | https://www.linkedin.com/in/chiranjitchak/
+      8. 🚀 [Tech] Navneet singh Kashyap  | Decision Maker at Alphanumeric | https://www.linkedin.com/in/navneet-singh-khasyap40191/
+
+[20/31] 🏢 COMPANY: NudgiFi Technologies (Ancona, Italy) (Post #291486740)
+   Matched Role : NudgiFi Technologies (Ancona, Italy) - Machine Learning
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/nudgifi
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'NudgiFi Technologies (Ancona, Italy)' in logged-in Chrome...
+   ✅ Browser search discovered 0 LinkedIn profile(s)!
+   ℹ️ Browser search found 0 (< 2). Calling Apify memo23...
+   [Apify Token #1/6] Querying memo23 on https://www.linkedin.com/company/nudgifi...
+   ✅ Apify delivered 3 decision-makers!
+
+   📋 Discovered 3 Decision-Makers for NudgiFi Technologies (Ancona, Italy):
+      1. 🚀 [Tech] Nick Sgobba            | NudgiFi Technologies           | https://www.linkedin.com/in/nicksgobba/
+      2. 🚀 [Tech] Dario Vuljanko         | SRE Podcasting                 | https://www.linkedin.com/in/dario-vuljanko-2a7179122/
+      3. 🚀 [Tech] Marco Rossi            | Italy | Professional Profile   | https://www.linkedin.com/in/marcoreds/
+
+[21/31] 🏢 COMPANY: Capco (Post #290745835)
+   Matched Role : Capco - Generative AI Engineer
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/capco
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Capco' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Capco:
+      1. 🚀 [Tech] Prerna verma           | Decision Maker at Capco        | https://www.linkedin.com/in/prerna-verma-096785221/
+      2. 🚀 [Tech] Devansh Nanda          | Decision Maker at Capco        | https://www.linkedin.com/in/devansh-nanda-812bb51a0/
+      3. 🚀 [Tech] Randhir Kumar          | Decision Maker at Capco        | https://www.linkedin.com/in/randhir-kumar-4b4ab321a/
+      4. 🚀 [Tech] Aswin kumar            | Decision Maker at Capco        | https://www.linkedin.com/in/aswinkumar2124/
+      5. 🚀 [Tech] Madhubanti Ghosh       | Decision Maker at Capco        | https://www.linkedin.com/in/madhubanti-ghosh-1608878a/
+      6. 🚀 [Tech] Karan sharma           | Decision Maker at Capco        | https://www.linkedin.com/in/karan-sharma-711338126/
+      7. 🚀 [Tech] Ravneet Kaur           | Decision Maker at Capco        | https://www.linkedin.com/in/ravneet-kaur-0458b6162/
+      8. 🚀 [Tech] Laboni M               | Decision Maker at Capco        | https://www.linkedin.com/in/laboni-m-20374838/
+
+[22/31] 🏢 COMPANY: She Can Foundation (Post #290318241)
+   Matched Role : She Can Foundation - AI Web Development
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/shecanfoundation
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'She Can Foundation' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for She Can Foundation:
+      1. 🚀 [Tech] Priya Dharshini.P      | Decision Maker at She Can Foun | https://www.linkedin.com/in/priya-dharshini-p-584b98299/
+      2. 🚀 [Tech] Vrinda .               | Decision Maker at She Can Foun | https://www.linkedin.com/in/vrinda-4810a6226/
+      3. 🚀 [Tech] Lalit Kumar            | Decision Maker at She Can Foun | https://www.linkedin.com/in/lalit-kumar-491765219/
+      4. 🚀 [Tech] Ayush Gawri            | Decision Maker at She Can Foun | https://www.linkedin.com/in/ayush-gawri-6093b7330/
+      5. 🚀 [Tech] RISHABH KUMAR RAY      | Decision Maker at She Can Foun | https://www.linkedin.com/in/rishabh-kumar-ray-b08b302a1/
+      6. 🚀 [Tech] Gaurav Jha             | Decision Maker at She Can Foun | https://www.linkedin.com/in/gaurav-jha-9b4401215/
+      7. 🚀 [Tech] Shresth Pandey         | Decision Maker at She Can Foun | https://www.linkedin.com/in/shresth-pandey-237574215/
+      8. 🚀 [Tech] Bharti Singh           | Decision Maker at She Can Foun | https://www.linkedin.com/in/bhartisingh29/
+
+[23/31] 🏢 COMPANY: Skillzen Loop (Post #290134218)
+   Matched Role : Skillzen Loop - Software Developer Intern
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/skillzen-loop
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Skillzen Loop' in logged-in Chrome...
+   ✅ Browser search discovered 6 LinkedIn profile(s)!
+
+   📋 Discovered 6 Decision-Makers for Skillzen Loop:
+      1. 🚀 [Tech] Casey Skillen          | Decision Maker at Skillzen Loo | https://www.linkedin.com/in/caseyskillen999/
+      2. 🚀 [Tech] Roel Sillen            | Decision Maker at Skillzen Loo | https://www.linkedin.com/in/rpm-consultancy-roel-sillen/
+      3. 🚀 [Tech] Lisa Skillern          | Decision Maker at Skillzen Loo | https://www.linkedin.com/in/lskillern/
+      4. 🚀 [Tech] Kenny Skillen          | Decision Maker at Skillzen Loo | https://www.linkedin.com/in/kennyskillen/
+      5. 🚀 [Tech] Kurt Sillén            | Decision Maker at Skillzen Loo | https://www.linkedin.com/in/kurtsillen/
+      6. 🚀 [Tech] Sarah Skillen          | Decision Maker at Skillzen Loo | https://www.linkedin.com/in/sarahskillen/
+
+[24/31] 🏢 COMPANY: Edri (Post #289373985)
+   Matched Role : Edri - Senior AI/ML Engineer (m/f/d)
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/edri
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Edri' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Edri:
+      1. 🚀 [Tech] Gvk Emri(hr) Raipur    | Decision Maker at Edri         | https://www.linkedin.com/in/gvk-emri-hr-raipur-441a7098/
+      2. 🚀 [Tech] Edria Services         | Decision Maker at Edri         | https://www.linkedin.com/in/edria-services-897848154/
+      3. 🚀 [Tech] Madhubanti Ghosh       | Decision Maker at Edri         | https://www.linkedin.com/in/madhubanti-ghosh-1608878a/
+      4. 🚀 [Tech] Radhika Priyan- Hiring for EDI-Contivo | Decision Maker at Edri         | https://www.linkedin.com/in/radhika-priyan-hiring-for-edi-contivo-b7407a46/
+      5. 🚀 [Tech] Diptimala Purohit      | Decision Maker at Edri         | https://www.linkedin.com/in/diptimala-purohit-04a058ab/
+      6. 🚀 [Tech] VIKAS MOTIRAM SHENGALE | Decision Maker at Edri         | https://www.linkedin.com/in/vikas-motiram-shengale-807a3536/
+      7. 🚀 [Tech] Edry Oballes           | Decision Maker at Edri         | https://www.linkedin.com/in/edry-oballes-94070b198/
+      8. 🚀 [Tech] Deepika Eri            | Decision Maker at Edri         | https://www.linkedin.com/in/deepika-eri-171451106/
+
+[25/31] 🏢 COMPANY: Lemon.io (Post #287592196)
+   Matched Role : Lemon.io - Senior React Full-stack Developer
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/lemonio
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Lemon.io' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Lemon.io:
+      1. 🚀 [Tech] Sanghamitra Chowdhury  | Decision Maker at Lemon.io     | https://www.linkedin.com/in/sanghamitra-chowdhury/
+      2. 🚀 [Tech] Anantha Sekhar         | Decision Maker at Lemon.io     | https://www.linkedin.com/in/anantha-sekhar-a3a111198/
+      3. 🚀 [Tech] Ruslana Murha          | Decision Maker at Lemon.io     | https://www.linkedin.com/in/ruslana-murha/
+      4. 🚀 [Tech] Urvi Gupta             | Decision Maker at Lemon.io     | https://www.linkedin.com/in/urvi-gupta-618a8a1ab/
+      5. 🚀 [Tech] Rimjhim Dhawan         | Decision Maker at Lemon.io     | https://www.linkedin.com/in/rimjhim-dhawan/
+      6. 🚀 [Tech] chef Shivam Singh      | Decision Maker at Lemon.io     | https://www.linkedin.com/in/chef-shivam-singh-55b65426b/
+      7. 🚀 [Tech] Yana Kurets            | Decision Maker at Lemon.io     | https://www.linkedin.com/in/yana-kurets-0ab1a933/
+      8. 🚀 [Tech] Alina Yaremenko        | Decision Maker at Lemon.io     | https://www.linkedin.com/in/alina-yaremenko/
+
+[26/31] 🏢 COMPANY: Jobs4PanIndia (Post #287215753)
+   Matched Role : Jobs4PanIndia - Data Science Intern
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/jobs4panindia
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Jobs4PanIndia' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Jobs4PanIndia:
+      1. 🚀 [Tech] Khushi Bansal          | Decision Maker at Jobs4PanIndi | https://www.linkedin.com/in/khushi-bansal-5458401a5/
+      2. 🚀 [Tech] Abhyanand Jha          | Decision Maker at Jobs4PanIndi | https://www.linkedin.com/in/abhyanand-jha-9392a0209/
+      3. 🚀 [Tech] Arpitha KN             | Decision Maker at Jobs4PanIndi | https://www.linkedin.com/in/arpitha-kn-233a8b303/
+      4. 🚀 [Tech] Tanya Tyagi            | Decision Maker at Jobs4PanIndi | https://www.linkedin.com/in/tanya-tyagi-17a775194/
+      5. 🚀 [Tech] Palak Khanna           | Decision Maker at Jobs4PanIndi | https://www.linkedin.com/in/palak-khanna-1a1308147/
+      6. 🚀 [Tech] Muskan Khandelwal      | Decision Maker at Jobs4PanIndi | https://www.linkedin.com/in/muskan-khandelwal-740582166/
+      7. 🚀 [Tech] Kamal Kishlay          | Decision Maker at Jobs4PanIndi | https://www.linkedin.com/in/kamalkishlay/
+      8. 🚀 [Tech] Yatharth Srivastava    | Decision Maker at Jobs4PanIndi | https://www.linkedin.com/in/yatharth-srivastava-916774210/
+
+[27/31] 🏢 COMPANY: SumUp (Post #286489186)
+   Matched Role : SumUp - Senior Backend Engineer - Run & Grow
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/sumup
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'SumUp' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for SumUp:
+      1. 🚀 [Tech] Shilpa B.S.            | Decision Maker at SumUp        | https://www.linkedin.com/in/shilpa0102/
+      2. 🚀 [Tech] Eram Qudsia            | Decision Maker at SumUp        | https://www.linkedin.com/in/eram-qudsia-86131521/
+      3. 🚀 [Tech] Anil Kumar Paride      | Decision Maker at SumUp        | https://www.linkedin.com/in/anil-kumar-paride-952669270/
+      4. 🚀 [Tech] Marina Berlitz         | Decision Maker at SumUp        | https://www.linkedin.com/in/marinaberlitz/
+      5. 🚀 [Tech] Jeffery Lovejoy        | Decision Maker at SumUp        | https://www.linkedin.com/in/jeffery-lovejoy-35838b39/
+      6. 🚀 [Tech] Pavithra Venkataramanareddy | Decision Maker at SumUp        | https://www.linkedin.com/in/pavithra-v-ta/
+      7. 🚀 [Tech] Dr. Aditi Raghuram     | Decision Maker at SumUp        | https://www.linkedin.com/in/aditi-raghuram/
+      8. 🚀 [Tech] Priyanka Mondal        | Decision Maker at SumUp        | https://www.linkedin.com/in/priyanka-mondal-4298b51b6/
+
+[28/31] 🏢 COMPANY: UST (Post #286320980)
+   Matched Role : UST - AI Engineer
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/ustglobal
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'UST' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for UST:
+      1. 🚀 [Tech] Shipra Singh           | Decision Maker at UST          | https://www.linkedin.com/in/shipra-singh-53743b18b/
+      2. 🚀 [Tech] Sonal Katyal           | Decision Maker at UST          | https://www.linkedin.com/in/sonal-katyal-436712123/
+      3. 🚀 [Tech] Puja Rawani            | Decision Maker at UST          | https://www.linkedin.com/in/puja-rawani-hr/
+      4. 🚀 [Tech] Disha Kanna            | Decision Maker at UST          | https://www.linkedin.com/in/disha-kanna-562595192/
+      5. 🚀 [Tech] Prasanna Varpe         | Decision Maker at UST          | https://www.linkedin.com/in/prasanna-varpe-628693215/
+      6. 🚀 [Tech] Drishti Madaan         | Decision Maker at UST          | https://www.linkedin.com/in/drishtimadaan1805/
+      7. 🚀 [Tech] Ashwini Gadge          | Decision Maker at UST          | https://www.linkedin.com/in/ashwini-gadge-07339b55/
+      8. 🚀 [Tech] MD NAWAB ALAM          | Decision Maker at UST          | https://www.linkedin.com/in/mdnawab/
+
+[29/31] 🏢 COMPANY: BlitzenX (Post #286098570)
+   Matched Role : BlitzenX - UI Developer Intern
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/blitzenx8
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'BlitzenX' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for BlitzenX:
+      1. 🚀 [Tech] Geeta Vankar           | Decision Maker at BlitzenX     | https://www.linkedin.com/in/geeta-vankar-279a13302/
+      2. 🚀 [Tech] Vishal Jain            | Decision Maker at BlitzenX     | https://www.linkedin.com/in/vishal-jain379/
+      3. 🚀 [Tech] Sanskrati soni         | Decision Maker at BlitzenX     | https://www.linkedin.com/in/sanskrati-soni-4382591b9/
+      4. 🚀 [Tech] Shivangi Solanki       | Decision Maker at BlitzenX     | https://www.linkedin.com/in/shivangi-solanki-8b05b71a7/
+      5. 🚀 [Tech] Gionata Liotta         | Decision Maker at BlitzenX     | https://www.linkedin.com/in/gionata-liotta-943199a0/
+      6. 🚀 [Tech] Sabrina Finger         | Decision Maker at BlitzenX     | https://www.linkedin.com/in/sabrina-finger-a64ba8179/
+      7. 🚀 [Tech] Angela G.              | Decision Maker at BlitzenX     | https://www.linkedin.com/in/an-granados/
+      8. 🚀 [Tech] Blitzen Sebastian      | Decision Maker at BlitzenX     | https://www.linkedin.com/in/blitzensebastian/
+
+[30/31] 🏢 COMPANY: Alaika (Post #285984433)
+   Matched Role : Alaika - Associate Partner - Financial Services / Data & AI (m/f/d)
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/alaika-advisory
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Alaika' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Alaika:
+      1. 🚀 [Tech] Johanna von Geyr       | Decision Maker at Alaika       | https://www.linkedin.com/in/johanna-von-geyr-374b81/
+      2. 🚀 [Tech] Alina Franke           | Decision Maker at Alaika       | https://www.linkedin.com/in/alina-franke/
+      3. 🚀 [Tech] Mila Pollmeier         | Decision Maker at Alaika       | https://www.linkedin.com/in/mila-pollmeier-985a001a3/
+      4. 🚀 [Tech] Umberto Alessandro Ferrari | Decision Maker at Alaika       | https://www.linkedin.com/in/umberto-alessandro-ferrari/
+      5. 🚀 [Tech] Regina Breske          | Decision Maker at Alaika       | https://www.linkedin.com/in/regina-breske-00045b72/
+      6. 🚀 [Tech] Inchara Vasudev        | Decision Maker at Alaika       | https://www.linkedin.com/in/inchara-vasudev/
+      7. 🚀 [Tech] Michaela Matus         | Decision Maker at Alaika       | https://www.linkedin.com/in/michaela-matus-6b626868/
+      8. 🚀 [Tech] Jithin Jose            | Decision Maker at Alaika       | https://www.linkedin.com/in/jithinjose13/
+
+[31/31] 🏢 COMPANY: Women First India Foundation (Post #285799034)
+   Matched Role : Women First India Foundation - SQL Developer
+   Match Reason : Passed tech keyword qualification check
+   Company LinkedIn : https://www.linkedin.com/company/women-first-india-foundation
+   Official Domain  : Not found
+   [Browser Search] Searching LinkedIn People for 'Women First India Foundation' in logged-in Chrome...
+   ✅ Browser search discovered 8 LinkedIn profile(s)!
+
+   📋 Discovered 8 Decision-Makers for Women First India Foundation:
+      1. 🚀 [Tech] Prisha Naveen          | Decision Maker at Women First  | https://www.linkedin.com/in/prisha-naveen/
+      2. 🚀 [Tech] Nakul Ghai             | Decision Maker at Women First  | https://www.linkedin.com/in/nakul-ghai-8741901aa/
+      3. 🚀 [Tech] Shivani Bhatt          | Decision Maker at Women First  | https://www.linkedin.com/in/shivani-bhatt-2639421b0/
+      4. 🚀 [Tech] Arti Mahato            | Decision Maker at Women First  | https://www.linkedin.com/in/artimahato/
+      5. 🚀 [Tech] Dr. Sanchi Jain        | Decision Maker at Women First  | https://www.linkedin.com/in/dr-sanchi-jain-181ab1210/
+      6. 🚀 [Tech] Mesha Aggarwal         | Decision Maker at Women First  | https://www.linkedin.com/in/mesha-aggarwal-1900ab214/
+      7. 🚀 [Tech] Taksh Sharma           | Decision Maker at Women First  | https://www.linkedin.com/in/taksh-sharma29/
+      8. 🚀 [Tech] Manav Pradhan          | Decision Maker at Women First  | https://www.linkedin.com/in/manav-pradhan-230262258/
+📄 Exported 908 leads to CSV: C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.csv
+📊 Generated Interactive HTML Dashboard: C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.html
+
+=================================================================
+🎉 LINKEDIN ENRICHMENT COMPLETED SUCCESSFULLY
+Total Decision-Makers & Tech Leaders Discovered: 137
+Reports Generated:
+  • CSV Report  : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.csv
+  • HTML Report : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.html
+=================================================================
+
+=================================================================
+[11:14:55] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP (Daily Limit: 200)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.outreach.mailer --limit 200
+=================================================================
+📎 Resume Attachment  : sparsh_goyal_resume.pdf (150.5 KB) [C:\Users\hp\OneDrive\Desktop\Resume\sparsh_goyal_resume.pdf]
+
+📊 Today's Outreach Budget: 0/200 sent today (200 remaining for today).
+
+=================================================================
+🚀 LIVE COLD EMAIL SENDING (WATERFALL STRATEGY)
+=================================================================
+Contacts in Queue       : 61 (Sending up to: 61)
+Daily Cap Remaining     : 200/200 emails
+Max Capacity per Account: 200 emails
+Sending Priority:
+  1. Account 1: sparshgoyal199@gmail.com (Primary 1)
+  2. Account 2: rahilgoyal127@gmail.com (Primary 2)
+  3. Account 3: sparsh198@gmail.com (Primary 3)
+-----------------------------------------------------------------
+[1/61] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ thanush@ea.com (Thanush S) ... ✅ SENT
+[2/61] [Account 1: sparshgoyal199@gmail.com (2/200)] ➔ rashi.goswami@ea.com (Rashi Goswami) ... ✅ SENT
+[3/61] [Account 1: sparshgoyal199@gmail.com (3/200)] ➔ naresh.reddy@ea.com (Naresh Reddy) ... ✅ SENT
+[4/61] [Account 1: sparshgoyal199@gmail.com (4/200)] ➔ smita.satapathy@ea.com (Smita Satapathy) ... ✅ SENT
+[5/61] [Account 1: sparshgoyal199@gmail.com (5/200)] ➔ iliyas.khan@ilias.com (Iliyas Khan) ... ✅ SENT
+[6/61] [Account 1: sparshgoyal199@gmail.com (6/200)] ➔ mohd.akhter@ilias.com (Mohd Ilyas Akhter) ... ✅ SENT
+[7/61] [Account 1: sparshgoyal199@gmail.com (7/200)] ➔ eram.qudsia@ilias.com (Eram Qudsia) ... ✅ SENT
+[8/61] [Account 1: sparshgoyal199@gmail.com (8/200)] ➔ rupali.goel@ilias.com (Rupali Goel) ... ✅ SENT
+[9/61] [Account 1: sparshgoyal199@gmail.com (9/200)] ➔ madeeha.ilyas@ilias.com (Madeeha Ilyas) ... ✅ SENT
+[10/61] [Account 1: sparshgoyal199@gmail.com (10/200)] ➔ fizra.fatima@ilias.com (Fizra Fatima) ... ✅ SENT
+[11/61] [Account 1: sparshgoyal199@gmail.com (11/200)] ➔ mahammad.mulla@ilias.com (MAHAMMAD ILIYAS MULLA) ... ✅ SENT
+[12/61] [Account 1: sparshgoyal199@gmail.com (12/200)] ➔ mittal.katariya@ilias.com (Mittal Katariya) ... ✅ SENT
+[13/61] [Account 1: sparshgoyal199@gmail.com (13/200)] ➔ abhiram.singhania@falconebiz.com (ABHIRAM SINGHANIA) ... ✅ SENT
+[14/61] [Account 1: sparshgoyal199@gmail.com (14/200)] ➔ srijit.ramakrishnan@falconebiz.com (Srijit Ramakrishnan) ... ✅ SENT
+[15/61] [Account 1: sparshgoyal199@gmail.com (15/200)] ➔ ankush.shah@falconebiz.com (Ankush Shah) ... ✅ SENT
+[16/61] [Account 1: sparshgoyal199@gmail.com (16/200)] ➔ vinodh@falconebiz.com (VINODH KUMAR L) ... ✅ SENT
+[17/61] [Account 1: sparshgoyal199@gmail.com (17/200)] ➔ ashish.kumar@falconebiz.com (ASHISH KUMAR) ... ✅ SENT
+[18/61] [Account 1: sparshgoyal199@gmail.com (18/200)] ➔ zaheer.adenwala@falconebiz.com (Zaheer Adenwala) ... ✅ SENT
+[19/61] [Account 1: sparshgoyal199@gmail.com (19/200)] ➔ sneha.das@falconebiz.com (Sneha Das) ... ✅ SENT
+[20/61] [Account 1: sparshgoyal199@gmail.com (20/200)] ➔ vivek@falconebiz.com (Vivek K.) ... ✅ SENT
+[21/61] [Account 1: sparshgoyal199@gmail.com (21/200)] ➔ vishal.singh@prosus.com (Vishal Singh) ... ✅ SENT
+[22/61] [Account 1: sparshgoyal199@gmail.com (22/200)] ➔ eram.qudsia@prosus.com (Eram Qudsia) ... ✅ SENT
+[23/61] [Account 1: sparshgoyal199@gmail.com (23/200)] ➔ advocate.kasana@prosus.com (Advocate Arjun Kasana) ... ✅ SENT
+[24/61] [Account 1: sparshgoyal199@gmail.com (24/200)] ➔ sarika.sandhu@prosus.com (Sarika Sandhu) ... ✅ SENT
+[25/61] [Account 1: sparshgoyal199@gmail.com (25/200)] ➔ shivani@prosus.com (Shivani S) ... ✅ SENT
+[26/61] [Account 1: sparshgoyal199@gmail.com (26/200)] ➔ aanchal.chandra@prosus.com (Aanchal Nijhawan Chandra) ... ✅ SENT
+[27/61] [Account 1: sparshgoyal199@gmail.com (27/200)] ➔ aditi.gupta@prosus.com (Aditi Gupta) ... ✅ SENT
+[28/61] [Account 1: sparshgoyal199@gmail.com (28/200)] ➔ kuntal.sisodia@prosus.com (Kuntal Singh Sisodia) ... ✅ SENT
+[29/61] [Account 1: sparshgoyal199@gmail.com (29/200)] ➔ aditya.singh@bharatcode.ai (Aditya Raj Singh) ... ✅ SENT
+[30/61] [Account 1: sparshgoyal199@gmail.com (30/200)] ➔ dev.khemani@bharatcode.ai (Dev Khemani) ... ✅ SENT
+[31/61] [Account 1: sparshgoyal199@gmail.com (31/200)] ➔ muskan.sahni@bharatcode.ai (Muskan Sahni) ... ✅ SENT
+[32/61] [Account 1: sparshgoyal199@gmail.com (32/200)] ➔ nandini.saini@bharatcode.ai (Nandini Saini) ... ✅ SENT
+[33/61] [Account 1: sparshgoyal199@gmail.com (33/200)] ➔ arushree.ravi@bharatcode.ai (Arushree Ravi) ... ✅ SENT
+[34/61] [Account 1: sparshgoyal199@gmail.com (34/200)] ➔ indhu.mathi@bharatcode.ai (Indhu mathi) ... ✅ SENT
+[35/61] [Account 1: sparshgoyal199@gmail.com (35/200)] ➔ preetha.ramachandran@bharatcode.ai (Preetha Ramachandran) ... ✅ SENT
+[36/61] [Account 1: sparshgoyal199@gmail.com (36/200)] ➔ chanderpal.choudhary@bharatcode.ai (Chanderpal Choudhary) ... ✅ SENT
+[37/61] [Account 1: sparshgoyal199@gmail.com (37/200)] ➔ prachi.kashyap@cloudback.it (Prachi Kashyap) ... ✅ SENT
+[38/61] [Account 1: sparshgoyal199@gmail.com (38/200)] ➔ khushi.srivastava@cloudback.it (Khushi Srivastava) ... ✅ SENT
+[39/61] [Account 1: sparshgoyal199@gmail.com (39/200)] ➔ sakshi.prajapati@cloudback.it (Sakshi Prajapati) ... ✅ SENT
+[40/61] [Account 1: sparshgoyal199@gmail.com (40/200)] ➔ arvind.mahato@cloudback.it (Arvind Mahato) ... ✅ SENT
+[41/61] [Account 1: sparshgoyal199@gmail.com (41/200)] ➔ manav.pradhan@cloudback.it (Manav Pradhan) ... ✅ SENT
+[42/61] [Account 1: sparshgoyal199@gmail.com (42/200)] ➔ aarti.padal@cloudback.it (Aarti Padal) ... ✅ SENT
+[43/61] [Account 1: sparshgoyal199@gmail.com (43/200)] ➔ asmita.banerjee@cloudback.it (Asmita Banerjee) ... ✅ SENT
+[44/61] [Account 1: sparshgoyal199@gmail.com (44/200)] ➔ shipra.singh@cloudback.it (Shipra Singh) ... ✅ SENT
+[45/61] [Account 1: sparshgoyal199@gmail.com (45/200)] ➔ vishal.notiyal@gehealthcare.com (Vishal Notiyal) ... ✅ SENT
+[46/61] [Account 1: sparshgoyal199@gmail.com (46/200)] ➔ apurwa.roy@gehealthcare.com (Apurwa Roy) ... ✅ SENT
+[47/61] [Account 1: sparshgoyal199@gmail.com (47/200)] ➔ sunita.birha@gehealthcare.com (Sunita Birha) ... ✅ SENT
+[48/61] [Account 1: sparshgoyal199@gmail.com (48/200)] ➔ kempegowda@gehealthcare.com (Kempegowda B K) ... ✅ SENT
+[49/61] [Account 1: sparshgoyal199@gmail.com (49/200)] ➔ shiffana.mk@gehealthcare.com (Shiffana Mk) ... ✅ SENT
+[50/61] [Account 1: sparshgoyal199@gmail.com (50/200)] ➔ piyali@gehealthcare.com (Piyali S) ... ✅ SENT
+[51/61] [Account 1: sparshgoyal199@gmail.com (51/200)] ➔ naveena.rejithlal@gehealthcare.com (Naveena Rejithlal) ... ✅ SENT
+[52/61] [Account 1: sparshgoyal199@gmail.com (52/200)] ➔ ravikannan@gehealthcare.com (Ravikannan S) ... ✅ SENT
+[53/61] [Account 1: sparshgoyal199@gmail.com (53/200)] ➔ jobs@zybotechlab.com (Hiring Team) ... ✅ SENT
+[54/61] [Account 1: sparshgoyal199@gmail.com (54/200)] ➔ careers@thefarside.com (Hiring Team) ... ✅ SENT
+[55/61] [Account 1: sparshgoyal199@gmail.com (55/200)] ➔ careers@gevernova.com (Hiring Team) ... ✅ SENT
+[56/61] [Account 1: sparshgoyal199@gmail.com (56/200)] ➔ careers@craftsilicon.com (Hiring Team) ... ✅ SENT
+[57/61] [Account 1: sparshgoyal199@gmail.com (57/200)] ➔ careers@hudini.io (Hiring Team) ... ✅ SENT
+[58/61] [Account 1: sparshgoyal199@gmail.com (58/200)] ➔ careers@marutitech.com (Hiring Team) ... ✅ SENT
+[59/61] [Account 1: sparshgoyal199@gmail.com (59/200)] ➔ careers@codingmart.com (Hiring Team) ... ✅ SENT
+[60/61] [Account 1: sparshgoyal199@gmail.com (60/200)] ➔ careers@shutterstock.com (Hiring Team) ... ✅ SENT
+[61/61] [Account 1: sparshgoyal199@gmail.com (61/200)] ➔ career@sculptsoft.com (Hiring Team) ... ✅ SENT
+
+=================================================================
+OUTREACH RUN COMPLETE (WATERFALL)
+  Successfully Sent : 61
+  Failed            : 0
+
+Database Status:
+  • failed: 24
+  • sent: 1649
+  • skipped: 19
+=================================================================
+
+=================================================================
+[11:24:09] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -u -m src.reporting.dashboard --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 3450
+  ✉️  Email Outreach Available : 796 jobs
+  👉 Action: Manual Portal     : 2654 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  LinkedIn Leads Dashboard     : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_linkedin_leads.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 1712.5s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261031_105539.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================

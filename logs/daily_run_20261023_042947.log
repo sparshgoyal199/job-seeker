@@ -1,0 +1,95 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-23 04:29:48
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_042947.log
+=================================================================
+
+=================================================================
+[04:29:48] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe sync_jobs_api.py --incremental
+=================================================================
+Current DB state: 2678 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... received 100 posts (Total in WP: 1172, Pages: 12)
+  Processed 100 posts: +0 new to DB, page completed.
+Encountered already-synced post ID. Incremental sync complete!
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 1
+Brand new posts added        : 0
+Total listings in database   : 2678
+Total matches (pre-filtered) : 526
+Total detail records ready   : 526
+============================================================
+
+=================================================================
+[04:29:52] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe judge_llm.py
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[04:30:03] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe extract_contacts.py
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 76
+   Contacts in DB (total)  : 158
+   Pending (not mailed yet): 0
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[04:30:03] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe enrich_contacts.py --limit 0
+=================================================================
+=================================================================
+🔍 RECRUITER CONTACT DISCOVERY & ENRICHMENT ENGINE
+=================================================================
+Unattempted Portal Jobs without emails : 1
+Jobs Selected for this batch           : 1
+Mode                                   : LIVE ENRICHMENT
+-----------------------------------------------------------------
+[1/1] Post #5617 | SummitCode Ventures ... ❌ No verified contact found (Requires manual portal apply)
+
+=================================================================
+ENRICHMENT SUMMARY
+  Processed Jobs       : 1
+  New Emails Discovered: 0
+=================================================================
+
+=================================================================
+[04:30:09] STEP: 5/6 Cold Email Outreach (SAFETY MODE: Skipped)
+ℹ️  No emails were sent. To preview emails without sending:
+     python cold_mailer.py --dry-run
+   To send pending emails when you feel confident:
+     python daily_run.py --send-emails
+=================================================================
+
+=================================================================
+[04:30:09] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe export_matches.py --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 192
+  ✉️  Email Outreach Available : 132 jobs
+  👉 Action: Manual Portal     : 60 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 23.0s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_042947.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================

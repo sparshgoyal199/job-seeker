@@ -1,0 +1,48 @@
+{
+  "personal": {
+    "first_name": "Sparsh",
+    "last_name": "Goyal",
+    "full_name": "Sparsh Goyal",
+    "email": "sparshgoyal199@gmail.com",
+    "phone": "+91 9887170974",
+    "current_city": "Bharatpur, rajasthan",
+    "country": "India",
+    "linkedin_url": "https://linkedin.com/in/sparshgoyal199",
+    "github_url": "https://github.com/sparshgoyal199",
+    "portfolio_url": "https://github.com/sparshgoyal199",
+    "resume_file": "resume.pdf",
+    "resume_path": "C:\\Users\\hp\\OneDrive\\Desktop\\Resume\\sparsh_goyal_resume.pdf"
+  },
+  "education": {
+    "university": "Hansraj College, University of Delhi",
+    "degree": "Bachelor of Science",
+    "major": "Computer Science",
+    "cgpa": "8.15",
+    "graduation_year": "2026",
+    "graduation_month": "June",
+    "start_year": "2023"
+  },
+  "work_authorization": {
+    "authorized_in_india": true,
+    "require_sponsorship": false,
+    "notice_period_days": "0",
+    "availability": "Immediate"
+  },
+  "skills_summary": "Python, FastAPI, RAG, LangChain, MCP Server, LLM Orchestration, SQLite, Vector Databases",
+  "key_projects": [
+    {
+      "name": "KhojAI",
+      "description": "Collaborative RAG platform that reduced retrieval memory usage by 4x through dynamic chunk caching."
+    },
+    {
+      "name": "DhanTrackAI",
+      "description": "MCP server with OAuth 2.1 authorization and conversational expense management."
+    }
+  ],
+  "custom_answers": {
+    "expected stipend": "15,000 - 25,000 / month (Negotiable)",
+    "willing to relocate": "Yes, willing to relocate or work remotely",
+    "notice period": "Immediate (0 days)",
+    "gender": "Male"
+  }
+}

@@ -1,0 +1,264 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-23 04:42:28
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_044228.log
+=================================================================
+
+=================================================================
+[04:42:28] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 2678 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... received 100 posts (Total in WP: 1172, Pages: 12)
+  Processed 100 posts: +0 new to DB, page completed.
+Encountered already-synced post ID. Incremental sync complete!
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 1
+Brand new posts added        : 0
+Total listings in database   : 2678
+Total matches (pre-filtered) : 526
+Total detail records ready   : 526
+============================================================
+
+=================================================================
+[04:42:33] STEP: 1b/6 Ingest AI Internships from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.multi_portal --limit 10
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL AI INTERNSHIP INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+=================================================================
+🌐 [Internshala] Fetching AI & Machine Learning internships...
+   ✅ Internshala: Discovered 10 AI internships.
+🌐 [LinkedIn Jobs] Querying public AI Engineer Intern postings...
+   ✅ LinkedIn Jobs: Discovered 10 AI internships.
+🌐 [Indeed India] Launching browser to scan AI Engineer Intern vacancies...
+   ✅ Indeed India: Discovered 10 AI internships.
+
+=================================================================
+SUMMARY: Gathered 30 candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 1
+   🔄 Existing Jobs Refreshed: 29
+   🎯 Total Ready for Decision-Maker Enrichment: 30
+
+=================================================================
+[04:42:57] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[04:43:08] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 76
+   Contacts in DB (total)  : 158
+   Pending (not mailed yet): 0
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[04:43:09] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.portal_contacts --limit 0
+=================================================================
+✅ No new unattempted portal jobs to enrich!
+   (All portal jobs have either had emails discovered or been marked for manual apply).
+
+=================================================================
+[04:43:11] STEP: 4b/6 Discover Decision-Maker Emails via LinkedIn & X-Ray
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.linkedin_decision_makers --limit 5
+=================================================================
+=================================================================
+🚀 LINKEDIN DECISION-MAKER ENRICHMENT PIPELINE
+=================================================================
+Target Companies Selected : 5
+Mode                      : LIVE PRODUCTION
+=================================================================
+
+=================================================================
+🏢 COMPANY: Splashgain (Post #297898173)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/splashgain-technology-solutions-pvt-ltd
+   • Domain   : splashgain.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Splashgain...
+   ℹ️ Free X-Ray found 0 candidates (< 5). Activating Apify Fallback (memo23) to complete quota...
+      [Apify Token #1/6] Querying memo23 actor...
+      ✅ Apify Token #1 successfully delivered 4 profiles!
+   ✅ Total candidate pool assembled: 4 decision-makers.
+   Received 4 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 4 candidates...
+   [1/4] Samir Kamat              (splashgain.com) ... ✅ samir.kamat@splashgain.com [Score: 10]
+   [2/4] Somit Shrivastav         (splashgain.com) ... ✅ somit.shrivastav@splashgain.com [Score: 10]
+   [3/4] Kishan Gopale            (splashgain.com) ... ✅ kishan.gopale@splashgain.com [Score: 10]
+   [4/4] Roh…                     (splashgain.com) ... ✅ roh@splashgain.com [Score: 10]
+
+🎯 Selected TOP 4 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Samir Kamat            | samir.kamat@splashgain.com   | Splashgain Technology Solutions Pvt Ltd.
+   2. Somit Shrivastav       | somit.shrivastav@splashgain.com | Kendriya Vidyalaya Sangathan
+   3. Kishan Gopale          | kishan.gopale@splashgain.com | Splashgain Technology Solutions
+   4. Roh…                   | roh@splashgain.com           | Splashgain
+
+✨ Successfully queued 4 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: InAmigos Foundation (Post #290939790)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/inamigos-foundation
+   • Domain   : inamigosfoundation.org.in
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for InAmigos Foundation...
+   🎯 [Zero-Cost Success] Found 10 decision-makers via Free X-Ray. Zero Apify credits used ($0.00 spent)!
+   Received 10 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 10 candidates...
+   [1/10] Sharmistha Majumdar      (inamigosfoundation.org.in) ... ✅ sharmistha.majumdar@inamigosfoundation.org.in [Score: 90]
+   [2/10] Govind Shukla            (inamigosfoundation.org.in) ... ✅ govind.shukla@inamigosfoundation.org.in [Score: 10]
+   [3/10] Fathima Sana S           (inamigosfoundation.org.in) ... ✅ fathima.s@inamigosfoundation.org.in [Score: 10]
+   [4/10] Presley F.               (inamigosfoundation.org.in) ... ✅ presley.f@inamigosfoundation.org.in [Score: 10]
+   [5/10] Sirisala Nagaratna       (inamigosfoundation.org.in) ... ✅ sirisala.nagaratna@inamigosfoundation.org.in [Score: 10]
+   [6/10] Vijay Laxmi Sunia        (inamigosfoundation.org.in) ... ✅ vijay.sunia@inamigosfoundation.org.in [Score: 10]
+   [7/10] Asra Fatima              (inamigosfoundation.org.in) ... ✅ asra.fatima@inamigosfoundation.org.in [Score: 10]
+   [8/10] Deepthi Shree S          (inamigosfoundation.org.in) ... ✅ deepthi.s@inamigosfoundation.org.in [Score: 10]
+   [9/10] Ashish Pawar             (inamigosfoundation.org.in) ... ✅ ashish.pawar@inamigosfoundation.org.in [Score: 10]
+   [10/10] Rajat Singh              (inamigosfoundation.org.in) ... ✅ rajat.singh@inamigosfoundation.org.in [Score: 10]
+
+🎯 Selected TOP 5 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Sharmistha Majumdar    | sharmistha.majumdar@inamigosfoundation.org.in | Human Resources Executive at InAmigos ..
+   2. Govind Shukla          | govind.shukla@inamigosfoundation.org.in | InAmigos Foundation
+   3. Fathima Sana S         | fathima.s@inamigosfoundation.org.in | InAmigos Foundation (IAF)
+   4. Presley F.             | presley.f@inamigosfoundation.org.in | Amigo at InAmigos Foundation (IAF)
+   5. Sirisala Nagaratna     | sirisala.nagaratna@inamigosfoundation.org.in | InAmigos Foundation (IAF)
+
+✨ Successfully queued 5 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: WeIntern Pvt Ltd (Post #290152745)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: The SmartBridge (Post #289478094)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: She Can Foundation (Post #287947903)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/shecanfoundation
+   • Domain   : shecan.global
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for She Can Foundation...
+   🎯 [Zero-Cost Success] Found 8 decision-makers via Free X-Ray. Zero Apify credits used ($0.00 spent)!
+   Received 8 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 8 candidates...
+   [1/8] Dev Agrawal              (shecan.global) ... ✅ dev.agrawal@shecan.global [Score: 10]
+   [2/8] Siva Bhavana R P         (shecan.global) ... ✅ siva.p@shecan.global [Score: 10]
+   [3/8] Amen Housni, FMVA        (shecan.global) ... ✅ amen.fmva@shecan.global [Score: 10]
+   [4/8] Ashcharya Trivedi        (shecan.global) ... ✅ ashcharya.trivedi@shecan.global [Score: 10]
+   [5/8] Aayush Tripathi          (shecan.global) ... ✅ aayush.tripathi@shecan.global [Score: 10]
+   [6/8] roshani khanijau         (shecan.global) ... ✅ roshani.khanijau@shecan.global [Score: 10]
+   [7/8] Bharti Singh             (shecan.global) ... ✅ bharti.singh@shecan.global [Score: 10]
+   [8/8] Vyshnavi Reddy           (shecan.global) ... ✅ vyshnavi.reddy@shecan.global [Score: 10]
+
+🎯 Selected TOP 5 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Dev Agrawal            | dev.agrawal@shecan.global    | Building a Career in Financial Operation
+   2. Siva Bhavana R P       | siva.p@shecan.global         | Research
+   3. Amen Housni, FMVA      | amen.fmva@shecan.global      | Strategic Operations & Deal Desk ...
+   4. Ashcharya Trivedi      | ashcharya.trivedi@shecan.global | SaaS
+   5. Aayush Tripathi        | aayush.tripathi@shecan.global | Insights on AI tools, tech trends ...ros
+
+✨ Successfully queued 5 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+ENRICHMENT BATCH COMPLETE
+Total Decision-Makers Added to Queue: 14
+Run: python cold_mailer.py --dry-run   to preview the new emails!
+=================================================================
+
+=================================================================
+[04:47:04] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.outreach.mailer
+=================================================================
+
+=================================================================
+🚀 LIVE COLD EMAIL SENDING (WATERFALL STRATEGY)
+=================================================================
+Contacts in Queue       : 14
+Max Capacity per Account: 50 emails
+Sending Priority:
+  1. Account 1: sparshgoyal199@gmail.com (Primary 1)
+  2. Account 2: rahilgoyal127@gmail.com (Primary 2)
+  3. Account 3: sparsh198@gmail.com (Primary 3)
+-----------------------------------------------------------------
+[1/14] [Account 1: sparshgoyal199@gmail.com (1/50)] ➔ samir.kamat@splashgain.com (Samir Kamat) ... ✅ SENT
+[2/14] [Account 1: sparshgoyal199@gmail.com (2/50)] ➔ somit.shrivastav@splashgain.com (Somit Shrivastav) ... ✅ SENT
+[3/14] [Account 1: sparshgoyal199@gmail.com (3/50)] ➔ kishan.gopale@splashgain.com (Kishan Gopale) ... ✅ SENT
+[4/14] [Account 1: sparshgoyal199@gmail.com (4/50)] ➔ roh@splashgain.com (Roh…) ... ✅ SENT
+[5/14] [Account 1: sparshgoyal199@gmail.com (5/50)] ➔ sharmistha.majumdar@inamigosfoundation.org.in (Sharmistha Majumdar) ... ✅ SENT
+[6/14] [Account 1: sparshgoyal199@gmail.com (6/50)] ➔ govind.shukla@inamigosfoundation.org.in (Govind Shukla) ... ✅ SENT
+[7/14] [Account 1: sparshgoyal199@gmail.com (7/50)] ➔ fathima.s@inamigosfoundation.org.in (Fathima Sana S) ... ✅ SENT
+[8/14] [Account 1: sparshgoyal199@gmail.com (8/50)] ➔ presley.f@inamigosfoundation.org.in (Presley F.) ... ✅ SENT
+[9/14] [Account 1: sparshgoyal199@gmail.com (9/50)] ➔ sirisala.nagaratna@inamigosfoundation.org.in (Sirisala Nagaratna) ... ✅ SENT
+[10/14] [Account 1: sparshgoyal199@gmail.com (10/50)] ➔ dev.agrawal@shecan.global (Dev Agrawal) ... ✅ SENT
+[11/14] [Account 1: sparshgoyal199@gmail.com (11/50)] ➔ siva.p@shecan.global (Siva Bhavana R P) ... ✅ SENT
+[12/14] [Account 1: sparshgoyal199@gmail.com (12/50)] ➔ amen.fmva@shecan.global (Amen Housni, FMVA) ... ✅ SENT
+[13/14] [Account 1: sparshgoyal199@gmail.com (13/50)] ➔ ashcharya.trivedi@shecan.global (Ashcharya Trivedi) ... ✅ SENT
+[14/14] [Account 1: sparshgoyal199@gmail.com (14/50)] ➔ aayush.tripathi@shecan.global (Aayush Tripathi) ... ✅ SENT
+
+=================================================================
+OUTREACH RUN COMPLETE (WATERFALL)
+  Successfully Sent : 14
+  Failed            : 0
+
+Database Status:
+  • sent: 172
+=================================================================
+
+=================================================================
+[04:49:17] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.reporting.dashboard --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 193
+  ✉️  Email Outreach Available : 135 jobs
+  👉 Action: Manual Portal     : 58 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 410.4s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261023_044228.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================

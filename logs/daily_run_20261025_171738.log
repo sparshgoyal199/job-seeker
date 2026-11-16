@@ -1,0 +1,957 @@
+=================================================================
+🚀 Daily Job Intelligence & Outreach Pipeline
+Started at : 2026-10-25 17:17:38
+Log file   : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261025_171738.log
+=================================================================
+
+=================================================================
+[17:17:38] STEP: 1a/6 Sync New Jobs from WordPress REST API (Incremental)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.wordpress_api --incremental
+=================================================================
+Current DB state: 2862 listings tracked.
+
+[Page 1] Fetching {'per_page': 100, 'page': 1, 'search': 'intern'} ... received 100 posts (Total in WP: 1185, Pages: 12)
+  Processed 100 posts: +0 new to DB, page completed.
+Encountered already-synced post ID. Incremental sync complete!
+
+============================================================
+SYNC SUMMARY
+============================================================
+Total posts checked this run : 1
+Brand new posts added        : 0
+Total listings in database   : 2862
+Total matches (pre-filtered) : 710
+Total detail records ready   : 2862
+============================================================
+
+=================================================================
+[17:17:44] STEP: 1b/6 Ingest Open Hiring Postings from Multi-Portals (LinkedIn, Internshala, Indeed)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.ingestion.multi_portal --limit 40
+=================================================================
+=================================================================
+🚀 MULTI-PORTAL OPEN HIRING INGESTION ENGINE
+Portals: LinkedIn Jobs (Public Guest), Internshala, Indeed India
+Cost   : $0.00 (Zero Apify credits consumed)
+Target : 40 jobs per portal (Total: ~120 jobs)
+=================================================================
+🌐 [Internshala] Fetching active internships across pages (target: 40)...
+   ✅ Internshala: Discovered 40 active hiring companies.
+🌐 [LinkedIn Jobs] Querying public postings across pages (target: 40)...
+   ✅ LinkedIn Jobs: Discovered 40 active hiring companies.
+🌐 [Indeed India] Launching browser to scan active postings (target: 40)...
+   ✅ Indeed India: Discovered 15 active hiring companies.
+
+=================================================================
+SUMMARY: Gathered 95 candidate postings across portals.
+=================================================================
+🎉 Database Ingestion Complete:
+   ➕ Brand New Jobs Added: 7
+   🔄 Existing Jobs Refreshed: 88
+   🎯 Total Ready for Decision-Maker Enrichment: 95
+
+=================================================================
+[17:18:10] STEP: 2/6 Evaluate Unjudged Jobs with Strict Binary LLM
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.evaluation.llm_judge
+=================================================================
+
+🚀 Strictly evaluating 0 job(s) via [Groq-qwen -> Groq-oss -> Gemini] (Strict YES / NO mode)
+
+All jobs are already evaluated!
+
+=================================================================
+[17:18:20] STEP: 3/6 Extract Direct Recruiter Emails from Verified YES Jobs
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.direct_contacts
+=================================================================
+🔍 Scanning YES jobs only for recruiter emails...
+
+✅ Extraction complete.
+   Jobs containing emails  : 225
+   Contacts in DB (total)  : 496
+   Pending (not mailed yet): 0
+
+→ Run: python cold_mailer.py --dry-run   to preview emails before sending.
+
+=================================================================
+[17:18:21] STEP: 4/6 Discover Hidden Recruiter Emails for WordPress Jobs (4-Step Waterfall)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.portal_contacts --limit 50
+=================================================================
+=================================================================
+🔍 RECRUITER CONTACT DISCOVERY & ENRICHMENT ENGINE
+=================================================================
+Unattempted Portal Jobs without emails : 2200
+Jobs Selected for this batch           : 50
+Mode                                   : LIVE ENRICHMENT
+-----------------------------------------------------------------
+[1/50] Post #11387 | Winlancer Technologies ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@winlancers.com>
+       Domain   : winlancers.com
+[2/50] Post #11384 | PGAGI ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@pgagi.in>
+       Domain   : pgagi.in
+[3/50] Post #11379 | UST ... 🎯 FOUND via Company Cache (priya.gusain@ust.com)!
+[4/50] Post #11376 | DeepIntent ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@deepintent.com>
+       Domain   : deepintent.com
+[5/50] Post #11374 | EY ... 🎯 FOUND via Company Cache (careers@ey.com)!
+[6/50] Post #11371 | Wipro ... 🎯 FOUND via Company Cache (careers@wipro.com)!
+[7/50] Post #11368 | Brace Infotech ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <hr@braceinfotech.com>
+       Domain   : braceinfotech.com
+[8/50] Post #11366 | Raqmiyat ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@raqmiyat.com>
+       Domain   : raqmiyat.com
+[9/50] Post #11363 | TestUnity ... 🎯 FOUND via Company Cache (hr@testunity.com)!
+[10/50] Post #11361 | Groww ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@groww.in>
+       Domain   : groww.in
+[11/50] Post #11359 | Data Engineering Intern ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@internshipp.com>
+       Domain   : internshipp.com
+[12/50] Post #11357 | Rudra Innovative Software ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@rudrainnovative.com>
+       Domain   : rudrainnovative.com
+[13/50] Post #11354 | Enterpret ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@enterpret.com>
+       Domain   : enterpret.com
+[14/50] Post #11351 | InheritX Solutions ... ❌ No verified contact found (Requires manual portal apply)
+[15/50] Post #11349 | 🎮IGS Global Hiring ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@integratedglobal.com>
+       Domain   : integratedglobal.com
+[16/50] Post #11347 | Synechron ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@synechron.com>
+       Domain   : synechron.com
+[17/50] Post #11344 | Larsen & Toubro ... ❌ No verified contact found (Requires manual portal apply)
+[18/50] Post #11341 | BuzzHire ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@buzzhire.in>
+       Domain   : buzzhire.in
+[19/50] Post #11338 | BMC Helix ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@bmc.com>
+       Domain   : bmc.com
+[20/50] Post #11336 | Openxcell ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@openxcell.com>
+       Domain   : openxcell.com
+[21/50] Post #11333 | Elsner Technologies Walk-In ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <career@elsner.com>
+       Domain   : elsner.com
+[22/50] Post #11331 | Wipro ... 🎯 FOUND via Company Cache (careers@wipro.com)!
+[23/50] Post #11327 | SAS ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careersaccessibility@sas.com>
+       Domain   : sas.com
+[24/50] Post #11325 | Vedantu ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@vedantu.com>
+       Domain   : vedantu.com
+[25/50] Post #11323 | Virtusa ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@virtusa.com>
+       Domain   : virtusa.com
+[26/50] Post #11320 | Iris Software Inc. ... ❌ No verified contact found (Requires manual portal apply)
+[27/50] Post #11317 | AM Webtech Pvt. Ltd. ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careers@amwebtech.com>
+       Domain   : amwebtech.com
+[28/50] Post #11314 | Thoughts2Binary ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@thoughts2binary.com>
+       Domain   : thoughts2binary.com
+[29/50] Post #11311 | Experion Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[30/50] Post #11308 | Arthtech Supports Pvt Ltd ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@arthtech.com>
+       Domain   : arthtech.com
+[31/50] Post #11305 | Elsner Technologies Pvt. Ltd. ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <career@elsner.com>
+       Domain   : elsner.com
+[32/50] Post #11291 | INFOSYS ... 🎯 FOUND via Company Cache (careers@infosys.com)!
+[33/50] Post #11288 | Tradofina ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@tradofina.com>
+       Domain   : tradofina.com
+[34/50] Post #11285 | DnT Infotech LLP ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@dntinfo.tech>
+       Domain   : dntinfo.tech
+[35/50] Post #11274 | American Chase ... 🎯 FOUND via Company Cache (careers@chase.com)!
+[36/50] Post #11271 | Moon Technolabs ... 🎯 FOUND via Company Cache (careers@moontechnolabs.com)!
+[37/50] Post #11266 | TRUEiGTECH ... ❌ No verified contact found (Requires manual portal apply)
+[38/50] Post #11263 | DevLabs Technology ... 🎯 FOUND via Company Cache (careers@devlabstechnology.com)!
+[39/50] Post #11256 | Infosys ... 🎯 FOUND via Company Cache (careers@infosys.com)!
+[40/50] Post #11254 | Coforge ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@coforge.com>
+       Domain   : coforge.com
+[41/50] Post #11252 | Accion Labs ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@accionlabs.com>
+       Domain   : accionlabs.com
+[42/50] Post #11249 | TCS BFSI Walk-In ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@tata.com>
+       Domain   : tata.com
+[43/50] Post #11246 | Capco ... ❌ No verified contact found (Requires manual portal apply)
+[44/50] Post #11242 | Zensar Technologies ... 🎯 FOUND via Website Scraping (/careers)!
+       Recruiter: Hiring Team <careers@zensar.com>
+       Domain   : zensar.com
+[45/50] Post #11239 | Digitrix Software LLP ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@digitrixsoft.com>
+       Domain   : digitrixsoft.com
+[46/50] Post #11237 | Thoughts2Binary ... 🎯 FOUND via Company Cache (careers@thoughts2binary.com)!
+[47/50] Post #11234 | Cisco ... ❌ No verified contact found (Requires manual portal apply)
+[48/50] Post #11231 | Apidel Technologies ... ❌ No verified contact found (Requires manual portal apply)
+[49/50] Post #11228 | Sathiii Infotech ... ❌ No verified contact found (Requires manual portal apply)
+[50/50] Post #11220 | Capgemini ... 🎯 FOUND via DNS MX Verified Pattern!
+       Recruiter: Hiring Team <careers@capgemini.com>
+       Domain   : capgemini.com
+
+=================================================================
+ENRICHMENT SUMMARY
+  Processed Jobs       : 50
+  New Emails Discovered: 41
+  ✅ Added 41 new recruiter email(s) into hr_contacts table!
+  They will now be included in your cold email queue and dashboard.
+=================================================================
+
+=================================================================
+[17:27:09] STEP: 4b/6 Discover Decision-Maker Emails via LinkedIn & X-Ray (41 waiting, targeting ~159 more)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.enrichment.linkedin_decision_makers --limit 50
+=================================================================
+=================================================================
+🚀 LINKEDIN DECISION-MAKER ENRICHMENT PIPELINE
+=================================================================
+Target Companies Selected : 50
+Mode                      : LIVE PRODUCTION
+=================================================================
+
+=================================================================
+🏢 COMPANY: ESSI Integrated Technologies (Post #245382235)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/elkosta
+   • Domain   : essi.co.in
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for ESSI Integrated Technologies...
+   🎯 [Zero-Cost Success] Found 10 decision-makers via Free X-Ray. Zero Apify credits used ($0.00 spent)!
+   Received 10 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 10 candidates...
+   [1/10] Tanmay Jain              (essi.co.in) ... ✅ tanmay.jain@essi.co.in [Score: 10]
+   [2/10] Rishabh Jain             (essi.co.in) ... ✅ rishabh.jain@essi.co.in [Score: 10]
+   [3/10] Manshubh Singh Rihal     (essi.co.in) ... ✅ manshubh.rihal@essi.co.in [Score: 10]
+   [4/10] Sainath Mahajan          (essi.co.in) ... ✅ sainath.mahajan@essi.co.in [Score: 10]
+   [5/10] Krishna Yadav            (essi.co.in) ... ✅ krishna.yadav@essi.co.in [Score: 50]
+   [6/10] Abhay Kumar Jha          (essi.co.in) ... ✅ abhay.jha@essi.co.in [Score: 95]
+   [7/10] Abhay Jha                (essi.co.in) ... ✅ abhay.jha@essi.co.in [Score: 10]
+   [8/10] Abhinav Jha              (essi.co.in) ... ✅ abhinav.jha@essi.co.in [Score: 10]
+   [9/10] Salib Wani               (essi.co.in) ... ✅ salib.wani@essi.co.in [Score: 10]
+   [10/10] Mohit Kumar              (essi.co.in) ... ✅ mohit.kumar@essi.co.in [Score: 10]
+
+🎯 Selected TOP 5 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Abhay Kumar Jha        | abhay.jha@essi.co.in         | CEO & Founder at Essi Integrated ...Abha
+   2. Krishna Yadav          | krishna.yadav@essi.co.in     | Senior Software Engineer
+   3. Tanmay Jain            | tanmay.jain@essi.co.in       | Machine Learning
+   4. Rishabh Jain           | rishabh.jain@essi.co.in      | Deep Learning Performance Architect
+   5. Manshubh Singh Rihal   | manshubh.rihal@essi.co.in    | Immediate Joiner
+
+✨ Successfully queued 5 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: Hope Behind Tails Foundation (Post #233887877)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: EdYoda (ZekeLabs Technologies (Post #231050700)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : pitchbook.com
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Rustic Wisdom (Post #231046472)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/rustic-wisdom
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: AVS Herbals Private Limited (Post #230620268)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: A1 Apps (Post #229793110)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/a1apps-co
+   • Domain   : a1apps.co
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for A1 Apps...
+   🎯 [Zero-Cost Success] Found 5 decision-makers via Free X-Ray. Zero Apify credits used ($0.00 spent)!
+   Received 5 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 5 candidates...
+   [1/5] Subhash Nawani           (a1apps.co) ... ✅ subhash@a1apps.co [Score: 10]
+   [2/5] Pratap Ranjan            (a1apps.co) ... ✅ pratap@a1apps.co [Score: 10]
+   [3/5] Ankita Gupta             (a1apps.co) ... ❌ No verified mailbox found
+   [4/5] Sneh Nath                (a1apps.co) ... ❌ No verified mailbox found
+   [5/5] Janez Šoper              (a1apps.co) ... ❌ No verified mailbox found
+
+🎯 Selected TOP 2 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Subhash Nawani         | subhash@a1apps.co            | Transforming Mobile Experience with Apps
+   2. Pratap Ranjan          | pratap@a1apps.co             | Building YourmateAi
+
+✨ Successfully queued 2 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: PinnacleU (Post #228662668)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/pinnacleu
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: HumbleWalking (Post #228537252)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: TechAlmas LLP (Post #228167749)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : techalmas.com
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Soch Et Latte (Post #227857462)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/soch-et-latte
+   • Domain   : sochetlatte.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Soch Et Latte...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 1/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      [Apify Token #2/6] Querying memo23 actor...
+      [Apify Token #3/6] Querying memo23 actor...
+      [Apify Token #4/6] Querying memo23 actor...
+      [Apify Token #5/6] Querying memo23 actor...
+      [Apify Token #6/6] Querying memo23 actor...
+   ✅ Total candidate pool assembled: 0 decision-makers.
+   Received 0 candidate employee record(s).
+⚠️ No matching decision-makers found for this company.
+
+=================================================================
+🏢 COMPANY: HoloGrad LLP (Post #227758692)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : holograd.in
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Bear Systems (Post #225622664)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/bear-systems
+   • Domain   : bearsystems.in
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Bear Systems...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 1/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      ✅ Apify Token #1 successfully delivered 2 profiles!
+   ✅ Total candidate pool assembled: 2 decision-makers.
+   Received 2 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 2 candidates...
+   [1/2] Thomas McCutchen         (bearsystems.in) ... ✅ thomas.mccutchen@bearsystems.in [Score: 95]
+   [2/2] Riley Clermont           (bearsystems.in) ... ✅ riley.clermont@bearsystems.in [Score: 10]
+
+🎯 Selected TOP 2 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Thomas McCutchen       | thomas.mccutchen@bearsystems.in | CEO at Bear, Experienced Founder, ...
+   2. Riley Clermont         | riley.clermont@bearsystems.in | Bear
+
+✨ Successfully queued 2 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: AIONOS (Post #225478081)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/aionos
+   • Domain   : aionos.io
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for AIONOS...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 2/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      ✅ Apify Token #1 successfully delivered 10 profiles!
+   ✅ Total candidate pool assembled: 10 decision-makers.
+   Received 10 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 10 candidates...
+   [1/10] Gagandeep Singh          (aionos.io) ... ❌ No verified mailbox found
+   [2/10] Raj T.                   (aionos.io) ... ❌ No verified mailbox found
+   [3/10] CP Gurnani               (aionos.io) ... ❌ No verified mailbox found
+   [4/10] Kar…                     (aionos.io) ... ❌ No verified mailbox found
+   [5/10] Sim…                     (aionos.io) ... ❌ No verified mailbox found
+   [6/10] Pal…                     (aionos.io) ... ❌ No verified mailbox found
+   [7/10] Sur…                     (aionos.io) ... ❌ No verified mailbox found
+   [8/10] Vin…                     (aionos.io) ... ❌ No verified mailbox found
+   [9/10] Abh…                     (aionos.io) ... ❌ No verified mailbox found
+   [10/10] Kir…                     (aionos.io) ... ❌ No verified mailbox found
+
+⚠️ None of the 10 candidate mailboxes could be verified for aionos.io.
+
+=================================================================
+🏢 COMPANY: Research Connect (Post #225429976)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/research-connect-usa
+   • Domain   : search.myresearchconnect.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Research Connect...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 3/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      [Apify Token #2/6] Querying memo23 actor...
+      [Apify Token #3/6] Querying memo23 actor...
+      [Apify Token #4/6] Querying memo23 actor...
+      [Apify Token #5/6] Querying memo23 actor...
+      [Apify Token #6/6] Querying memo23 actor...
+   ✅ Total candidate pool assembled: 0 decision-makers.
+   Received 0 candidate employee record(s).
+⚠️ No matching decision-makers found for this company.
+
+=================================================================
+🏢 COMPANY: BEMPU Health (Post #224599448)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/bempu-health
+   • Domain   : bempu.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for BEMPU Health...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 3/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      ✅ Apify Token #1 successfully delivered 7 profiles!
+   ✅ Total candidate pool assembled: 7 decision-makers.
+   Received 7 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 7 candidates...
+   [1/7] Triloki Nath Keshri      (bempu.com) ... ❌ No verified mailbox found
+   [2/7] Ranjini H.J              (bempu.com) ... ❌ No verified mailbox found
+   [3/7] Nupur Mandke             (bempu.com) ... ❌ No verified mailbox found
+   [4/7] Rit…                     (bempu.com) ... ❌ No verified mailbox found
+   [5/7] Yeg…                     (bempu.com) ... ❌ No verified mailbox found
+   [6/7] Mon…                     (bempu.com) ... ❌ No verified mailbox found
+   [7/7] Sah…                     (bempu.com) ... ❌ No verified mailbox found
+
+⚠️ None of the 7 candidate mailboxes could be verified for bempu.com.
+
+=================================================================
+🏢 COMPANY: Sahayak Associates (Post #224495152)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/sahayak-associates
+   • Domain   : sahayakassociates.in
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Sahayak Associates...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 4/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      ✅ Apify Token #1 successfully delivered 4 profiles!
+   ✅ Total candidate pool assembled: 4 decision-makers.
+   Received 4 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 4 candidates...
+   [1/4] Sandeep Sahni            (sahayakassociates.in) ... ✅ sandeepsahni@sahayakassociates.in [Score: 10]
+   [2/4] Vaibhav Sahni, CFA       (sahayakassociates.in) ... ❌ No verified mailbox found
+   [3/4] Puneet Kohli             (sahayakassociates.in) ... ✅ puneetkohli@sahayakassociates.in [Score: 10]
+   [4/4] Kra…                     (sahayakassociates.in) ... ❌ No verified mailbox found
+
+🎯 Selected TOP 2 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Sandeep Sahni          | sandeepsahni@sahayakassociates.in | Partner at Sahayak Associates | Author
+   2. Puneet Kohli           | puneetkohli@sahayakassociates.in | Partner at SAHAYAK ASSOCIATES
+
+✨ Successfully queued 2 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: SKOOLLAGE (Post #223495728)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/skoollage
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Dimakh Consultants Pvt.Ltd (Post #223294249)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/dimakh-consultants-pvt-ltd
+   • Domain   : dimakhconsultants.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Dimakh Consultants Pvt.Ltd...
+   ℹ️ Free X-Ray found 0 candidates (< 2). Activating Apify Fallback (memo23) [Call 5/5]...
+      [Apify Token #1/6] Querying memo23 actor...
+      ✅ Apify Token #1 successfully delivered 7 profiles!
+   ✅ Total candidate pool assembled: 7 decision-makers.
+   Received 7 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 7 candidates...
+   [1/7] piyush dangi             (dimakhconsultants.com) ... ✅ piyush.dangi@dimakhconsultants.com [Score: 10]
+   [2/7] Manasi Satwaskar         (dimakhconsultants.com) ... ✅ manasi.satwaskar@dimakhconsultants.com [Score: 10]
+   [3/7] Dimakh Sahasrabuddhe     (dimakhconsultants.com) ... ✅ dimakh.sahasrabuddhe@dimakhconsultants.com [Score: 10]
+   [4/7] Ama…                     (dimakhconsultants.com) ... ✅ ama@dimakhconsultants.com [Score: 10]
+   [5/7] Arc…                     (dimakhconsultants.com) ... ✅ arc@dimakhconsultants.com [Score: 10]
+   [6/7] Ric…                     (dimakhconsultants.com) ... ✅ ric@dimakhconsultants.com [Score: 10]
+   [7/7] Jar…                     (dimakhconsultants.com) ... ✅ jar@dimakhconsultants.com [Score: 10]
+
+🎯 Selected TOP 5 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. piyush dangi           | piyush.dangi@dimakhconsultants.com | Dimakh Consultants Pvt.Ltd
+   2. Manasi Satwaskar       | manasi.satwaskar@dimakhconsultants.com | Dimakh Consultants Pvt.Ltd
+   3. Dimakh Sahasrabuddhe   | dimakh.sahasrabuddhe@dimakhconsultants.com | Pune/Pimpri-Chinchwad Area | Professiona
+   4. Ama…                   | ama@dimakhconsultants.com    | Dimakh Consultants Pvt. Ltd.
+   5. Arc…                   | arc@dimakhconsultants.com    | Head of Design Department - Dimakh Consu
+
+✨ Successfully queued 5 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: Fresh to home (Post #223261141)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/freshtohome-foods-private-limited
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Himalaya Enterprises (Post #222756756)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/himalaya-enterprises
+   • Domain   : himalaya-enterprises.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Himalaya Enterprises...
+   🎯 [Zero-Cost Success] Found 7 decision-makers via Free X-Ray. Zero Apify credits used ($0.00 spent)!
+   Received 7 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 7 candidates...
+   [1/7] Aman Kumar Jha           (himalaya-enterprises.com) ... ✅ aman.jha@himalaya-enterprises.com [Score: 10]
+   [2/7] Himalaya Enterprises     (himalaya-enterprises.com) ... ✅ himalaya.enterprises@himalaya-enterprises.com [Score: 10]
+   [3/7] Suresh Tummala           (himalaya-enterprises.com) ... ✅ suresh.tummala@himalaya-enterprises.com [Score: 10]
+   [4/7] NIMESH BHAGAT            (himalaya-enterprises.com) ... ✅ nimesh.bhagat@himalaya-enterprises.com [Score: 10]
+   [5/7] nilantha jayaweera       (himalaya-enterprises.com) ... ✅ nilantha.jayaweera@himalaya-enterprises.com [Score: 10]
+   [6/7] Anurag Goyal             (himalaya-enterprises.com) ... ✅ anurag.goyal@himalaya-enterprises.com [Score: 10]
+   [7/7] Noman Ahmad              (himalaya-enterprises.com) ... ✅ noman.ahmad@himalaya-enterprises.com [Score: 10]
+
+🎯 Selected TOP 5 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Aman Kumar Jha         | aman.jha@himalaya-enterprises.com | Manager
+   2. Himalaya Enterprises   | himalaya.enterprises@himalaya-enterprises.com | himalya crates
+   3. Suresh Tummala         | suresh.tummala@himalaya-enterprises.com | Vice President at Himalaya Enterprises .
+   4. NIMESH BHAGAT          | nimesh.bhagat@himalaya-enterprises.com | Assistant Manager at Himalaya enterprise
+   5. nilantha jayaweera     | nilantha.jayaweera@himalaya-enterprises.com | manager at himalaya enterprises
+
+✨ Successfully queued 5 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: Codeatrix (Post #222227285)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: WEINTERN PRIVATE LIMITED (Post #221990502)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : we-intern.in
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Bosscoder Academy (Post #221601084)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : bosscoderacademy.com
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Devloops Software (Post #221495612)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/devloops-software
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Cinemate™ (Post #221181517)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : cinemate.co
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: DiracAI Services (Post #220362321)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/diracai-services
+   • Domain   : diracai.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for DiracAI Services...
+   🛡️ Apify run limit reached (5/5). Skipping Apify to conserve credits.
+   ✅ Total candidate pool assembled: 0 decision-makers.
+   Received 0 candidate employee record(s).
+⚠️ No matching decision-makers found for this company.
+
+=================================================================
+🏢 COMPANY: Ira Hospitality (Post #220059677)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/ira-hospitality
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Vedak: Expert Network (Post #219070016)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/vedak-expert-network
+   • Domain   : vedak.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Vedak: Expert Network...
+   🛡️ Apify run limit reached (5/5). Skipping Apify to conserve credits.
+   ✅ Total candidate pool assembled: 0 decision-makers.
+   Received 0 candidate employee record(s).
+⚠️ No matching decision-makers found for this company.
+
+=================================================================
+🏢 COMPANY: Ancilar (Post #218819140)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/ancilar
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: InAmigos Foundation (Post #218806229)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Complivibe Private Limited (Post #218631886)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/complivibe
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Dexterz Technology (Post #218268317)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/dexterz-technology
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Planys Technologies Private Limited (Post #217085380)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/planys
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Optimspace (Post #216824524)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/optim-space
+   • Domain   : careerspage.io
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Optimspace...
+   🛡️ Apify run limit reached (5/5). Skipping Apify to conserve credits.
+   ✅ Total candidate pool assembled: 0 decision-makers.
+   Received 0 candidate employee record(s).
+⚠️ No matching decision-makers found for this company.
+
+=================================================================
+🏢 COMPANY: Tech Analogy (Post #216668657)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Paarsh Infotech (Post #216578277)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Cloudseed Technologies (Post #216479391)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : cloudseed.io
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: TechShlok (Post #216364043)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/techshlok
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Selah Digital (Post #215803292)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/selah-digital
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: AnantaX Technologies (Post #215629626)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/anantax-technologies
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Savitra Creation (Post #215009738)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/savita
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Electronic Arts (EA) (Post #214988788)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/electronic-arts-ea
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Gateway Software Solutions (Post #214718713)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/gateway-software-solutions
+   • Domain   : gatewaysoftwaresolutions.com
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for Gateway Software Solutions...
+   🛡️ Apify run limit reached (5/5). Skipping Apify to conserve credits.
+   ✅ Total candidate pool assembled: 0 decision-makers.
+   Received 0 candidate employee record(s).
+⚠️ No matching decision-makers found for this company.
+
+=================================================================
+🏢 COMPANY: EMBONE TECHNOLOGIES (Post #214035834)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : embonetech.in
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Women First India Foundation (Post #213952788)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Manomay Electronics Pvt Ltd (Post #213528308)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Envision Next (Post #212715758)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/envision-next
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: She Can Foundation (Post #211728978)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : https://www.linkedin.com/company/shecanfoundation
+   • Domain   : shecanfoundation.org
+
+📡 Extracting 10 Decision-Maker Candidates (Primary: memo23 | Fallback: X-Ray)...
+   [Primary: 100% Free X-Ray] Searching public LinkedIn profiles for She Can Foundation...
+   🎯 [Zero-Cost Success] Found 7 decision-makers via Free X-Ray. Zero Apify credits used ($0.00 spent)!
+   Received 7 candidate employee record(s).
+
+⚡ Testing corporate email permutations for ALL 7 candidates...
+   [1/7] Dev Agrawal              (shecanfoundation.org) ... ✅ dev.agrawal@shecanfoundation.org [Score: 10]
+   [2/7] Ashcharya Trivedi        (shecanfoundation.org) ... ✅ ashcharya.trivedi@shecanfoundation.org [Score: 10]
+   [3/7] Aayush Tripathi          (shecanfoundation.org) ... ✅ aayush.tripathi@shecanfoundation.org [Score: 10]
+   [4/7] roshani khanijau         (shecanfoundation.org) ... ✅ roshani.khanijau@shecanfoundation.org [Score: 10]
+   [5/7] SHE CAN FOUNDATION GILGIT (shecanfoundation.org) ... ✅ she.gilgit@shecanfoundation.org [Score: 10]
+   [6/7] Bharti Singh             (shecanfoundation.org) ... ✅ bharti.singh@shecanfoundation.org [Score: 10]
+   [7/7] Anne Devereux            (shecanfoundation.org) ... ✅ anne.devereux@shecanfoundation.org [Score: 10]
+
+🎯 Selected TOP 5 BEST VERIFIED DECISION-MAKERS FOR OUTREACH:
+   1. Dev Agrawal            | dev.agrawal@shecanfoundation.org | Building a Career in Financial Operation
+   2. Ashcharya Trivedi      | ashcharya.trivedi@shecanfoundation.org | MBA
+   3. Aayush Tripathi        | aayush.tripathi@shecanfoundation.org | Insights on AI tools, tech trends ...ros
+   4. roshani khanijau       | roshani.khanijau@shecanfoundation.org | Attended Vellore Institute of Technology
+   5. SHE CAN FOUNDATION GILGIT | she.gilgit@shecanfoundation.org | BALTISTAN
+
+✨ Successfully queued 5 top-tier verified contact(s) for cold emailing!
+
+=================================================================
+🏢 COMPANY: Women First India Foundation (Post #211368804)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : ❌ Not found
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+🏢 COMPANY: Marpu Foundation (Post #210848299)
+=================================================================
+🔎 Resolving Company LinkedIn & Website Domain... DONE
+   • LinkedIn : ❌ Not found
+   • Domain   : marpu.org
+⚠️ Skipping: Missing LinkedIn company URL or domain.
+
+=================================================================
+ENRICHMENT BATCH COMPLETE
+Total Decision-Makers Added to Queue: 26
+Run: python cold_mailer.py --dry-run   to preview the new emails!
+=================================================================
+
+=================================================================
+[17:53:50] STEP: 5/6 Send Pending Cold Emails via Gmail SMTP (Daily Limit: 200)
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.outreach.mailer --limit 200
+=================================================================
+
+📊 Today's Outreach Budget: 63/200 sent today (137 remaining for today).
+
+=================================================================
+🚀 LIVE COLD EMAIL SENDING (WATERFALL STRATEGY)
+=================================================================
+Contacts in Queue       : 54 (Sending up to: 54)
+Daily Cap Remaining     : 137/200 emails
+Max Capacity per Account: 200 emails
+Sending Priority:
+  1. Account 1: sparshgoyal199@gmail.com (Primary 1)
+  2. Account 2: rahilgoyal127@gmail.com (Primary 2)
+  3. Account 3: sparsh198@gmail.com (Primary 3)
+-----------------------------------------------------------------
+[1/54] [Account 1: sparshgoyal199@gmail.com (1/200)] ➔ careers@winlancers.com (Hiring Team) ... ✅ SENT
+[2/54] [Account 1: sparshgoyal199@gmail.com (2/200)] ➔ careers@pgagi.in (Hiring Team) ... ✅ SENT
+[3/54] [Account 1: sparshgoyal199@gmail.com (3/200)] ➔ careers@deepintent.com (Hiring Team) ... ✅ SENT
+[4/54] [Account 1: sparshgoyal199@gmail.com (4/200)] ➔ hr@braceinfotech.com (Hiring Team) ... ✅ SENT
+[5/54] [Account 1: sparshgoyal199@gmail.com (5/200)] ➔ careers@raqmiyat.com (Hiring Team) ... ✅ SENT
+[6/54] [Account 1: sparshgoyal199@gmail.com (6/200)] ➔ careers@groww.in (Hiring Team) ... ✅ SENT
+[7/54] [Account 1: sparshgoyal199@gmail.com (7/200)] ➔ careers@internshipp.com (Hiring Team) ... ✅ SENT
+[8/54] [Account 1: sparshgoyal199@gmail.com (8/200)] ➔ careers@rudrainnovative.com (Hiring Team) ... ✅ SENT
+[9/54] [Account 1: sparshgoyal199@gmail.com (9/200)] ➔ careers@enterpret.com (Hiring Team) ... ✅ SENT
+[10/54] [Account 1: sparshgoyal199@gmail.com (10/200)] ➔ careers@integratedglobal.com (Hiring Team) ... ✅ SENT
+[11/54] [Account 1: sparshgoyal199@gmail.com (11/200)] ➔ careers@synechron.com (Hiring Team) ... ✅ SENT
+[12/54] [Account 1: sparshgoyal199@gmail.com (12/200)] ➔ careers@buzzhire.in (Hiring Team) ... ✅ SENT
+[13/54] [Account 1: sparshgoyal199@gmail.com (13/200)] ➔ careers@bmc.com (Hiring Team) ... ✅ SENT
+[14/54] [Account 1: sparshgoyal199@gmail.com (14/200)] ➔ careers@openxcell.com (Hiring Team) ... ✅ SENT
+[15/54] [Account 1: sparshgoyal199@gmail.com (15/200)] ➔ career@elsner.com (Hiring Team) ... ✅ SENT
+[16/54] [Account 1: sparshgoyal199@gmail.com (16/200)] ➔ careersaccessibility@sas.com (Hiring Team) ... ✅ SENT
+[17/54] [Account 1: sparshgoyal199@gmail.com (17/200)] ➔ careers@vedantu.com (Hiring Team) ... ✅ SENT
+[18/54] [Account 1: sparshgoyal199@gmail.com (18/200)] ➔ careers@virtusa.com (Hiring Team) ... ✅ SENT
+[19/54] [Account 1: sparshgoyal199@gmail.com (19/200)] ➔ careers@amwebtech.com (Hiring Team) ... ✅ SENT
+[20/54] [Account 1: sparshgoyal199@gmail.com (20/200)] ➔ careers@thoughts2binary.com (Hiring Team) ... ✅ SENT
+[21/54] [Account 1: sparshgoyal199@gmail.com (21/200)] ➔ careers@arthtech.com (Hiring Team) ... ✅ SENT
+[22/54] [Account 1: sparshgoyal199@gmail.com (22/200)] ➔ careers@tradofina.com (Hiring Team) ... ✅ SENT
+[23/54] [Account 1: sparshgoyal199@gmail.com (23/200)] ➔ careers@dntinfo.tech (Hiring Team) ... ✅ SENT
+[24/54] [Account 1: sparshgoyal199@gmail.com (24/200)] ➔ careers@coforge.com (Hiring Team) ... ✅ SENT
+[25/54] [Account 1: sparshgoyal199@gmail.com (25/200)] ➔ careers@accionlabs.com (Hiring Team) ... ✅ SENT
+[26/54] [Account 1: sparshgoyal199@gmail.com (26/200)] ➔ careers@tata.com (Hiring Team) ... ✅ SENT
+[27/54] [Account 1: sparshgoyal199@gmail.com (27/200)] ➔ careers@digitrixsoft.com (Hiring Team) ... ✅ SENT
+[28/54] [Account 1: sparshgoyal199@gmail.com (28/200)] ➔ careers@capgemini.com (Hiring Team) ... ✅ SENT
+[29/54] [Account 1: sparshgoyal199@gmail.com (29/200)] ➔ abhay.jha@essi.co.in (Abhay Kumar Jha) ... ✅ SENT
+[30/54] [Account 1: sparshgoyal199@gmail.com (30/200)] ➔ krishna.yadav@essi.co.in (Krishna Yadav) ... ✅ SENT
+[31/54] [Account 1: sparshgoyal199@gmail.com (31/200)] ➔ tanmay.jain@essi.co.in (Tanmay Jain) ... ✅ SENT
+[32/54] [Account 1: sparshgoyal199@gmail.com (32/200)] ➔ rishabh.jain@essi.co.in (Rishabh Jain) ... ✅ SENT
+[33/54] [Account 1: sparshgoyal199@gmail.com (33/200)] ➔ manshubh.rihal@essi.co.in (Manshubh Singh Rihal) ... ✅ SENT
+[34/54] [Account 1: sparshgoyal199@gmail.com (34/200)] ➔ subhash@a1apps.co (Subhash Nawani) ... ✅ SENT
+[35/54] [Account 1: sparshgoyal199@gmail.com (35/200)] ➔ pratap@a1apps.co (Pratap Ranjan) ... ✅ SENT
+[36/54] [Account 1: sparshgoyal199@gmail.com (36/200)] ➔ thomas.mccutchen@bearsystems.in (Thomas McCutchen) ... ✅ SENT
+[37/54] [Account 1: sparshgoyal199@gmail.com (37/200)] ➔ riley.clermont@bearsystems.in (Riley Clermont) ... ✅ SENT
+[38/54] [Account 1: sparshgoyal199@gmail.com (38/200)] ➔ sandeepsahni@sahayakassociates.in (Sandeep Sahni) ... ✅ SENT
+[39/54] [Account 1: sparshgoyal199@gmail.com (39/200)] ➔ puneetkohli@sahayakassociates.in (Puneet Kohli) ... ✅ SENT
+[40/54] [Account 1: sparshgoyal199@gmail.com (40/200)] ➔ piyush.dangi@dimakhconsultants.com (piyush dangi) ... ✅ SENT
+[41/54] [Account 1: sparshgoyal199@gmail.com (41/200)] ➔ manasi.satwaskar@dimakhconsultants.com (Manasi Satwaskar) ... ✅ SENT
+[42/54] [Account 1: sparshgoyal199@gmail.com (42/200)] ➔ dimakh.sahasrabuddhe@dimakhconsultants.com (Dimakh Sahasrabuddhe) ... ✅ SENT
+[43/54] [Account 1: sparshgoyal199@gmail.com (43/200)] ➔ ama@dimakhconsultants.com (Ama…) ... ✅ SENT
+[44/54] [Account 1: sparshgoyal199@gmail.com (44/200)] ➔ arc@dimakhconsultants.com (Arc…) ... ✅ SENT
+[45/54] [Account 1: sparshgoyal199@gmail.com (45/200)] ➔ aman.jha@himalaya-enterprises.com (Aman Kumar Jha) ... ✅ SENT
+[46/54] [Account 1: sparshgoyal199@gmail.com (46/200)] ➔ himalaya.enterprises@himalaya-enterprises.com (Himalaya Enterprises) ... ✅ SENT
+[47/54] [Account 1: sparshgoyal199@gmail.com (47/200)] ➔ suresh.tummala@himalaya-enterprises.com (Suresh Tummala) ... ✅ SENT
+[48/54] [Account 1: sparshgoyal199@gmail.com (48/200)] ➔ nimesh.bhagat@himalaya-enterprises.com (NIMESH BHAGAT) ... ✅ SENT
+[49/54] [Account 1: sparshgoyal199@gmail.com (49/200)] ➔ nilantha.jayaweera@himalaya-enterprises.com (nilantha jayaweera) ... ✅ SENT
+[50/54] [Account 1: sparshgoyal199@gmail.com (50/200)] ➔ dev.agrawal@shecanfoundation.org (Dev Agrawal) ... ✅ SENT
+[51/54] [Account 1: sparshgoyal199@gmail.com (51/200)] ➔ ashcharya.trivedi@shecanfoundation.org (Ashcharya Trivedi) ... ✅ SENT
+[52/54] [Account 1: sparshgoyal199@gmail.com (52/200)] ➔ aayush.tripathi@shecanfoundation.org (Aayush Tripathi) ... ✅ SENT
+[53/54] [Account 1: sparshgoyal199@gmail.com (53/200)] ➔ roshani.khanijau@shecanfoundation.org (roshani khanijau) ... ✅ SENT
+[54/54] [Account 1: sparshgoyal199@gmail.com (54/200)] ➔ she.gilgit@shecanfoundation.org (SHE CAN FOUNDATION GILGIT) ... ✅ SENT
+
+=================================================================
+OUTREACH RUN COMPLETE (WATERFALL)
+  Successfully Sent : 54
+  Failed            : 0
+
+Database Status:
+  • pending: 15
+  • sent: 563
+=================================================================
+
+=================================================================
+[18:00:01] STEP: 6/6 Export Matches & Open Interactive Dashboard
+Running: C:\Users\hp\OneDrive\Desktop\medicine_app\.venv\Scripts\python.exe -m src.reporting.dashboard --open
+=================================================================
+
+=================================================================
+DASHBOARD GENERATED
+=================================================================
+  Total Verified Matches (YES) : 2869
+  ✉️  Email Outreach Available : 444 jobs
+  👉 Action: Manual Portal     : 2425 jobs
+  HTML Dashboard               : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.html
+  CSV Export                   : C:\Users\hp\OneDrive\Desktop\medicine_app\matched_jobs.csv
+=================================================================
+
+=================================================================
+✨ Daily routine completed successfully in 2544.0s!
+📝 Session Log : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\daily_run_20261025_171738.log
+🔗 Latest Log  : C:\Users\hp\OneDrive\Desktop\medicine_app\logs\latest_run.log
+=================================================================
